@@ -23,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "PortedCheese\\Catalog\\ServiceProvider"
+                "PortedCheese\\CategoryProduct\\ServiceProvider"
             ]
         }
     }
