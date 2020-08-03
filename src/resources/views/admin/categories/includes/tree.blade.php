@@ -7,7 +7,7 @@
         @foreach ($categories as $category)
             <li>
                 @can("view", \App\Category::class)
-                    <a href="{{ route('admin.category.show', ['category' => $category["slug"]]) }}"
+                    <a href="{{ route('admin.categories.show', ['category' => $category["slug"]]) }}"
                        class="btn btn-link">
                         {{ $category["title"] }}
                     </a>
