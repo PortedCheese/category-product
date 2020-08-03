@@ -1,0 +1,30 @@
+{
+    "name": "portedcheese/category-product",
+    "description": "Frame for catalog",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir",
+            "email": "dev@gis4biz.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+      "portedcheese/base-settings": "@dev",
+      "portedcheese/seo-integration": "@dev",
+      "portedcheese/admin-site-menu": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "PortedCheese\\Catalog\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PortedCheese\\Catalog\\ServiceProvider"
+            ]
+        }
+    }
+}
