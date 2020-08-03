@@ -65,7 +65,9 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      * @var array
      */
     protected $vueIncludes = [
-        'admin' => [],
+        'admin' => [
+            'admin-category-list' => "CategoryListComponent",
+        ],
         'app' => [],
     ];
 

@@ -4,6 +4,7 @@ namespace PortedCheese\CategoryProduct;
 
 use App\Category;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
+use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -32,13 +33,31 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // Подключение шаблонов.
         $this->loadViewsFrom(__DIR__ . "/resources/views", "category-product");
+
+        // Assets.
+        $this->publishes([
+            __DIR__ . '/resources/js/components' => resource_path('js/components/vendor/category-product'),
+        ], 'public');
     }
 
     public function register()
     {
+        // Конфигурация стандартная.
         $this->mergeConfigFrom(
           __DIR__ . '/config/category-product.php', 'category-product'
         );
+        // Facades.
+        $this->initFacades();
+    }
+
+    /**
+     * Подключение Facades.
+     */
+    protected function initFacades()
+    {
+        $this->app->singleton("category-actions", function () {
+            return new CategoryActionsManager;
+        });
     }
 
     /**

@@ -10,6 +10,7 @@
         <div class="card">
             <div class="card-body">
                 @if ($isTree)
+                    @include("category-product::admin.categories.includes.tree", ["categories" => $categories])
                 @else
                     @include("category-product::admin.categories.includes.table-list", ["categories" => $categories])
                 @endif

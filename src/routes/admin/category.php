@@ -9,6 +9,10 @@ Route::group([
     "prefix" => "admin",
 ], function () {
     Route::resource("categories", "CategoryController");
+    
+    // Изменить вес у категорий.
+    Route::put("categories/tree/priority", "CategoryController@changeItemsPriority")
+        ->name("categories.item-priority");
 
     Route::group([
         "prefix" => "categories/{category}",

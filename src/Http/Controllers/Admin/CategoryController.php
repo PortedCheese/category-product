@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Meta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 
 class CategoryController extends Controller
 {
@@ -26,7 +27,7 @@ class CategoryController extends Controller
         $view = $request->get("view", "default");
         $isTree = $view == "tree";
         if ($isTree) {
-            $categories = [];
+            $categories = CategoryActions::getTree();
         }
         else {
             $collection = Category::query()
@@ -201,5 +202,31 @@ class CategoryController extends Controller
         return view("category-product::admin.categories.metas", [
             'category' => $category,
         ]);
+    }
+
+    /**
+     * Изменить приоритет категорий.
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeItemsPriority(Request $request)
+    {
+        $data = $request->get("items", false);
+        if ($data) {
+            $result = CategoryActions::saveOrder($data);
+            if ($result) {
+                return response()
+                    ->json("Порядок сохранен");
+            }
+            else {
+                return response()
+                    ->json("Ошибка, что то пошло не так");
+            }
+        }
+        else {
+            return response()
+                ->json("Ошибка, недостаточно данных");
+        }
     }
 }

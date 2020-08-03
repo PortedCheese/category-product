@@ -1,5 +1,6 @@
 <?php
 
 return [
-  "categoryAdminRoutes" => true,
+    "categoryAdminRoutes" => true,
+    "categoryShowRouteName" => "admin.categories.show",
 ];
