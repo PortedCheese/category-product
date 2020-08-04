@@ -48,6 +48,9 @@
     @if ($childrenCount)
         <div class="col-12 mt-3">
             <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Подкатегории</h5>
+                </div>
                 <div class="card-body">
                     @include("category-product::admin.categories.includes.table-list", ["categories" => $children])
                 </div>

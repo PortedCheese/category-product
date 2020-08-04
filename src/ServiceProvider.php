@@ -5,6 +5,7 @@ namespace PortedCheese\CategoryProduct;
 use App\Category;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
 use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
+use PortedCheese\CategoryProduct\Helpers\SpecificationActionManager;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -58,6 +59,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->app->singleton("category-actions", function () {
             return new CategoryActionsManager;
         });
+
+        $this->app->singleton("specification-actions", function () {
+            return new SpecificationActionManager;
+        });
     }
 
     /**
@@ -67,6 +72,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         if (config("category-product.categoryAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/category.php");
+        }
+        if (config("category-product.specificationAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/specification.php");
+        }
+        if (config("category-product.specificationGroupAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/specification-group.php");
         }
     }
 

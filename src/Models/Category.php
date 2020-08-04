@@ -50,4 +50,18 @@ class Category extends Model
     {
         return $this->hasMany(\App\Category::class, "parent_id");
     }
+
+    /**
+     * Характеристики.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function specifications()
+    {
+        return $this->belongsToMany(\App\Specification::class)
+            ->withPivot("title")
+            ->withPivot("filter")
+            ->withPivot("priority")
+            ->withTimestamps();
+    }
 }

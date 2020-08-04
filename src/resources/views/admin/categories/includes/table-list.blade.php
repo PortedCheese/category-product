@@ -20,7 +20,7 @@
                     <td>
                         <div role="toolbar" class="btn-toolbar">
                             <div class="btn-group mr-1">
-                                @can("edit", \App\Category::class)
+                                @can("update", \App\Category::class)
                                     <a href="{{ route("admin.categories.edit", ["category" => $item]) }}" class="btn btn-primary">
                                         <i class="far fa-edit"></i>
                                     </a>

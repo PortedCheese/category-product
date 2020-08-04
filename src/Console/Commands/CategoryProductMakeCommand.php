@@ -40,7 +40,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      * The models that need to be exported.
      * @var array
      */
-    protected $models = ["Category"];
+    protected $models = ["Category", "Specification", "SpecificationGroup"];
 
     /**
      * Создание контроллеров.
@@ -48,7 +48,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      * @var array
      */
     protected $controllers = [
-        "Admin" => ["CategoryController"],
+        "Admin" => ["CategoryController", "SpecificationController", "SpecificationGroupController"],
         "Site" => [],
     ];
 
@@ -81,6 +81,16 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "title" => "Категории",
             "slug" => "categories",
             "policy" => "CategoryPolicy",
+        ],
+        [
+            "title" => "Характеристики категории",
+            "slug" => "specifications",
+            "policy" => "SpecificationPolicy",
+        ],
+        [
+            "title" => "Группы характеристик",
+            "slug" => "specifications-group",
+            "policy" => "SpecificationGroupPolicy",
         ]
     ];
 

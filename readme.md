@@ -17,3 +17,9 @@
                             {--policies : Export and create rules}
                             {--only-default : Create default rules}
                             {--vue : Export vue}
+                            
+## Config
+    
+    categoryAdminRoutes - Использовать роуты для управления категориями из пакета
+    categoryShowRouteName - Адрес просмотра категории
+    specificationAdminRoutes - Использовать роуты для управления характеристиками из пакета

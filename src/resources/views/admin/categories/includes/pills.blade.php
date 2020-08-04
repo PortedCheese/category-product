@@ -78,6 +78,15 @@
                         </li>
                     @endcan
 
+                    @can("viewAny", \App\Specification::class)
+                        <li class="nav-item">
+                            <a href="{{ route("admin.categories.specifications.index", ["category" => $category]) }}"
+                               class="nav-link{{ strstr($currentRoute, "specifications.") !== false ? " active" : "" }}">
+                                Характеристики <span class="badge badge-dark">{{ $category->specifications->count() }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can("delete", $category)
                         <li class="nav-item">
                             <button type="button" class="btn btn-link nav-link"
