@@ -34,6 +34,28 @@ class SpecificationGroupController extends Controller
     }
 
     /**
+     * Приоритет.
+     * 
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function priority()
+    {
+        $this->authorize("update", SpecificationGroup::class);
+        $collection = SpecificationGroup::query()
+            ->orderBy("priority")
+            ->get();
+        $groups = [];
+        foreach ($collection as $item) {
+            $groups[] = [
+                "name" => $item->title,
+                "id" => $item->id,
+            ];
+        }
+        return view("category-product::admin.specification-groups.priority", compact("groups"));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -80,18 +102,8 @@ class SpecificationGroupController extends Controller
      */
     public function show(SpecificationGroup $group)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\SpecificationGroup  $specification
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SpecificationGroup $group)
-    {
-        //
+        $specifications = $group->specifications()->orderBy("title")->get();
+        return view("category-product::admin.specification-groups.show", compact("group", "specifications"));
     }
 
     /**
@@ -103,7 +115,21 @@ class SpecificationGroupController extends Controller
      */
     public function update(Request $request, SpecificationGroup $group)
     {
-        //
+        $this->updateValidator($request->all(), $group);
+        $group->update($request->all());
+        return redirect()
+            ->back()
+            ->with("success", "Обновлено");
+    }
+
+    protected function updateValidator($data, SpecificationGroup $group)
+    {
+        $id = $group->id;
+        Validator::make($data, [
+            "title" => ["required", "max: 100", "unique:specification_groups,title,{$id}"]
+        ], [], [
+            "title" => "Заголовок",
+        ])->validate();
     }
 
     /**
@@ -114,6 +140,14 @@ class SpecificationGroupController extends Controller
      */
     public function destroy(SpecificationGroup $group)
     {
-        //
+        if ($group->specifications->count()) {
+            return redirect()
+                ->back()
+                ->with("danger", "Есть поля относящиеся к данной группе");
+        }
+        $group->delete();
+        return redirect()
+            ->route("admin.specification-groups.index")
+            ->with("success", "Группа удалена");
     }
 }

@@ -12,5 +12,8 @@ Route::group([
         ->parameters([
             "specification-groups" => "group",
         ])
+        ->except("edit")
         ->shallow();
+    Route::get("specification-groups/list/priority", "SpecificationGroupController@priority")
+        ->name("specification-groups.priority");
 });

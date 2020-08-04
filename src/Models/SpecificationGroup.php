@@ -13,4 +13,14 @@ class SpecificationGroup extends Model
         "title",
         "slug",
     ];
+
+    /**
+     * Характеристики.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function specifications()
+    {
+        return $this->hasMany(\App\Specification::class, "group_id");
+    }
 }
