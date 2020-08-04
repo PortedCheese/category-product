@@ -38,6 +38,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // Assets.
         $this->publishes([
             __DIR__ . '/resources/js/components' => resource_path('js/components/vendor/category-product'),
+            __DIR__ . "/resources/sass" => resource_path("sass/vendor")
         ], 'public');
     }
 
@@ -78,6 +79,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         }
         if (config("category-product.specificationGroupAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/specification-group.php");
+        }
+        if (config("category-product.productLabelAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/product-labels.php");
         }
     }
 

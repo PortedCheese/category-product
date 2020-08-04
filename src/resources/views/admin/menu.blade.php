@@ -3,7 +3,7 @@
               (strstr($currentRoute, ".product.") !== false) ||
               (strstr($currentRoute, ".specification-groups.") !== false) ||
               (strstr($currentRoute, ".specifications.") !== false) ||
-              (strstr($currentRoute, ".product-state.") !== false);
+              (strstr($currentRoute, ".product-labels.") !== false);
 @endphp
 
 @if ($theme == "sb-admin")
@@ -28,16 +28,25 @@
                         <span>Список</span>
                     </a>
                 @endcan
+
                 @can("viewAny", \App\SpecificationGroup::class)
                     <a href="{{ route("admin.specification-groups.index") }}"
                        class="collapse-item{{ strstr($currentRoute, ".specification-groups.") !== false ? " active" : "" }}">
                         <span>Группы характеристик</span>
                     </a>
                 @endcan
+
                 @can("viewAny", \App\Specification::class)
                     <a href="{{ route("admin.specifications.index") }}"
-                       class="collapse-item{{ strstr($currentRoute, "admin.specifications.index") !== false ? " active" : "" }}">
+                       class="collapse-item{{ strstr($currentRoute, "admin.specifications.") !== false ? " active" : "" }}">
                         <span>Характеристики</span>
+                    </a>
+                @endcan
+
+                @can("viewAny", \App\ProductLabel::class)
+                    <a href="{{ route("admin.product-labels.index") }}"
+                       class="collapse-item{{ strstr($currentRoute, ".product-labels.") !== false ? " active" : "" }}">
+                        <span>Метки товаров</span>
                     </a>
                 @endcan
             </div>
@@ -73,6 +82,12 @@
                 <a href="{{ route("admin.specifications.index") }}"
                    class="dropdown-item">
                     Характеристики
+                </a>
+            @endcan
+            @can("viewAny", \App\Specification::class)
+                <a href="{{ route("admin.product-labels.index") }}"
+                   class="dropdown-item">
+                    Метки товаров
                 </a>
             @endcan
         </div>

@@ -1,0 +1,85 @@
+@mixin product-label($bg) {
+  color: color-yiq($bg);
+  background-color: $bg;
+
+  @at-root a#{&} {
+    @include hover-focus() {
+      color: color-yiq($bg);
+      background-color: darken($bg, 10%);
+    }
+
+    &:focus,
+    &.focus {
+      outline: 0;
+      box-shadow: 0 0 0 $badge-focus-width rgba($bg, .5);
+    }
+  }
+}
+
+$product-label-dark:                      #3A2D2B !default;
+$product-label-yellow:                    #FDC72F !default;
+$product-label-green:                     #2AA34F !default;
+$product-label-red:                       #DC3545 !default;
+$product-label-purple:                    #6F42C1 !default;
+$product-label-blue:                      #1B2390 !default;
+$product-label-orange:                    #FF512F !default;
+$product-label-pink:                      #E83E8C !default;
+$product-label-burgundy:                  #600606 !default;
+$product-label-gray:                      #BCBCBC !default;
+
+$product-label-colors: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$product-label-colors: map-merge(
+                (
+                        "dark":            $product-label-dark,
+                        "yellow":          $product-label-yellow,
+                        "green":           $product-label-green,
+                        "red":             $product-label-red,
+                        "purple":          $product-label-purple,
+                        "blue":            $product-label-blue,
+                        "orange":          $product-label-orange,
+                        "pink":            $product-label-pink,
+                        "burgundy":        $product-label-burgundy,
+                        "gray":            $product-label-gray
+                ),
+                $product-label-colors
+);
+
+$product-label-padding-y:                   0.3125rem !default;
+$product-label-padding-x:                   0.3125rem !default;
+$product-label-font-size:                   75% !default;
+$product-label-font-weight:                 $font-weight-bold !default;
+$product-label-border-radius:               $border-radius !default;
+$product-label-transition:                  $btn-transition !default;
+
+.product-label {
+  display: inline-block;
+  padding: $product-label-padding-y $product-label-padding-x;
+  @include font-size($product-label-font-size);
+  font-weight: $badge-font-weight;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  @include border-radius($product-label-border-radius);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  @include transition($product-label-transition);
+
+  @at-root a#{&} {
+    @include hover-focus() {
+      text-decoration: none;
+    }
+  }
+
+  // Empty badges collapse automatically
+  &:empty {
+    display: none;
+  }
+}
+
+@each $color, $value in $product-label-colors {
+  .product-label_#{$color} {
+    @include product-label($value);
+  }
+}

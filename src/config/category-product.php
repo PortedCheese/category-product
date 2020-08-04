@@ -5,4 +5,5 @@ return [
     "categoryShowRouteName" => "admin.categories.show",
     "specificationAdminRoutes" => true,
     "specificationGroupAdminRoutes" => true,
+    "productLabelAdminRoutes" => true,
 ];

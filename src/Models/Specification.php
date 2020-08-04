@@ -30,7 +30,7 @@ class Specification extends Model
     public static function getTypes()
     {
         $array = [];
-        foreach (self::TYPES as $key => $title) {
+        foreach (\App\Specification::TYPES as $key => $title) {
             $array[] = (object) [
                 "key" => $key,
                 "title" => $title,

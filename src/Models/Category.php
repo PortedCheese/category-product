@@ -64,4 +64,14 @@ class Category extends Model
             ->withPivot("priority")
             ->withTimestamps();
     }
+
+    /**
+     * Товары категории.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function products()
+    {
+        return $this->hasMany(\App\Product::class);
+    }
 }

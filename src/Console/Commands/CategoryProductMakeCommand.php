@@ -20,6 +20,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
                     {--controllers : Export controllers}
                     {--policies : Export and create rules}
                     {--only-default : Create only default rules}
+                    {--scss : Export scss}
                     {--vue : Export vue}";
 
     /**
@@ -40,7 +41,10 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      * The models that need to be exported.
      * @var array
      */
-    protected $models = ["Category", "Specification", "SpecificationGroup"];
+    protected $models = [
+        "Category", "Specification", "SpecificationGroup",
+        "Product", "ProductLabel",
+    ];
 
     /**
      * Создание контроллеров.
@@ -48,7 +52,10 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      * @var array
      */
     protected $controllers = [
-        "Admin" => ["CategoryController", "SpecificationController", "SpecificationGroupController"],
+        "Admin" => [
+            "CategoryController", "SpecificationController", "SpecificationGroupController",
+            "ProductLabelController",
+        ],
         "Site" => [],
     ];
 
@@ -89,9 +96,24 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
         ],
         [
             "title" => "Группы характеристик",
-            "slug" => "specifications-group",
+            "slug" => "specification-groups",
             "policy" => "SpecificationGroupPolicy",
+        ],
+        [
+            "title" => "Метки товаров",
+            "slug" => "product-labels",
+            "policy" => "ProductLabelPolicy",
         ]
+    ];
+
+    /**
+     * Стили.
+     * 
+     * @var array 
+     */
+    protected $scssIncludes = [
+        "app" => ["product-labels"],
+        "admin" => ["product-labels"],
     ];
 
     /**
@@ -131,6 +153,11 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
 
         if ($this->option("policies") || $all) {
             $this->makeRules();
+        }
+
+        if ($this->option("scss") || $all) {
+            $this->makeScssIncludes("app");
+            $this->makeScssIncludes("admin");
         }
     }
 
