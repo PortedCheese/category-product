@@ -15,7 +15,9 @@ Route::group([
     Route::resource("categories.specifications", "SpecificationController")
         ->except("edit", "destroy")
         ->shallow();
-    
+    // Инхронизация.
+    Route::put("cateries/{category}/specification/list/sync", "SpecificationController@sync")
+    ->name("categories.specifications.sync");
     // Редактировать связки.
     Route::group([
         "as" => "categories.specifications.",

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Specification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\CategoryProduct\Events\CategoryFieldUpdate;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\SpecificationActions;
 
 class SpecificationController extends Controller
@@ -81,7 +83,10 @@ class SpecificationController extends Controller
             $specification = Specification::create($request->all());
         }
         
-        $title = $request->get("title", $specification->title);
+        $title = $request->get("title", false);
+        if (empty($title)) {
+            $title = $specification->title;
+        }
         /**
          * @var Specification $specification
          */
@@ -91,7 +96,7 @@ class SpecificationController extends Controller
             "priority" => $request->get("priority", 1),
         ]);
 
-        // TODO: add event.
+        event(new CategoryFieldUpdate($category));
 
         return redirect()
             ->route("admin.categories.specifications.index", ["category" => $category])
@@ -145,7 +150,7 @@ class SpecificationController extends Controller
         $categories = $specification->categories;
         if ($categories->count()) {
             foreach ($categories as $category) {
-                // TODO: run event
+                event(new CategoryFieldUpdate($category));
             }
         }
         return redirect()
@@ -196,7 +201,7 @@ class SpecificationController extends Controller
                 "filter" => $request->has("filter") ? 1 : 0,
                 "priority" => $request->get("priority", 1)
             ]);
-        // TODO: add event.
+        event(new CategoryFieldUpdate($category));
         return redirect()
             ->route("admin.categories.specifications.index", ["category" => $category])
             ->with("success", "Успешно обновлено");
@@ -224,9 +229,23 @@ class SpecificationController extends Controller
         // TODO: check values
         $category->specifications()->detach($specification);
         $specification->checkCategoryOnDetach();
-        // TODO: run event
+        event(new CategoryFieldUpdate($category));
         return redirect()
             ->route("admin.categories.specifications.index", ["category" => $category])
             ->with("success", "Характеристика удалена");
+    }
+
+    /**
+     * Синхронизировать характеристики.
+     * 
+     * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sync(Category $category)
+    {
+        CategoryActions::syncSpec($category);
+        return redirect()
+            ->back()
+            ->with("success", "Характеристики синхронизированны");
     }
 }

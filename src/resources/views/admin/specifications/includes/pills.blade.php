@@ -3,19 +3,43 @@
     <div class="card">
         <div class="card-body">
             <ul class="nav nav-pills">
-                <li class="nav-item">
-                    <a href="{{ route("admin.categories.specifications.index", ["category" => $category]) }}"
-                       class="nav-link{{ $currentRoute === "admin.categories.specifications.index" ? " active" : "" }}">
-                        Список
-                    </a>
-                </li>
+                @can("viewAny", \App\Specification::class)
+                    <li class="nav-item">
+                        <a href="{{ route("admin.categories.specifications.index", ["category" => $category]) }}"
+                           class="nav-link{{ $currentRoute === "admin.categories.specifications.index" ? " active" : "" }}">
+                            Список
+                        </a>
+                    </li>
+                @endcan
 
-                <li class="nav-item">
-                    <a href="{{ route("admin.categories.specifications.create", ["category" => $category]) }}"
-                       class="nav-link{{ $currentRoute === "admin.categories.specifications.create" ? " active" : "" }}">
-                        Добавить
-                    </a>
-                </li>
+                @can("create", \App\Specification::class)
+                    <li class="nav-item">
+                        <a href="{{ route("admin.categories.specifications.create", ["category" => $category]) }}"
+                           class="nav-link{{ $currentRoute === "admin.categories.specifications.create" ? " active" : "" }}">
+                            Добавить
+                        </a>
+                    </li>
+                @endcan
+
+                @can("update", \App\Specification::class)
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-link nav-link"
+                                data-confirm="{{ "sync-form-specification" }}">
+                            <i class="fas fa-sync text-warning"></i> Синхронизировать
+                        </button>
+                        <confirm-form :id="'{{ "sync-form-specification" }}'" confirm-text="Да, синхронизировать!">
+                            <template>
+                                <form action="{{ route('admin.categories.specifications.sync', ["category" => $category]) }}"
+                                      id="sync-form-specification"
+                                      class="btn-group"
+                                      method="post">
+                                    @csrf
+                                    @method("put")
+                                </form>
+                            </template>
+                        </confirm-form>
+                    </li>
+                @endcan
 
                 @if (! empty($specification))
                     <li class="nav-item">

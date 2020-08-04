@@ -2,8 +2,11 @@
 
 namespace PortedCheese\CategoryProduct\Helpers;
 
+use App\Category;
+use App\Specification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use PortedCheese\CategoryProduct\Events\CategoryFieldUpdate;
 
 class CategoryActionsManager
 {
@@ -36,6 +39,74 @@ class CategoryActionsManager
             return false;
         }
         return true;
+    }
+
+    /**
+     * Синхронизировать характеристики у дочерних.
+     *
+     * @param Category $category
+     */
+    public function syncSpec(Category $category)
+    {
+        foreach ($category->children as $child) {
+            /**
+             * @var Category $child
+             */
+            $this->copyParentSpec($child);
+            $this->syncSpec($child);
+            event(new CategoryFieldUpdate($child));
+        }
+    }
+
+    /**
+     * Скопировать характеристики родительской категории.
+     *
+     * @param Category $category
+     * @param Category|null $customParent
+     */
+    public function copyParentSpec(Category $category, Category $customParent = null)
+    {
+        if (! $customParent) {
+            if (! $parent = $category->parent) {
+                return;
+            }
+        }
+        else {
+            $parent = $customParent;
+        }
+        /**
+         * @var Category $parent
+         */
+        $parentSpecs = $parent->specifications;
+        if (! $parentSpecs->count()) {
+            return;
+        }
+        $ids = [];
+        foreach ($category->specifications as $specification) {
+            $ids[] = $specification->id;
+        }
+        foreach ($parentSpecs as $item) {
+            /**
+             * @var Specification $item
+             */
+            $pivot = $item->pivot;
+            if (empty($pivot)) {
+                continue;
+            }
+            $data = [
+                "title" => $pivot->title,
+                "filter" => $pivot->filter,
+                "priority" => $pivot->priority,
+            ];
+            if (in_array($item->id, $ids)) {
+                $item->categories()
+                    ->updateExistingPivot($category, $data);
+            }
+            else {
+                $item->categories()
+                    ->attach($category, $data);
+            }
+        }
     }
 
     /**
