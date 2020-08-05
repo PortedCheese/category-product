@@ -24,7 +24,7 @@ $product-label-purple:                    #6F42C1 !default;
 $product-label-blue:                      #1B2390 !default;
 $product-label-orange:                    #FF512F !default;
 $product-label-pink:                      #E83E8C !default;
-$product-label-burgundy:                  #600606 !default;
+$product-label-brown:                  #600606 !default;
 $product-label-gray:                      #BCBCBC !default;
 
 $product-label-colors: () !default;
@@ -39,7 +39,7 @@ $product-label-colors: map-merge(
                         "blue":            $product-label-blue,
                         "orange":          $product-label-orange,
                         "pink":            $product-label-pink,
-                        "burgundy":        $product-label-burgundy,
+                        "brown":           $product-label-brown,
                         "gray":            $product-label-gray
                 ),
                 $product-label-colors

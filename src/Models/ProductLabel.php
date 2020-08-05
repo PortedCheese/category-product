@@ -8,7 +8,7 @@ use PortedCheese\BaseSettings\Traits\ShouldSlug;
 class ProductLabel extends Model
 {
     const COLORS = [
-        "dark" => "Темный",
+        "dark" => "Черный",
         "yellow" => "Желтый",
         "green" => "Зеленый",
         "red" => "Красный",
@@ -16,7 +16,7 @@ class ProductLabel extends Model
         "blue" => "Синий",
         "orange" => "Оранжевый",
         "pink" => "Розовый",
-        "burgundy" => "Бордовый",
+        "brown" => "Коричневый",
         "gray" => "Серый",
     ];
 
