@@ -1,8 +1,8 @@
 @extends("admin.layout")
 
-@section("page-title", "Просмотр {$category->title} - ")
+@section("page-title", "{$category->title} - ")
 
-@section('header-title', "Просмотр {$category->title}")
+@section('header-title', "{$category->title}")
 
 @section('admin')
     @include("category-product::admin.categories.includes.pills")

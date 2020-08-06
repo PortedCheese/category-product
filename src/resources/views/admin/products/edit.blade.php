@@ -1,15 +1,15 @@
 @extends("admin.layout")
 
-@section("page-title", "{$category->title} - ")
+@section("page-title", "{$product->title} - ")
 
-@section('header-title', "{$category->title}")
+@section('header-title', "{$product->title}")
 
 @section('admin')
-    @include("category-product::admin.categories.includes.pills")
+    @include("category-product::admin.products.includes.pills")
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route("admin.categories.update", ["category" => $category]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route("admin.products.update", ["product" => $product]) }}" method="post">
                     @csrf
                     @method("put")
 
@@ -19,7 +19,7 @@
                                id="title"
                                name="title"
                                required
-                               value="{{ old("title", $category->title) }}"
+                               value="{{ old("title", $product->title) }}"
                                class="form-control @error("title") is-invalid @enderror">
                         @error("title")
                             <div class="invalid-feedback" role="alert">
@@ -33,7 +33,7 @@
                         <input type="text"
                                id="slug"
                                name="slug"
-                               value="{{ old("slug", $category->slug) }}"
+                               value="{{ old("slug", $product->slug) }}"
                                class="form-control @error("slug") is-invalid @enderror">
                         @error("slug")
                             <div class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
                         <input type="text"
                                id="short"
                                name="short"
-                               value="{{ old("short", $category->short) }}"
+                               value="{{ old("short", $product->short) }}"
                                class="form-control @error("short") is-invalid @enderror">
                         @error("short")
                             <div class="invalid-feedback" role="alert">
@@ -57,24 +57,33 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="custom-file-input">Изображение</label>
-                        <div class="custom-file">
-                            <input type="file"
-                                   class="custom-file-input{{ $errors->has('iamge') ? ' is-invalid' : '' }}"
-                                   id="custom-file-input"
-                                   lang="ru"
-                                   name="iamge"
-                                   aria-describedby="inputGroupImage">
-                            <label class="custom-file-label"
-                                   for="custom-file-input">
-                                Выберите файл
-                            </label>
-                            @if ($errors->has('iamge'))
-                                <div class="invalid-feedback">
-                                    <strong>{{ $errors->first('iamge') }}</strong>
-                                </div>
-                            @endif
-                        </div>
+                        <label for="description">Описание</label>
+                        <textarea class="form-control tiny @error("description") is-invalid @enderror"
+                                  name="description"
+                                  id="description"
+                                  rows="3">{{ old('description') ? old('description') : $product->description }}</textarea>
+                        @error("description")
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label>Метки</label>
+                        @foreach($labels as $label)
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input"
+                                       type="checkbox"
+                                       {{ (! count($errors->all()) && in_array($label->id, $currentLabels)) || in_array($label->id, old("labels[]", [])) ? "checked" : "" }}
+                                       value="{{ $label->id }}"
+                                       id="check-{{ $label->id }}"
+                                       name="labels[]">
+                                <label class="custom-control-label" for="check-{{ $label->id }}">
+                                    {{ $label->title }}
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
 
                     <div class="btn-group"

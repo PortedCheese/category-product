@@ -18,6 +18,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
                     {--menu : Config menu}
                     {--models : Export models}
                     {--controllers : Export controllers}
+                    {--observers : Export observers}
                     {--policies : Export and create rules}
                     {--only-default : Create only default rules}
                     {--scss : Export scss}
@@ -54,10 +55,17 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
     protected $controllers = [
         "Admin" => [
             "CategoryController", "SpecificationController", "SpecificationGroupController",
-            "ProductLabelController",
+            "ProductLabelController", "ProductController",
         ],
         "Site" => [],
     ];
+
+    /**
+     * Создание наблюдателей
+     *
+     * @var array
+     */
+    protected $observers = ["ProductObserver", "CategoryObserver", "ProductLabelObserver", "SpecificationGroupObserver"];
 
     /**
      * Папка для vue файлов.
@@ -103,6 +111,11 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "title" => "Метки товаров",
             "slug" => "product-labels",
             "policy" => "ProductLabelPolicy",
+        ],
+        [
+            "title" => "Товары",
+            "slug" => "products",
+            "policy" => "ProductPolicy",
         ]
     ];
 
@@ -112,8 +125,8 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      * @var array 
      */
     protected $scssIncludes = [
-        "app" => ["product-labels"],
-        "admin" => ["product-labels"],
+        "app" => ["category-product/product-labels"],
+        "admin" => ["category-product/product-labels"],
     ];
 
     /**
@@ -144,6 +157,10 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
         if ($this->option("controllers") || $all) {
             $this->exportControllers("Admin");
             $this->exportControllers("Site");
+        }
+
+        if ($this->option("observers") || $all) {
+            $this->exportObservers();
         }
 
         if ($this->option("vue") || $all) {

@@ -1,8 +1,8 @@
 @extends("admin.layout")
 
-@section("page-title", "Характеристики {$category->title} - ")
+@section("page-title", "{$category->title} - ")
 
-@section('header-title', "Характеристики {$category->title}")
+@section('header-title', "{$category->title}")
 
 @section('admin')
     @include("category-product::admin.specifications.includes.pills")
@@ -18,7 +18,7 @@
                             <th>В фильтре</th>
                             <th>Группа</th>
                             <th>Приоритет</th>
-                            @canany(["update", "delete"], \App\CategoryField::class)
+                            @canany(["update", "delete"], \App\Specification::class)
                                 <th>Действия</th>
                             @endcan
                         </tr>

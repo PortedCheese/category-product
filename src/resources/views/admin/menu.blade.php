@@ -1,6 +1,6 @@
 @php
     $active = (strstr($currentRoute, ".categories.") !== false) ||
-              (strstr($currentRoute, ".product.") !== false) ||
+              (strstr($currentRoute, ".products.") !== false) ||
               (strstr($currentRoute, ".specification-groups.") !== false) ||
               (strstr($currentRoute, ".specifications.") !== false) ||
               (strstr($currentRoute, ".product-labels.") !== false);
@@ -49,6 +49,13 @@
                         <span>Метки товаров</span>
                     </a>
                 @endcan
+
+                @can("viewAny", \App\Product::class)
+                    <a href="{{ route("admin.products.index") }}"
+                       class="collapse-item{{ strstr($currentRoute, "admin.products.index") !== false ? " active" : "" }}">
+                        <span>Товары</span>
+                    </a>
+                @endcan
             </div>
         </div>
     </li>
@@ -84,10 +91,16 @@
                     Характеристики
                 </a>
             @endcan
-            @can("viewAny", \App\Specification::class)
+            @can("viewAny", \App\ProductLabel::class)
                 <a href="{{ route("admin.product-labels.index") }}"
                    class="dropdown-item">
                     Метки товаров
+                </a>
+            @endcan
+            @can("viewAny", \App\Product::class)
+                <a href="{{ route("admin.products.index") }}"
+                   class="dropdown-item">
+                    Товары
                 </a>
             @endcan
         </div>

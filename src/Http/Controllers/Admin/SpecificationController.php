@@ -221,8 +221,10 @@ class SpecificationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Specification  $specification
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @param Specification $specification
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroyPivot(Category $category, Specification $specification)
     {

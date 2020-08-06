@@ -19,18 +19,6 @@ class Category extends Model
 
     protected $metaKey = "categories";
 
-    protected static function booted()
-    {
-        parent::booted();
-
-        static::creating(function (\App\Category $model) {
-            $max = \App\Category::query()
-                ->where("parent_id", $model->parent_id)
-                ->max("priority");
-            $model->priority = $max + 1;
-        });
-    }
-
     /**
      * Родительская категолрия.
      *

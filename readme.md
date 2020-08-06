@@ -20,7 +20,13 @@
                             {--vue : Export vue}
                             
 ## Config
+
+Если надо выгрузить конфиг:
     
+    php artisan vendor:publish --provider="PortedCheese\CategoryProduct\ServiceProvider" --tag=config
+
+Переменные конфига:
+
     categoryAdminRoutes - Использовать роуты для управления категориями из пакета
     categoryShowRouteName - Адрес просмотра категории
     specificationAdminRoutes - Использовать роуты для управления характеристиками из пакета

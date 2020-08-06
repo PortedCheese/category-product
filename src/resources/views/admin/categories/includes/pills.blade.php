@@ -87,6 +87,15 @@
                         </li>
                     @endcan
 
+                    @can("viewAny", \App\Product::class)
+                        <li class="nav-item">
+                            <a href="{{ route("admin.categories.products.index", ["category" => $category]) }}"
+                               class="nav-link{{ strstr($currentRoute, "products.") !== false ? " active" : "" }}">
+                                Товары
+                            </a>
+                        </li>
+                    @endcan
+
                     @can("delete", $category)
                         <li class="nav-item">
                             <button type="button" class="btn btn-link nav-link"

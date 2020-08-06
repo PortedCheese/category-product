@@ -1,8 +1,8 @@
 @extends("admin.layout")
 
-@section("page-title", "Добавить характеристику {$category->title} - ")
+@section("page-title", "{$category->title} - ")
 
-@section('header-title', "Добавить характеристику {$category->title}")
+@section('header-title', "{$category->title}")
 
 @section('admin')
     @include("category-product::admin.specifications.includes.pills")

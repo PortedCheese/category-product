@@ -19,15 +19,6 @@ class Product extends Model
     ];
 
     protected $metaKey = "products";
-    
-    protected static function booted()
-    {
-        parent::booted();
-        
-        static::creating(function (\App\Product $model) {
-            $model->published_at = now();
-        });
-    }
 
     /**
      * Категория товара.

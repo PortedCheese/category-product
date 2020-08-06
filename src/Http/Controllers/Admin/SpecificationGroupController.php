@@ -135,16 +135,12 @@ class SpecificationGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SpecificationGroup  $specification
-     * @return \Illuminate\Http\Response
+     * @param SpecificationGroup $group
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(SpecificationGroup $group)
     {
-        if ($group->specifications->count()) {
-            return redirect()
-                ->back()
-                ->with("danger", "Есть поля относящиеся к данной группе");
-        }
         $group->delete();
         return redirect()
             ->route("admin.specification-groups.index")

@@ -28,17 +28,6 @@ class ProductLabel extends Model
         "color",
     ];
 
-    protected static function booted()
-    {
-        parent::booted();
-
-        static::deleting(function (\App\ProductLabel $model) {
-            foreach ($model->products as $product) {
-                $model->products()->detach($product);
-            }
-        });
-    }
-
     /**
      * Товары по метке.
      *

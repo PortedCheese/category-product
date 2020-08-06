@@ -56,7 +56,7 @@ class ProductLabelController extends Controller
     public function store(Request $request)
     {
         $this->storeValidator($request->all());
-        $label = ProductLabel::create($request->all());
+        ProductLabel::create($request->all());
         return redirect()
             ->route("admin.product-labels.index")
             ->with("success", "Метка добавлена");
@@ -141,8 +141,9 @@ class ProductLabelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ProductLabel  $productLabel
-     * @return \Illuminate\Http\Response
+     * @param ProductLabel $label
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(ProductLabel $label)
     {
