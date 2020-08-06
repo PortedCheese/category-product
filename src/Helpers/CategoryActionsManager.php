@@ -11,6 +11,20 @@ use PortedCheese\CategoryProduct\Events\CategoryFieldUpdate;
 class CategoryActionsManager
 {
     /**
+     * Список всех категорий.
+     *
+     * @return array
+     */
+    public function getAllList()
+    {
+        $categories = [];
+        foreach (Category::all()->sortBy("title") as $item) {
+            $categories[$item->id] = "$item->title ({$item->slug})";
+        }
+        return $categories;
+    }
+
+    /**
      * Получить дерево категорий.
      * 
      * @param bool $forJs

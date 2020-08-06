@@ -22,5 +22,7 @@ Route::group([
             ->name("meta");
         Route::get("gallery", "ProductController@gallery")
             ->name("gallery");
+        Route::put("change-category", "ProductController@changeCategory")
+            ->name("change-category");
     });
 });

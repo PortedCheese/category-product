@@ -11,6 +11,7 @@ use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
  * @method static bool saveOrder(array $data)
  * @method static syncSpec(Category $category)
  * @method static copyParentSpec(Category $category, Category $customParent = null)
+ * @method static array getAllList()
  *
  * @see CategoryActionsManager
  */

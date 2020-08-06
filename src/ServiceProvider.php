@@ -12,6 +12,7 @@ use App\ProductLabel;
 use App\SpecificationGroup;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
 use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
+use PortedCheese\CategoryProduct\Helpers\ProductActionsManager;
 use PortedCheese\CategoryProduct\Helpers\SpecificationActionManager;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -92,6 +93,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         $this->app->singleton("specification-actions", function () {
             return new SpecificationActionManager;
+        });
+
+        $this->app->singleton("product-actions", function () {
+            return new ProductActionsManager;
         });
     }
 

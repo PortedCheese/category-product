@@ -9,6 +9,8 @@ use App\Product;
 use App\ProductLabel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
+use PortedCheese\CategoryProduct\Facades\ProductActions;
 
 class ProductController extends Controller
 {
@@ -120,9 +122,10 @@ class ProductController extends Controller
     {
         $category = $product->category;
         $labels = $product->labels;
+        $categories = CategoryActions::getAllList();
         return view(
             "category-product::admin.products.show",
-            compact("product", "category", "labels")
+            compact("product", "category", "labels", "categories")
         );
     }
 
@@ -229,5 +232,35 @@ class ProductController extends Controller
         $this->authorize("update", $product);
         $category = $product->category;
         return view("category-product::admin.products.gallery", compact("category", "product"));
+    }
+
+    /**
+     * Изменить категорию товара.
+     *
+     * @param Request $request
+     * @param Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function changeCategory(Request $request, Product $product)
+    {
+        $this->authorize("changeCategory", $product);
+        $this->changeCategoryValidator($request->all());
+        ProductActions::changeCategory($product, $request->get("category_id"));
+        return redirect()
+            ->route("admin.products.show", ["product" => $product])
+            ->with("success", "Категория изменена");
+    }
+
+    /**
+     * @param $data
+     */
+    protected function changeCategoryValidator($data)
+    {
+        Validator::make($data, [
+            "category_id" => "required|exists:categories,id",
+        ], [], [
+            "category_id" => "Категория",
+        ])->validate();
     }
 }
