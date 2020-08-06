@@ -20,5 +20,7 @@ Route::group([
     ], function () {
         Route::get("meta", "ProductController@meta")
             ->name("meta");
+        Route::get("gallery", "ProductController@gallery")
+            ->name("gallery");
     });
 });

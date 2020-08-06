@@ -1,6 +1,6 @@
 @extends("admin.layout")
 
-@section("page-title", "{$product->title} - ")
+@section("page-title", "Meta - ")
 
 @section('header-title', "{$product->title}")
 

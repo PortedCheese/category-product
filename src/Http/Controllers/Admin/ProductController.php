@@ -216,4 +216,18 @@ class ProductController extends Controller
         $category = $product->category;
         return view("category-product::admin.products.meta", compact("category", "product"));
     }
+
+    /**
+     * Галерея товара.
+     *
+     * @param Product $product
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function gallery(Product $product)
+    {
+        $this->authorize("update", $product);
+        $category = $product->category;
+        return view("category-product::admin.products.gallery", compact("category", "product"));
+    }
 }
