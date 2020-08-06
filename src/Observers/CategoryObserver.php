@@ -4,6 +4,7 @@ namespace PortedCheese\CategoryProduct\Observers;
 
 use App\Category;
 use PortedCheese\BaseSettings\Exceptions\PreventDeleteException;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 
 class CategoryObserver
 {
@@ -17,6 +18,17 @@ class CategoryObserver
             ->where("parent_id", $category->parent_id)
             ->max("priority");
         $category->priority = $max + 1;
+    }
+
+    /**
+     * После создания.
+     *
+     * @param Category $category
+     */
+    public function created(Category $category)
+    {
+        // Скопировать поля родителя.
+        CategoryActions::copyParentSpec($category);
     }
 
     /**

@@ -10,9 +10,8 @@ use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
  * @method static array getTree()
  * @method static bool saveOrder(array $data)
  * @method static syncSpec(Category $category)
- * @nethod static copyParentSpec(Category $category, Category $customParent = null)
- * 
- * @package PortedCheese\CategoryProduct\Facade
+ * @method static copyParentSpec(Category $category, Category $customParent = null)
+ *
  * @see CategoryActionsManager
  */
 class CategoryActions extends Facade

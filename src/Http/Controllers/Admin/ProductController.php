@@ -4,6 +4,7 @@ namespace PortedCheese\CategoryProduct\Http\Controllers\Admin;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Meta;
 use App\Product;
 use App\ProductLabel;
 use Illuminate\Http\Request;
@@ -199,5 +200,20 @@ class ProductController extends Controller
         return redirect()
             ->route("admin.categories.products.index", ["category" => $category])
             ->with("success", "Товар удален");
+    }
+
+    /**
+     * Meta.
+     *
+     * @param Product $product
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function meta(Product $product)
+    {
+        $this->authorize("viewAny", Meta::class);
+        $this->authorize("update", $product);
+        $category = $product->category;
+        return view("category-product::admin.products.meta", compact("category", "product"));
     }
 }

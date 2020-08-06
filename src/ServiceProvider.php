@@ -130,6 +130,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // Подключение метатегов.
         $seo = app()->config["seo-integration.models"];
         $seo["categories"] = Category::class;
+        $seo["products"] = Product::class;
         app()->config["seo-integration.models"] = $seo;
 
         // Подключаем изображения.
