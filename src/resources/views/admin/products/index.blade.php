@@ -73,28 +73,59 @@
                                     <td>
                                         <div role="toolbar" class="btn-toolbar">
                                             <div class="btn-group mr-1">
-                                                <a href="{{ route("admin.products.edit", ["product" => $item]) }}" class="btn btn-primary">
-                                                    <i class="far fa-edit"></i>
-                                                </a>
-                                                <a href="{{ route('admin.products.show', ['product' => $item]) }}" class="btn btn-dark">
-                                                    <i class="far fa-eye"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-danger" data-confirm="{{ "delete-form-{$item->id}" }}">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
+                                                @can("update", $item)
+                                                    <a href="{{ route("admin.products.edit", ["product" => $item]) }}" class="btn btn-primary">
+                                                        <i class="far fa-edit"></i>
+                                                    </a>
+                                                @endcan
+                                                @can("view", $item)
+                                                    <a href="{{ route('admin.products.show', ['product' => $item]) }}" class="btn btn-dark">
+                                                        <i class="far fa-eye"></i>
+                                                    </a>
+                                                @endcan
+                                                @can("delete", $item)
+                                                    <button type="button" class="btn btn-danger" data-confirm="{{ "delete-form-{$item->id}" }}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                @endcan
                                             </div>
+                                            @can("publish", $item)
+                                                <div class="btn-group">
+                                                    <button type="button"
+                                                            class="btn btn-{{ $item->published_at ? "success" : "secondary" }}"
+                                                            data-confirm="{{ "change-published-form-{$item->id}" }}">
+                                                        <i class="fas fa-toggle-{{ $item->published_at ? "on" : "off" }}"></i>
+                                                    </button>
+                                                </div>
+                                            @endcan
                                         </div>
-                                        <confirm-form :id="'{{ "delete-form-{$item->id}" }}'">
-                                            <template>
-                                                <form action="{{ route('admin.products.destroy', ['product' => $item]) }}"
-                                                      id="delete-form-{{ $item->id }}"
-                                                      class="btn-group"
-                                                      method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                </form>
-                                            </template>
-                                        </confirm-form>
+                                        @can("publish", $item)
+                                            <confirm-form :id="'{{ "change-published-form-{$item->id}" }}'"
+                                                          confirm-text="Да, изменить!"
+                                                          text="Это изменит статус показа товара на сайте">
+                                                <template>
+                                                    <form id="change-published-form-{{ $item->id }}"
+                                                          action="{{ route("admin.products.published", ['product' => $item]) }}"
+                                                          method="post">
+                                                        @method('put')
+                                                        @csrf
+                                                    </form>
+                                                </template>
+                                            </confirm-form>
+                                        @endcan
+                                        @can("delete", $item)
+                                            <confirm-form :id="'{{ "delete-form-{$item->id}" }}'">
+                                                <template>
+                                                    <form action="{{ route('admin.products.destroy', ['product' => $item]) }}"
+                                                          id="delete-form-{{ $item->id }}"
+                                                          class="btn-group"
+                                                          method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                    </form>
+                                                </template>
+                                            </confirm-form>
+                                        @endcan
                                     </td>
                                 @endcanany
                             </tr>

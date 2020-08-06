@@ -263,4 +263,21 @@ class ProductController extends Controller
             "category_id" => "Категория",
         ])->validate();
     }
+
+    /**
+     * Спена статуса публикации.
+     *
+     * @param Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function changePublished(Product $product)
+    {
+        $this->authorize("publish", $product);
+        $product->published_at = $product->published_at ? null : now();
+        $product->save();
+        return redirect()
+            ->back()
+            ->with("success", "Статус публикации изменен");
+    }
 }

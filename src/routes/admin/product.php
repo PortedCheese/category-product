@@ -18,11 +18,17 @@ Route::group([
         "prefix" => "products/{product}",
         "as" => "products.",
     ], function () {
+        // Метатеги.
         Route::get("meta", "ProductController@meta")
             ->name("meta");
+        // Галерея.
         Route::get("gallery", "ProductController@gallery")
             ->name("gallery");
+        // Изменение категории.
         Route::put("change-category", "ProductController@changeCategory")
             ->name("change-category");
+        // Отключение\включение товара.
+        Route::put("published", "ProductController@changePublished")
+            ->name("published");
     });
 });
