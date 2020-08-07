@@ -54,6 +54,18 @@ class Specification extends Model
     }
 
     /**
+     * Товары со значением.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(\App\Product::class)
+            ->withPivot("values", "category_id")
+            ->withTimestamps();
+    }
+
+    /**
      * Группа.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

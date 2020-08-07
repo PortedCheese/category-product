@@ -60,18 +60,18 @@
                         <label for="custom-file-input">Изображение</label>
                         <div class="custom-file">
                             <input type="file"
-                                   class="custom-file-input{{ $errors->has('iamge') ? ' is-invalid' : '' }}"
+                                   class="custom-file-input{{ $errors->has('image') ? ' is-invalid' : '' }}"
                                    id="custom-file-input"
                                    lang="ru"
-                                   name="iamge"
+                                   name="image"
                                    aria-describedby="inputGroupImage">
                             <label class="custom-file-label"
                                    for="custom-file-input">
                                 Выберите файл
                             </label>
-                            @if ($errors->has('iamge'))
+                            @if ($errors->has('image'))
                                 <div class="invalid-feedback">
-                                    <strong>{{ $errors->first('iamge') }}</strong>
+                                    <strong>{{ $errors->first('image') }}</strong>
                                 </div>
                             @endif
                         </div>

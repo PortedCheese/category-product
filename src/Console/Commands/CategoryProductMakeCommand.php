@@ -55,7 +55,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
     protected $controllers = [
         "Admin" => [
             "CategoryController", "SpecificationController", "SpecificationGroupController",
-            "ProductLabelController", "ProductController",
+            "ProductLabelController", "ProductController", "ProductSpecificationController",
         ],
         "Site" => [],
     ];
@@ -82,6 +82,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
     protected $vueIncludes = [
         'admin' => [
             'admin-category-list' => "CategoryListComponent",
+            "admin-product-specifications" => "ProductSpecificationsComponent",
         ],
         'app' => [],
     ];

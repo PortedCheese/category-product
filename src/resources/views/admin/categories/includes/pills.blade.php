@@ -79,9 +79,10 @@
                     @endcan
 
                     @can("viewAny", \App\Specification::class)
+                        @php($active = strstr($currentRoute, "categories.specifications.") !== false || strstr($currentRoute, "admin.specifications.") !== false)
                         <li class="nav-item">
                             <a href="{{ route("admin.categories.specifications.index", ["category" => $category]) }}"
-                               class="nav-link{{ strstr($currentRoute, "specifications.") !== false ? " active" : "" }}">
+                               class="nav-link{{ $active ? " active" : "" }}">
                                 Характеристики <span class="badge badge-dark">{{ $category->specifications->count() }}</span>
                             </a>
                         </li>

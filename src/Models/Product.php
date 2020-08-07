@@ -40,4 +40,16 @@ class Product extends Model
         return $this->belongsToMany(\App\ProductLabel::class)
             ->withTimestamps();
     }
+
+    /**
+     * Занчения.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function specifications()
+    {
+        return $this->belongsToMany(\App\Specification::class)
+            ->withPivot("values", "category_id")
+            ->withTimestamps();
+    }
 }

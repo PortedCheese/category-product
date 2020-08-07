@@ -47,6 +47,15 @@
                         </li>
                     @endcan
 
+                    @can("specificationManagement", $product)
+                        <li class="nav-item">
+                            <a href="{{ route("admin.products.specifications.index", ["product" => $product]) }}"
+                               class="nav-link{{ strstr($currentRoute, ".products.specifications.") !== false ? " active" : "" }}">
+                                Характеристики
+                            </a>
+                        </li>
+                    @endcan
+
                     @can("viewAny", \App\Meta::class)
                         @can("update", $product)
                             <li class="nav-item">

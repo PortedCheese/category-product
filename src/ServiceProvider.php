@@ -125,6 +125,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if (config("category-product.productAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/product.php");
         }
+        // Значения характеристик.
+        if (config("category-product.productSpecificationAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/product-specification.php");
+        }
     }
 
     /**

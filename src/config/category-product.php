@@ -7,4 +7,5 @@ return [
     "specificationGroupAdminRoutes" => true,
     "productLabelAdminRoutes" => true,
     "productAdminRoutes" => true,
+    "productSpecificationAdminRoutes" => true,
 ];

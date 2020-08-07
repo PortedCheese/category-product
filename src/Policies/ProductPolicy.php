@@ -20,6 +20,7 @@ class ProductPolicy
     const DELETE = 32;
     const PUBLISH = 64;
     const CHANGE_CATEGORY = 128;
+    const SPECIFICATION_MANAGEMENT = 256;
 
     public function __construct()
     {
@@ -41,6 +42,7 @@ class ProductPolicy
             self::DELETE => "Удаление",
             self::PUBLISH => "Публикация",
             self::CHANGE_CATEGORY => "Смена категории",
+            self::SPECIFICATION_MANAGEMENT => "Управление характеристиками",
         ];
     }
 
@@ -51,7 +53,7 @@ class ProductPolicy
      */
     public static function defaultRules()
     {
-        return self::VIEW_ALL + self::VIEW + self::CREATE + self::UPDATE + self::DELETE + self::PUBLISH + self::CHANGE_CATEGORY;
+        return self::VIEW_ALL + self::VIEW + self::CREATE + self::UPDATE + self::DELETE + self::PUBLISH + self::CHANGE_CATEGORY + self::SPECIFICATION_MANAGEMENT;
     }
 
     /**
@@ -129,5 +131,16 @@ class ProductPolicy
     public function changeCategory(User $user)
     {
         return $user->hasPermission($this->model, self::CHANGE_CATEGORY);
+    }
+
+    /**
+     * Управление спецификациями.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function specificationManagement(User $user)
+    {
+        return $user->hasPermission($this->model, self::SPECIFICATION_MANAGEMENT);
     }
 }
