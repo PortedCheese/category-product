@@ -18,6 +18,8 @@
                         <thead>
                         <tr>
                             <th>Заголовок</th>
+                            <th>Тип</th>
+                            <th>Группа</th>
                             <th>Значения</th>
                             <th>Действия</th>
                         </tr>
@@ -25,6 +27,10 @@
                         <tbody>
                         <tr v-for="specification in specifications">
                             <td>{{ specification.title }}</td>
+                            <td>{{ specification.spec_type_title }}</td>
+                            <td>
+                                <span v-if="specification.group_title">{{ specification.group_title }}</span>
+                            </td>
                             <td>
                                 <ul class="list-unstyled">
                                     <li v-for="value in specification.values">

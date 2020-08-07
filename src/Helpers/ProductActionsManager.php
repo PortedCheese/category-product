@@ -6,6 +6,7 @@ namespace PortedCheese\CategoryProduct\Helpers;
 
 use App\Category;
 use App\Product;
+use App\Specification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -32,6 +33,7 @@ class ProductActionsManager
                     ->on("product_specification.category_id", "=", "category_specification.category_id");
             })
             ->join("specifications", "product_specification.specification_id", "=", "specifications.id")
+            ->leftJoin("specification_groups", "specifications.group_id", "specification_groups.id")
             ->select(
                 "product_specification.specification_id",
                 "product_specification.product_id",
@@ -39,7 +41,9 @@ class ProductActionsManager
                 "category_specification.title",
                 "category_specification.priority",
                 "category_specification.filter",
-                "specifications.slug as spec_slug"
+                "specifications.slug as spec_slug",
+                "specifications.type as spec_type",
+                "specification_groups.title as group_title"
             )
             ->orderBy("category_specification.priority")
             ->get();
@@ -51,6 +55,7 @@ class ProductActionsManager
             if (! empty($item->values)) {
                 $item->values = json_decode($item->values, true);
             }
+            $item->spec_type_title = Specification::getTypeByKey($item->spec_type);
             $item->deleteUrl = route(
                 "admin.products.specifications.destroy",
                 ["product" => $product, "specification" => $item->spec_slug]

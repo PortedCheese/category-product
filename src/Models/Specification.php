@@ -40,6 +40,22 @@ class Specification extends Model
     }
 
     /**
+     * Название типа.
+     *
+     * @param $key
+     * @return mixed
+     */
+    public static function getTypeByKey($key)
+    {
+        if (! empty(self::TYPES[$key])) {
+            return self::TYPES[$key];
+        }
+        else {
+            return $key;
+        }
+    }
+
+    /**
      * Категории.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -83,12 +99,7 @@ class Specification extends Model
     public function getTypeHumanAttribute()
     {
         $type = $this->type;
-        if (! empty(self::TYPES[$type])) {
-            return self::TYPES[$type];
-        }
-        else {
-            return $type;
-        }
+        return self::getTypeByKey($type);
     }
 
     /**
