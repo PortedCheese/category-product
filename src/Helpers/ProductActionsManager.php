@@ -6,6 +6,7 @@ namespace PortedCheese\CategoryProduct\Helpers;
 
 use App\Category;
 use App\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\JoinClause;
@@ -72,9 +73,12 @@ class ProductActionsManager
      */
     public function getAvailableSpecifications(Product $product, bool $collection = false)
     {
+        $productId = $product->id;
         $category = $product->category()
-            ->with(["specifications" => function (BelongsToMany $query) {
-                $query->doesntHave("products");
+            ->with(["specifications" => function (BelongsToMany $query) use ($productId) {
+                $query->whereDoesntHave("products", function (Builder $query) use ($productId) {
+                    $query->where("product_id", $productId);
+                });
                 $query->orderBy("priority");
             }])
             ->first();
