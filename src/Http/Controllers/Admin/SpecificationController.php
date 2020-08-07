@@ -228,7 +228,12 @@ class SpecificationController extends Controller
      */
     public function destroyPivot(Category $category, Specification $specification)
     {
-        // TODO: check values
+        if (SpecificationActions::checkProductsSpecifications($category, $specification)) {
+            return redirect()
+                ->back()
+                ->with("danger", "У характеристики есть заполненные значения");
+        }
+
         $category->specifications()->detach($specification);
         $specification->checkCategoryOnDetach();
         event(new CategoryFieldUpdate($category));

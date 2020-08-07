@@ -7,6 +7,7 @@ namespace PortedCheese\CategoryProduct\Helpers;
 use App\Category;
 use App\Specification;
 use App\SpecificationGroup;
+use Illuminate\Support\Facades\DB;
 
 class SpecificationActionManager
 {
@@ -35,5 +36,20 @@ class SpecificationActionManager
             $ids[] = $specification->id;
         }
         return Specification::query()->whereNotIn("id", $ids)->get();
+    }
+
+    /**
+     * Количество значений.
+     *
+     * @param Category $category
+     * @param Specification $specification
+     * @return int
+     */
+    public function checkProductsSpecifications(Category $category, Specification $specification)
+    {
+        return DB::table("product_specification")
+            ->where("specification_id", $specification->id)
+            ->where("category_id", $category->id)
+            ->count();
     }
 }
