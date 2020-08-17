@@ -133,12 +133,24 @@ class ProductActionsManager
          * @var Category $category
          * @var Category $original
          */
-        $this->changeProductPivots();
+        $this->changeProductPivots($original->id, $categoryId, $product->id);
         CategoryActions::copyParentSpec($category, $original);
     }
 
-    protected function changeProductPivots()
+    /**
+     * Изменить категорию у таблицы связки.
+     *
+     * @param $originalId
+     * @param $newId
+     * @param $productId
+     */
+    protected function changeProductPivots($originalId, $newId, $productId)
     {
-        // TODO: change field values pivot.
+        DB::table("product_specification")
+            ->where("category_id", $originalId)
+            ->where("product_id", $productId)
+            ->update([
+                "category_id" => $newId
+            ]);
     }
 }
