@@ -11,9 +11,6 @@ use App\Product;
 use App\ProductLabel;
 use App\SpecificationGroup;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
-use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
-use PortedCheese\CategoryProduct\Helpers\ProductActionsManager;
-use PortedCheese\CategoryProduct\Helpers\SpecificationActionManager;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -87,16 +84,19 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function initFacades()
     {
-        $this->app->singleton(config("category-product.categoryFacade"), function () {
-            return new CategoryActionsManager;
+        $this->app->singleton("category-actions", function () {
+            $class = config("category-product.categoryFacade");
+            return new $class;
         });
 
-        $this->app->singleton(config("category-product.specificationFacade"), function () {
-            return new SpecificationActionManager;
+        $this->app->singleton("specification-actions", function () {
+            $class = config("category-product.specificationFacade");
+            return new $class;
         });
 
-        $this->app->singleton(config("category-product.productFacade"), function () {
-            return new ProductActionsManager;
+        $this->app->singleton("product-actions", function () {
+            $class = config("category-product.productFacade");
+            return new $class;
         });
     }
 

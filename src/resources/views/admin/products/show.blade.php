@@ -79,6 +79,8 @@
         </div>
     </div>
 
+    @includeIf("product-variation::admin.product-variations.includes.list")
+
     @can("changeCategory", $product)
         <div class="modal fade" id="changeCategory" tabindex="-1" role="dialog" aria-labelledby="changeCategoryLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">

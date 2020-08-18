@@ -20,6 +20,6 @@ class SpecificationActions extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return "specification-actions-pkg";
+        return "specification-actions";
     }
 }

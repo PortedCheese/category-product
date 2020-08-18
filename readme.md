@@ -13,6 +13,7 @@
                             {--all : Run all}
                             {--menu : Config menu}
                             {--models : Export models}
+                            {--observers : Export observers}
                             {--controllers : Export controllers}
                             {--policies : Export and create rules}
                             {--only-default : Create default rules}

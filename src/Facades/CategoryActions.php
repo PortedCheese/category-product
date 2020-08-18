@@ -20,6 +20,6 @@ class CategoryActions extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return "category-actions-pkg";
+        return "category-actions";
     }
 }

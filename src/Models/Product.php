@@ -2,7 +2,9 @@
 
 namespace PortedCheese\CategoryProduct\Models;
 
+use App\ProductVariation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use PortedCheese\BaseSettings\Traits\ShouldGallery;
 use PortedCheese\BaseSettings\Traits\ShouldSlug;
 use PortedCheese\SeoIntegration\Traits\ShouldMetas;
@@ -51,5 +53,20 @@ class Product extends Model
         return $this->belongsToMany(\App\Specification::class)
             ->withPivot("values", "category_id")
             ->withTimestamps();
+    }
+
+    /**
+     * Вариации.
+     *
+     * @return bool|\Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function variations()
+    {
+        if (class_exists(ProductVariation::class)) {
+            return $this->hasMany(ProductVariation::class);
+        }
+        else {
+            return new HasMany($this->newQuery(), $this, "", "");
+        }
     }
 }

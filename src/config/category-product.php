@@ -10,7 +10,7 @@ return [
     "productSpecificationAdminRoutes" => true,
 
     // FACADES
-    "categoryFacade" => "category-actions-pkg",
-    "specificationFacade" => "specification-actions-pkg",
-    "productFacade" => "product-actions-pkg",
+    "categoryFacade" => \PortedCheese\CategoryProduct\Helpers\CategoryActionsManager::class,
+    "specificationFacade" => \PortedCheese\CategoryProduct\Helpers\SpecificationActionManager::class,
+    "productFacade" => \PortedCheese\CategoryProduct\Helpers\ProductActionsManager::class,
 ];
