@@ -18,6 +18,6 @@ class ProductActions extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return "product-actions";
+        return "product-actions-pkg";
     }
 }

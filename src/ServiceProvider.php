@@ -87,15 +87,15 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function initFacades()
     {
-        $this->app->singleton("category-actions", function () {
+        $this->app->singleton(config("category-product.categoryFacade"), function () {
             return new CategoryActionsManager;
         });
 
-        $this->app->singleton("specification-actions", function () {
+        $this->app->singleton(config("category-product.specificationFacade"), function () {
             return new SpecificationActionManager;
         });
 
-        $this->app->singleton("product-actions", function () {
+        $this->app->singleton(config("category-product.productFacade"), function () {
             return new ProductActionsManager;
         });
     }

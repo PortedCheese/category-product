@@ -8,4 +8,9 @@ return [
     "productLabelAdminRoutes" => true,
     "productAdminRoutes" => true,
     "productSpecificationAdminRoutes" => true,
+
+    // FACADES
+    "categoryFacade" => "category-actions-pkg",
+    "specificationFacade" => "specification-actions-pkg",
+    "productFacade" => "product-actions-pkg",
 ];
