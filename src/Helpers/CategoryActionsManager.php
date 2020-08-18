@@ -6,10 +6,52 @@ use App\Category;
 use App\Specification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use PortedCheese\CategoryProduct\Events\CategoryFieldUpdate;
 
 class CategoryActionsManager
 {
+    /**
+     * Собрать хлебные крошки для админки.
+     *
+     * @param Category $category
+     * @param bool $isProductPage
+     * @return array
+     */
+    public function getAdminBreadcrumb(Category $category, $isProductPage = false)
+    {
+        $breadcrumb = [];
+        if (! empty($category->parent)) {
+            $breadcrumb = $this->getAdminBreadcrumb($category->parent);
+        }
+        else {
+            $breadcrumb[] = (object) [
+                "title" => "Категории",
+                "url" => route("admin.categories.index"),
+                "active" => false,
+            ];
+        }
+        $routeParams = Route::current()->parameters();
+        $isProductPage = $isProductPage && ! empty($routeParams["product"]);
+        $active = ! empty($routeParams["category"]) &&
+                  $routeParams["category"]->id == $category->id &&
+                  ! $isProductPage;
+        $breadcrumb[] = (object) [
+            "title" => $category->title,
+            "url" => route("admin.categories.show", ["category" => $category]),
+            "active" => $active,
+        ];
+        if ($isProductPage) {
+            $product = $routeParams["product"];
+            $breadcrumb[] = (object) [
+                "title" => $product->title,
+                "url" => route("admin.products.show", ["product" => $product]),
+                "active" => true,
+            ];
+        }
+        return $breadcrumb;
+    }
+
     /**
      * Список всех категорий.
      *

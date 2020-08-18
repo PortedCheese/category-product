@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Facade;
 use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
 
 /**
+ * @method static array getAdminBreadcrumb(Category $category, $isProductPage = false)
  * @method static array getTree()
  * @method static bool saveOrder(array $data)
  * @method static syncSpec(Category $category)

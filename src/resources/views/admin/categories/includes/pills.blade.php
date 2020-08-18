@@ -1,3 +1,6 @@
+@if (! empty($category))
+    @include("category-product::admin.categories.includes.breadcrumb")
+@endif
 <div class="col-12 mb-2">
     <div class="card">
         <div class="card-body">
