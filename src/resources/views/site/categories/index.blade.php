@@ -16,6 +16,10 @@
     @endempty
 @endsection
 
+@push("svg")
+    @include("category-product::site.includes.svg")
+@endpush
+
 @section("contents")
     <div class="row">
         @foreach ($categories as $item)

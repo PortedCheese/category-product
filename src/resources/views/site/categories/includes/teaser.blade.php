@@ -16,7 +16,9 @@
                 ])
             @else
                 <div class="category-teaser__empty">
-                    <i class="far fa-image fa-9x"></i>
+                    <svg class="category-teaser__empty-ico">
+                        <use xlink:href="#catalog-empty-image"></use>
+                    </svg>
                 </div>
             @endif
         </a>
@@ -26,7 +28,11 @@
                 {{ $category->title }}
             </a>
             @if (! empty($category->short))
-                <i class="far fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{ $category->short }}"></i>
+                <div data-toggle="tooltip" data-placement="left" title="{{ $category->short }}">
+                    <svg class="category-teaser__question">
+                        <use xlink:href="#catalog-question"></use>
+                    </svg>
+                </div>
             @endif
         </div>
     </div>
