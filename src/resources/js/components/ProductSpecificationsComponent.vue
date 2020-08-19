@@ -40,10 +40,10 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <button type="button" @click="editSpecification(specification)" class="btn btn-primary">
+                                    <button type="button" @click="editSpecification(specification)" :disabled="loading" class="btn btn-primary">
                                         <i class="far fa-edit"></i>
                                     </button>
-                                    <button type="button" @click="deleteSpecification(specification)" class="btn btn-danger">
+                                    <button type="button" @click="deleteSpecification(specification)" :disabled="loading" class="btn btn-danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
