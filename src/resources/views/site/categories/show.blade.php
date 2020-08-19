@@ -14,8 +14,8 @@
 
 @section("contents")
     <div class="row">
-        @if ($children->count())
-            @include("category-product::site.categories.includes.children", ["children" => $children])
+        @if ($categories->count())
+            @include("category-product::site.categories.includes.children", ["children" => $categories])
         @endif
         <div class="col-12">
             test

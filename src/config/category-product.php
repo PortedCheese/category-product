@@ -17,4 +17,5 @@ return [
 
     // Site
     "categorySiteRoutes" => true,
+    "subCategoriesPage" => false,
 ];

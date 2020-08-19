@@ -33,14 +33,20 @@ class CategoryController extends Controller
      */
     public function show(Request $request, Category $category)
     {
-        $children = $category
+        $categories = $category
             ->children()
+            ->with("image")
             ->orderBy("priority")
             ->get();
 
-        return view(
-            "category-product::site.categories.show",
-            compact("category", "children")
-        );
+        if (config("category-product.subCategoriesPage")) {
+            return view("category-product::site.categories.index", compact("categories", "category"));
+        }
+        else {
+            return view(
+                "category-product::site.categories.show",
+                compact("category", "categories")
+            );
+        }
     }
 }

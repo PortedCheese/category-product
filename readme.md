@@ -43,3 +43,6 @@
     categoryFacade - Класс для фасада действий с категориями
     specificationFacade - Класс для фасада действий с характеристиками
     productFacade - Класс для фасада действий с товарами
+    
+    categorySiteRoutes - Роуты категорий для сайта
+    subCategoriesPage - Включить страницу подкатегорий

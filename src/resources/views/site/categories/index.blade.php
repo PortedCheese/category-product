@@ -1,8 +1,20 @@
 @extends("layouts.boot")
 
-@section('page-title', "Каталог - ")
+@section('page-title')
+    @empty($category)
+        Каталог -
+    @else
+        {{ $category->title }} -
+    @endempty
+@endsection
 
-@section("header-title", "Каталог")
+@section("header-title")
+    @empty($category)
+        Каталог
+    @else
+        {{ $category->title }}
+    @endempty
+@endsection
 
 @section("contents")
     <div class="row">
