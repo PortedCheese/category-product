@@ -6,6 +6,7 @@
 
 @section('admin')
     @include("category-product::admin.products.includes.pills")
+    @includeIf("product-variation::admin.product-variations.includes.list")
     <div class="col-12">
         <div class="card">
             @can("changeCategory", $product)
@@ -78,8 +79,6 @@
             </div>
         </div>
     </div>
-
-    @includeIf("product-variation::admin.product-variations.includes.list")
 
     @can("changeCategory", $product)
         <div class="modal fade" id="changeCategory" tabindex="-1" role="dialog" aria-labelledby="changeCategoryLabel" aria-hidden="true">
