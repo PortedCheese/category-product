@@ -31,6 +31,11 @@
     @include media-breakpoint-up(xl) {
       min-height: 253px;
     }
+    &-ico {
+      height: 120px;
+      width: 120px;
+      fill: $gray-500;
+    }
   }
 
   &__body {
@@ -48,6 +53,12 @@
     @include hover() {
       text-decoration: none;
     }
+  }
+
+  &__question {
+    width: 24px;
+    height: 24px;
+    fill: $body-color;
   }
 
   &-cover {
