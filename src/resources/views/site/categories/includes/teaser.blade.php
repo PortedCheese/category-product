@@ -1,7 +1,8 @@
 <div class="col-12 col-sm-6 col-md-4 col-xl-3 category-teaser-cover">
     <div class="card category-teaser">
-        @if ($category->image)
-            <a href="{{ route("catalog.categories.show", ["category" => $category]) }}">
+        <a href="{{ route("catalog.categories.show", ["category" => $category]) }}"
+           class="category-teaser__image">
+            @if ($category->image)
                 @pic([
                     "image" => $category->image,
                     "template" => "category-teaser-xs",
@@ -13,8 +14,12 @@
                     ],
                     "imgClass" => "card-img-top",
                 ])
-            </a>
-        @endif
+            @else
+                <div class="category-teaser__empty">
+                    <i class="far fa-image fa-9x"></i>
+                </div>
+            @endif
+        </a>
         <div class="card-body category-teaser__body">
             <a class="category-teaser__title"
                href="{{ route("catalog.categories.show", ["category" => $category]) }}">
