@@ -29,6 +29,36 @@ class CategoryObserver
     {
         // Скопировать поля родителя.
         CategoryActions::copyParentSpec($category);
+        // Очистить список id категорий.
+        CategoryActions::forgetCategoryChildrenIdsCache($category);
+    }
+
+    /**
+     * После обновления.
+     *
+     * @param Category $category
+     */
+    public function updating(Category $category)
+    {
+        $original = $category->getOriginal();
+        if ($original["parent_id"] != $category->parent_id) {
+            $this->categoryChangedParent($category, $original["parent_id"]);
+        }
+    }
+
+    /**
+     * Очистить список id дочерних категорий.
+     *
+     * @param Category $category
+     * @param $parent
+     */
+    protected function categoryChangedParent(Category $category, $parent)
+    {
+        if (! empty($parent)) {
+            $parent = Category::find($parent);
+            CategoryActions::forgetCategoryChildrenIdsCache($parent);
+        }
+        CategoryActions::forgetCategoryChildrenIdsCache($category);
     }
 
     /**

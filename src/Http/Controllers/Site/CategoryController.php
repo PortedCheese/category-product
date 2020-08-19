@@ -5,6 +5,7 @@ namespace PortedCheese\CategoryProduct\Http\Controllers\Site;
 use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use PortedCheese\CategoryProduct\Facades\ProductFilters;
 
 class CategoryController extends Controller
 {
@@ -40,9 +41,13 @@ class CategoryController extends Controller
             ->get();
 
         if (config("category-product.subCategoriesPage")) {
-            return view("category-product::site.categories.index", compact("categories", "category"));
+            return view(
+                "category-product::site.categories.index",
+                compact("categories", "category")
+            );
         }
         else {
+            $products = ProductFilters::filterByCategory($request, $category);
             return view(
                 "category-product::site.categories.show",
                 compact("category", "categories")

@@ -103,6 +103,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $class = config("category-product.productFacade");
             return new $class;
         });
+
+        $this->app->singleton("product-filters", function () {
+            $class = config("category-product.productFilterFacade");
+            return new $class;
+        });
     }
 
     /**

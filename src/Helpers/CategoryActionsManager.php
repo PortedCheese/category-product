@@ -5,12 +5,60 @@ namespace PortedCheese\CategoryProduct\Helpers;
 use App\Category;
 use App\Specification;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use PortedCheese\CategoryProduct\Events\CategoryFieldUpdate;
 
 class CategoryActionsManager
 {
+    /**
+     * Получить id всех подкатегорий.
+     *
+     * @param Category $category
+     * @param bool $includeSelf
+     * @return array|mixed
+     */
+    public function getCategoryChildren(Category $category, $includeSelf = false)
+    {
+        $key = "category-actions-getCategoryChildren:{$category->id}";
+        $children = Cache::rememberForever($key, function () use ($category) {
+            $children = [];
+            $collection = Category::query()
+                ->select("id")
+                ->where("parent_id", $category->id)
+                ->get();
+            foreach ($collection as $child) {
+                $children[] = $child->id;
+                $categories = $this->getCategoryChildren($child);
+                if (! empty($categories)) {
+                    foreach ($categories as $id) {
+                        $children[] = $id;
+                    }
+                }
+            }
+            return $children;
+        });
+        if ($includeSelf) {
+            $children[] = $category->id;
+        }
+        return $children;
+    }
+
+    /**
+     * Очистить кэш списка id категорий.
+     *
+     * @param Category $category
+     */
+    public function forgetCategoryChildrenIdsCache(Category $category)
+    {
+        Cache::forget("category-actions-getCategoryChildren:{$category->id}");
+        $parent = $category->parent;
+        if (! empty($parent)) {
+            $this->forgetCategoryChildrenIdsCache($parent);
+        }
+    }
+
     /**
      * Собрать хлебные крошки для админки.
      *
@@ -179,9 +227,13 @@ class CategoryActionsManager
                 $this->setItemsWeight($item["children"], $id);
             }
             $parentId = ! empty($parent) ? $parent : null;
-            DB::table("categories")
+            // Обновление Категории.
+            $category = Category::query()
                 ->where("id", $id)
-                ->update(["priority" => $priority, "parent_id" => $parentId]);
+                ->first();
+            $category->priority = $priority;
+            $category->parent_id = $parentId;
+            $category->save();
         }
     }
 
