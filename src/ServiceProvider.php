@@ -11,6 +11,11 @@ use App\Product;
 use App\ProductLabel;
 use App\SpecificationGroup;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
+use PortedCheese\CategoryProduct\Filters\CategoryTeaserLg;
+use PortedCheese\CategoryProduct\Filters\CategoryTeaserMd;
+use PortedCheese\CategoryProduct\Filters\CategoryTeaserSm;
+use PortedCheese\CategoryProduct\Filters\CategoryTeaserXl;
+use PortedCheese\CategoryProduct\Filters\CategoryTeaserXs;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -105,6 +110,26 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function addRoutes()
     {
+        $this->addAdminRoutes();
+        $this->addSiteRoutes();
+    }
+
+    /**
+     * Пути для сайта.
+     */
+    protected function addSiteRoutes()
+    {
+        // Категории.
+        if (config("category-product.categorySiteRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/site/category.php");
+        }
+    }
+
+    /**
+     * Пути для админки.
+     */
+    protected function addAdminRoutes()
+    {
         // Управление категориями.
         if (config("category-product.categoryAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/category.php");
@@ -152,5 +177,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $gallery = app()->config["gallery.models"];
         $gallery["products"] = Product::class;
         app()->config["gallery.models"] = $gallery;
+
+        // Фильтры изображений.
+        $imagecache = app()->config["imagecache.templates"];
+        $imagecache["category-teaser-xl"] = CategoryTeaserXl::class;
+        $imagecache["category-teaser-lg"] = CategoryTeaserLg::class;
+        $imagecache["category-teaser-md"] = CategoryTeaserMd::class;
+        $imagecache["category-teaser-sm"] = CategoryTeaserSm::class;
+        $imagecache["category-teaser-xs"] = CategoryTeaserXs::class;
+        app()->config['imagecache.templates'] = $imagecache;
     }
 }

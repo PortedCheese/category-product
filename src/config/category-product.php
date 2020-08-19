@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // Admin
     "categoryAdminRoutes" => true,
     "categoryShowRouteName" => "admin.categories.show",
     "specificationAdminRoutes" => true,
@@ -13,4 +14,7 @@ return [
     "categoryFacade" => \PortedCheese\CategoryProduct\Helpers\CategoryActionsManager::class,
     "specificationFacade" => \PortedCheese\CategoryProduct\Helpers\SpecificationActionManager::class,
     "productFacade" => \PortedCheese\CategoryProduct\Helpers\ProductActionsManager::class,
+
+    // Site
+    "categorySiteRoutes" => true,
 ];

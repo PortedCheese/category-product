@@ -57,7 +57,9 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "CategoryController", "SpecificationController", "SpecificationGroupController",
             "ProductLabelController", "ProductController", "ProductSpecificationController",
         ],
-        "Site" => [],
+        "Site" => [
+            "CategoryController",
+        ],
     ];
 
     /**
@@ -126,7 +128,9 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      * @var array 
      */
     protected $scssIncludes = [
-        "app" => ["category-product/product-labels"],
+        "app" => [
+            "category-product/product-labels", "category-product/category-teaser",
+        ],
         "admin" => ["category-product/product-labels"],
     ];
 

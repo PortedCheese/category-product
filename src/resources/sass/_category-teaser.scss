@@ -1,0 +1,25 @@
+.category-teaser {
+  height: 100%;
+  border-color: $gray-500;
+  @include hover() {
+    border-color: $primary;
+  }
+
+  &__body {
+    padding: 1rem;
+  }
+
+  &__title {
+    color: $body-color;
+    @include media-breakpoint-up(md) {
+      font-size: .875rem;
+    }
+    @include hover() {
+      text-decoration: none;
+    }
+  }
+
+  &-cover {
+    margin-bottom: $grid-gutter-width;
+  }
+}
