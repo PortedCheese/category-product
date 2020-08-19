@@ -24,8 +24,23 @@ class CategoryController extends Controller
         return view("category-product::site.categories.index", compact("categories"));
     }
 
+    /**
+     * Просмотр категории.
+     *
+     * @param Request $request
+     * @param Category $category
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show(Request $request, Category $category)
     {
-        return "category";
+        $children = $category
+            ->children()
+            ->orderBy("priority")
+            ->get();
+
+        return view(
+            "category-product::site.categories.show",
+            compact("category", "children")
+        );
     }
 }

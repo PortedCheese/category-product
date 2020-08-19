@@ -1,0 +1,10 @@
+.category-children {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  &__item {
+    margin-right: $grid-gutter-width / 2;
+    margin-bottom: $grid-gutter-width / 2;
+  }
+}

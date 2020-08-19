@@ -7,6 +7,9 @@
 
   &__body {
     padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__title {

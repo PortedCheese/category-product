@@ -20,6 +20,9 @@
                href="{{ route("catalog.categories.show", ["category" => $category]) }}">
                 {{ $category->title }}
             </a>
+            @if (! empty($category->short))
+                <i class="far fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{ $category->short }}"></i>
+            @endif
         </div>
     </div>
 </div>
