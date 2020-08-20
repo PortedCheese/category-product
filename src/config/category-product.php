@@ -19,4 +19,5 @@ return [
     // Site
     "categorySiteRoutes" => true,
     "subCategoriesPage" => false,
+    "categoryProductsPerPage" => 18,
 ];

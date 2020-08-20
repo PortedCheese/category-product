@@ -42,21 +42,27 @@ class ProductFilterManager
         $this->category = $category;
         $this->request = $request;
         $this->initCategoryQuery();
-        return [];
+        return $this->makeFilters();
     }
 
+    /**
+     * Добавить категории к запросу.
+     */
     protected function initCategoryQuery()
     {
         $this->categoryIds = CategoryActions::getCategoryChildren($this->category, true);
-        debugbar()->info($this->categoryIds);
+        $this->query->whereIn("products.category_id", $this->categoryIds);
     }
 
+    /**
+     * Фильтрация.
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     protected function makeFilters()
     {
-        foreach ($this->request->all() as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
-        }
+        $this->query->groupBy("products.id");
+        $perPage = config("category-product.categoryProductsPerPage");
+        return $this->query->paginate($perPage)->appends($this->request->input());
     }
 }

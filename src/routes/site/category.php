@@ -12,4 +12,6 @@ Route::group([
         ->name("index");
     Route::get("/{category}", "CategoryController@show")
         ->name("show");
+    Route::put("/product-view", "CategoryController@changeProductView")
+        ->name("product-view");
 });

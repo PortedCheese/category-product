@@ -5,6 +5,7 @@ namespace PortedCheese\CategoryProduct\Http\Controllers\Site;
 use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use PortedCheese\CategoryProduct\Facades\ProductFilters;
 
 class CategoryController extends Controller
@@ -48,10 +49,27 @@ class CategoryController extends Controller
         }
         else {
             $products = ProductFilters::filterByCategory($request, $category);
+            $productView = Cookie::get("products-view", "list");
             return view(
                 "category-product::site.categories.show",
-                compact("category", "categories")
+                compact("category", "categories", "products", "productView")
             );
         }
+    }
+
+    /**
+     * Поменять куку.
+     *
+     * @param Request $request
+     * @param string $view
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeProductView(Request $request)
+    {
+        $view = $request->get("view", "list");
+        $cookie = Cookie::make("products-view", $view, 60*24*30);
+        Cookie::queue($cookie);
+        return response()
+            ->json(["success" => true]);
     }
 }

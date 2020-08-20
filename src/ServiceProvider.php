@@ -48,6 +48,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // Assets.
         $this->publishes([
             __DIR__ . '/resources/js/components' => resource_path('js/components/vendor/category-product'),
+            __DIR__ . '/resources/js/scripts' => resource_path('js/vendor/category-product'),
             __DIR__ . "/resources/sass" => resource_path("sass/vendor/category-product")
         ], 'public');
 

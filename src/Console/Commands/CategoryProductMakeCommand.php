@@ -22,7 +22,8 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
                     {--policies : Export and create rules}
                     {--only-default : Create only default rules}
                     {--scss : Export scss}
-                    {--vue : Export vue}";
+                    {--vue : Export vue}
+                    {--js : Export scripts}";
 
     /**
      * The console command description.
@@ -89,6 +90,10 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
         'app' => [],
     ];
 
+    protected $jsIncludes = [
+        "app" => ["category-product/products-grid"]
+    ];
+
     /**
      * Политики.
      *
@@ -130,7 +135,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
     protected $scssIncludes = [
         "app" => [
             "category-product/product-labels", "category-product/category-teaser",
-            "category-product/category-children",
+            "category-product/category-children", "category-product/products-grid",
         ],
         "admin" => ["category-product/product-labels"],
     ];
@@ -181,6 +186,10 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
         if ($this->option("scss") || $all) {
             $this->makeScssIncludes("app");
             $this->makeScssIncludes("admin");
+        }
+
+        if ($this->option("js") || $all) {
+            $this->makeJsIncludes("app");
         }
     }
 
