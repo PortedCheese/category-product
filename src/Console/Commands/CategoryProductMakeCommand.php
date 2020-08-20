@@ -59,7 +59,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "ProductLabelController", "ProductController", "ProductSpecificationController",
         ],
         "Site" => [
-            "CategoryController",
+            "CategoryController", "ProductController",
         ],
     ];
 

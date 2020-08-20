@@ -48,3 +48,5 @@
     
     categorySiteRoutes - Роуты категорий для сайта
     subCategoriesPage - Включить страницу подкатегорий
+    categoryProductsPerPage - Товаров на страницу
+    productSiteRoutes - Роуты товаров для сайта

@@ -20,4 +20,5 @@ return [
     "categorySiteRoutes" => true,
     "subCategoriesPage" => false,
     "categoryProductsPerPage" => 18,
+    "productSiteRoutes" => true,
 ];
