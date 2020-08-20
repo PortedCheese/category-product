@@ -25,5 +25,7 @@ class ProductObserver
     {
         // Очистить метки.
         $product->labels()->detach();
+        // Очистить значения полей.
+        $product->specifications()->sync([]);
     }
 }
