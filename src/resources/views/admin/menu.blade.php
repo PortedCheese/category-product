@@ -106,3 +106,5 @@
         </div>
     </li>
 @endif
+
+@includeIf("product-variation::admin.menu")

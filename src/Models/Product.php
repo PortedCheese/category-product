@@ -2,6 +2,7 @@
 
 namespace PortedCheese\CategoryProduct\Models;
 
+use App\OrderItem;
 use App\ProductVariation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -64,6 +65,21 @@ class Product extends Model
     {
         if (class_exists(ProductVariation::class)) {
             return $this->hasMany(ProductVariation::class);
+        }
+        else {
+            return new HasMany($this->newQuery(), $this, "", "");
+        }
+    }
+
+    /**
+     * Позиции заказа.
+     *
+     * @return HasMany
+     */
+    public function orderItems()
+    {
+        if (class_exists(OrderItem::class)) {
+            return $this->hasMany(OrderItem::class);
         }
         else {
             return new HasMany($this->newQuery(), $this, "", "");
