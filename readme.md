@@ -23,6 +23,7 @@
                             {--only-default : Create default rules}
                             {--scss : Export scss}
                             {--vue : Export vue}
+                            {--js : Export scripts}
                             
 ## Config
 
@@ -43,6 +44,7 @@
     categoryFacade - Класс для фасада действий с категориями
     specificationFacade - Класс для фасада действий с характеристиками
     productFacade - Класс для фасада действий с товарами
+    productFilterFacade - Класс для фасада фильтрации товара
     
     categorySiteRoutes - Роуты категорий для сайта
     subCategoriesPage - Включить страницу подкатегорий
