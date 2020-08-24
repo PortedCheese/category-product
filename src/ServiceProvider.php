@@ -171,6 +171,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function extendConfigVariables()
     {
+        // SVG.
+        $svg = app()->config["theme.configSvg"];
+        $svg[] = "category-product::site.includes.svg";
+        app()->config["theme.configSvg"] = $svg;
+
         // Подключение метатегов.
         $seo = app()->config["seo-integration.models"];
         $seo["categories"] = Category::class;

@@ -9,7 +9,7 @@
         </div>
         <div class="col-12 col-md-6">
             <h1>{{ $product->title }}</h1>
-            @includeIf("product-variation::site.variations.show", ["product" => $product])
+            @includeFirst(["variation-cart::site.variations.show", "product-variation::site.variations.show"], ["product" => $product])
         </div>
     </div>
 @endsection
