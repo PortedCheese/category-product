@@ -13,31 +13,6 @@
     }
   }
 
-  &__empty {
-    width: 100%;
-    min-height: 238px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @include media-breakpoint-up(sm) {
-      min-height: 238px;
-    }
-    @include media-breakpoint-up(md) {
-      min-height: 208px;
-    }
-    @include media-breakpoint-up(lg) {
-      min-height: 288px;
-    }
-    @include media-breakpoint-up(xl) {
-      min-height: 253px;
-    }
-    &-ico {
-      height: 120px;
-      width: 120px;
-      fill: $gray-500;
-    }
-  }
-
   &__body {
     padding: 1rem;
     display: flex;

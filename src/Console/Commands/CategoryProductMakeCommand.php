@@ -134,8 +134,13 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      */
     protected $scssIncludes = [
         "app" => [
-            "category-product/product-labels", "category-product/category-teaser",
-            "category-product/category-children", "category-product/products-grid",
+            "category-product/product-labels",
+            "category-product/products-grid",
+            "category-product/catalog-image",
+
+            "category-product/category-teaser",
+            "category-product/category-children",
+            "category-product/product-teaser",
         ],
         "admin" => ["category-product/product-labels"],
     ];

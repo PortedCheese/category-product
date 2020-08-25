@@ -35,21 +35,21 @@ class CategoryController extends Controller
      */
     public function show(Request $request, Category $category)
     {
-        $categories = $category
+        $collection = $category
             ->children()
-            ->with("image")
-            ->orderBy("priority")
-            ->get();
+            ->orderBy("priority");
 
         if (config("category-product.subCategoriesPage")) {
+            $categories = $collection->with("image")->get();
             return view(
                 "category-product::site.categories.index",
                 compact("categories", "category")
             );
         }
         else {
+            $categories = $collection->get();
             $products = ProductFilters::filterByCategory($request, $category);
-            $productView = Cookie::get("products-view", "list");
+            $productView = Cookie::get("products-view", config("category-product.defaultProductView"));
             return view(
                 "category-product::site.categories.show",
                 compact("category", "categories", "products", "productView")

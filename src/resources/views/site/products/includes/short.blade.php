@@ -1,0 +1,3 @@
+<div>
+    {{ $product->short }}
+</div>

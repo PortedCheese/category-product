@@ -6,6 +6,7 @@ use App\OrderItem;
 use App\ProductVariation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 use PortedCheese\BaseSettings\Traits\ShouldGallery;
 use PortedCheese\BaseSettings\Traits\ShouldSlug;
 use PortedCheese\SeoIntegration\Traits\ShouldMetas;
@@ -84,5 +85,29 @@ class Product extends Model
         else {
             return new HasMany($this->newQuery(), $this, "", "");
         }
+    }
+
+    /**
+     * Данные для тизера.
+     *
+     * @return mixed
+     */
+    public function getTeaserData()
+    {
+        $key = "productTeaserData:{$this->id}";
+        $product = $this;
+        return Cache::rememberForever($key, function () use ($product) {
+            $product->cover;
+            $product->labels;
+            return $product;
+        });
+    }
+
+    /**
+     * Очистить кэш.
+     */
+    public function clearCache()
+    {
+        Cache::forget("productTeaserData:{$this->id}");
     }
 }

@@ -12,11 +12,18 @@ use App\ProductLabel;
 use App\SpecificationGroup;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
-use PortedCheese\CategoryProduct\Filters\CategoryTeaserLg;
-use PortedCheese\CategoryProduct\Filters\CategoryTeaserMd;
-use PortedCheese\CategoryProduct\Filters\CategoryTeaserSm;
-use PortedCheese\CategoryProduct\Filters\CategoryTeaserXl;
-use PortedCheese\CategoryProduct\Filters\CategoryTeaserXs;
+use PortedCheese\CategoryProduct\Filters\CatalogTeaserLg;
+use PortedCheese\CategoryProduct\Filters\CatalogTeaserMd;
+use PortedCheese\CategoryProduct\Filters\CatalogTeaserSm;
+use PortedCheese\CategoryProduct\Filters\CatalogTeaserXl;
+use PortedCheese\CategoryProduct\Filters\CatalogTeaserXs;
+use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserLg;
+use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserMd;
+use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserSm;
+use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXl;
+use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXs;
+use PortedCheese\CategoryProduct\Filters\ProductSimpleTeaserLg;
+use PortedCheese\CategoryProduct\Filters\ProductTeaserLg;
 use PortedCheese\CategoryProduct\Listeners\ProductGalleryChange;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -209,11 +216,23 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // Фильтры изображений.
         $imagecache = app()->config["imagecache.templates"];
-        $imagecache["category-teaser-xl"] = CategoryTeaserXl::class;
-        $imagecache["category-teaser-lg"] = CategoryTeaserLg::class;
-        $imagecache["category-teaser-md"] = CategoryTeaserMd::class;
-        $imagecache["category-teaser-sm"] = CategoryTeaserSm::class;
-        $imagecache["category-teaser-xs"] = CategoryTeaserXs::class;
+        // Тизеры.
+        if (config("category-product.useSimpleTeaser")) {
+            $imagecache["catalog-teaser-xl"] = CatalogSimpleTeaserXl::class;
+            $imagecache["catalog-teaser-lg"] = CatalogSimpleTeaserLg::class;
+            $imagecache["product-teaser-lg"] = ProductSimpleTeaserLg::class;
+            $imagecache["catalog-teaser-md"] = CatalogSimpleTeaserMd::class;
+            $imagecache["catalog-teaser-sm"] = CatalogSimpleTeaserSm::class;
+            $imagecache["catalog-teaser-xs"] = CatalogSimpleTeaserXs::class;
+        }
+        else {
+            $imagecache["catalog-teaser-xl"] = CatalogTeaserXl::class;
+            $imagecache["catalog-teaser-lg"] = CatalogTeaserLg::class;
+            $imagecache["product-teaser-lg"] = ProductTeaserLg::class;
+            $imagecache["catalog-teaser-md"] = CatalogTeaserMd::class;
+            $imagecache["catalog-teaser-sm"] = CatalogTeaserSm::class;
+            $imagecache["catalog-teaser-xs"] = CatalogTeaserXs::class;
+        }
         app()->config['imagecache.templates'] = $imagecache;
     }
 }

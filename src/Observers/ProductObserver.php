@@ -16,6 +16,11 @@ class ProductObserver
         $product->published_at = now();
     }
 
+    public function updated(Product $product)
+    {
+        $product->clearCache();
+    }
+
     /**
      * После удаления.
      *
@@ -27,5 +32,7 @@ class ProductObserver
         $product->labels()->detach();
         // Очистить значения полей.
         $product->specifications()->sync([]);
+        // Очистить кэш.
+        $product->clearCache();
     }
 }

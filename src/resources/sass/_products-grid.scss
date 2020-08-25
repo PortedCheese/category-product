@@ -4,8 +4,10 @@
   }
 
   &_list &-col {
-    -webkit-box-flex: 0;
-    flex: 0 0 100%;
-    max-width: 100%;
+    @include media-breakpoint-up(md) {
+      -webkit-box-flex: 0;
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
   }
 }

@@ -21,4 +21,7 @@ return [
     "subCategoriesPage" => false,
     "categoryProductsPerPage" => 18,
     "productSiteRoutes" => true,
+    // @var ["list", "bar"]
+    "defaultProductView" => "bar",
+    "useSimpleTeaser" => true,
 ];
