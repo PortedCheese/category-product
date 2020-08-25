@@ -159,11 +159,12 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $this->updateValidator($request->all(), $product);
+        // Обновление.
+        $product->update($request->all());
         // Метки.
         $labels = $request->get("labels", []);
         $product->labels()->sync($labels);
-        // Обновление.
-        $product->update($request->all());
+        $product->clearCache();
         return redirect()
             ->route("admin.products.show", ["product" => $product])
             ->with("success", "Товар добавлен");
