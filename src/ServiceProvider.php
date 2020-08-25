@@ -10,12 +10,14 @@ use App\Observers\Vendor\CategoryProduct\SpecificationGroupObserver;
 use App\Product;
 use App\ProductLabel;
 use App\SpecificationGroup;
+use PortedCheese\BaseSettings\Events\ImageUpdate;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
 use PortedCheese\CategoryProduct\Filters\CategoryTeaserLg;
 use PortedCheese\CategoryProduct\Filters\CategoryTeaserMd;
 use PortedCheese\CategoryProduct\Filters\CategoryTeaserSm;
 use PortedCheese\CategoryProduct\Filters\CategoryTeaserXl;
 use PortedCheese\CategoryProduct\Filters\CategoryTeaserXs;
+use PortedCheese\CategoryProduct\Listeners\ProductGalleryChange;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -54,6 +56,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // Наблюдатели.
         $this->addObservers();
+
+        // События.
+        $this->makeEvents();
     }
 
     public function register()
@@ -64,6 +69,15 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         );
         // Facades.
         $this->initFacades();
+    }
+
+    /**
+     * Подписка на события.
+     */
+    protected function makeEvents()
+    {
+        // Обновление галереи.
+        $this->app["events"]->listen(ImageUpdate::class, ProductGalleryChange::class);
     }
 
     /**
