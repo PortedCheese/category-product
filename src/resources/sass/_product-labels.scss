@@ -56,7 +56,7 @@ $product-label-transition:                  $btn-transition !default;
   display: inline-block;
   padding: $product-label-padding-y $product-label-padding-x;
   @include font-size($product-label-font-size);
-  font-weight: $badge-font-weight;
+  font-weight: $font-weight-base;
   line-height: 1;
   text-align: center;
   white-space: nowrap;

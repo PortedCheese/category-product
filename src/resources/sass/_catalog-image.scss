@@ -13,7 +13,7 @@
   }
 }
 @mixin product-image-sizes() {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-only(lg) {
     min-height: 208px;
   }
 }
@@ -39,7 +39,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 238px;
+    height: 238px;
+    @include media-breakpoint-up(sm) {
+      height: 100%;
+    }
     &-ico {
       height: 120px;
       width: 120px;
