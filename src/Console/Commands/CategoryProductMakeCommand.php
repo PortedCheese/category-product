@@ -138,6 +138,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "category-product/products-grid",
             "category-product/catalog-image",
             "category-product/product-switch-view",
+            "category-product/product-switch-sort",
 
             "category-product/category-teaser",
             "category-product/category-children",

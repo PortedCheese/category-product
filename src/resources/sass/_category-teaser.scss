@@ -22,6 +22,7 @@
 
   &__title {
     color: $body-color;
+    line-height: 1.25;
     @include media-breakpoint-up(md) {
       font-size: .875rem;
     }

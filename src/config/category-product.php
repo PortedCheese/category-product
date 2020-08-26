@@ -24,4 +24,39 @@ return [
     // @var ["list", "bar"]
     "defaultProductView" => "bar",
     "useSimpleTeaser" => true,
+
+    // Sort
+    "defaultSort" => "title",
+    "defaultSortDirection" => "asc",
+    "enablePriceSort" => false,
+    "sortOptions" => [
+        "title.asc" => (object) [
+            "title" => "По названию",
+            "by" => "title",
+            "direction" => "asc",
+            "ico" => "catalog-sort-alpha",
+            "arrow" => "down",
+        ],
+        "title.desc" => (object) [
+            "title" => "По названию",
+            "by" => "title",
+            "direction" => "desc",
+            "ico" => "catalog-sort-alpha",
+            "arrow" => "up",
+        ],
+        "published_at.desc" => (object) [
+            "title" => "Сначала новые",
+            "by" => "published_at",
+            "direction" => "desc",
+            "ico" => "catalog-sort-amount",
+            "arrow" => "down",
+        ],
+        "published_at.asc" => (object) [
+            "title" => "Сначала старые",
+            "by" => "published_at",
+            "direction" => "asc",
+            "ico" => "catalog-sort-amount",
+            "arrow" => "up",
+        ],
+    ],
 ];

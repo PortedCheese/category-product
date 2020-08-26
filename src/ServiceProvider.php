@@ -10,8 +10,11 @@ use App\Observers\Vendor\CategoryProduct\SpecificationGroupObserver;
 use App\Product;
 use App\ProductLabel;
 use App\SpecificationGroup;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Blade;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
+use PortedCheese\CategoryProduct\Facades\ProductFilters;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserLg;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserMd;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserSm;
@@ -66,6 +69,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // События.
         $this->makeEvents();
+
+        // Расширить blade.
+        $this->expandBlade();
     }
 
     public function register()
@@ -76,6 +82,29 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         );
         // Facades.
         $this->initFacades();
+    }
+
+    /**
+     * Add Blade includes adn variables.
+     */
+    protected function expandBlade()
+    {
+        view()->composer("category-product::site.includes.sort-link", function (View $view) {
+            list($field, $order, $uri, $params) = ProductFilters::getSortLinkData();
+            $view->with("sortField", $field);
+            $view->with("sortOrder", $order);
+            $view->with("sortUrl", $uri);
+            $view->with("noParams", $params);
+        });
+        Blade::include("category-product::site.includes.sort-text", "sortText");
+        Blade::include("category-product::site.includes.sort-link", "sortLink");
+
+        view()->composer("category-product::site.products.includes.grid-sort", function (View $view) {
+            list($options, $field, $order) = ProductFilters::getSortOptions();
+            $view->with("sortOptions", $options);
+            $view->with("sortBy", $field);
+            $view->with("sortDirection", $order);
+        });
     }
 
     /**
