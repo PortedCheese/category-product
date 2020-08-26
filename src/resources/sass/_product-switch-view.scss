@@ -1,0 +1,24 @@
+.product-switch-view {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  &__btn {
+    padding: 0;
+    margin-left: .3125rem;
+    color: $gray-500;
+    &.active, &:hover {
+      color: $body-color;
+    }
+    @include hover-focus() {
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  &__ico {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+}

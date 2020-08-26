@@ -6,4 +6,12 @@
     <symbol id="catalog-empty-image" viewBox="0 0 24 24">
         <path d="M5,21h14c1.104,0,2-0.896,2-2V5c0-1.104-0.896-2-2-2H5C3.896,3,3,3.896,3,5v14C3,20.104,3.896,21,5,21z M8,14l2.363,2.363 L14,11l5,7H5L8,14z"></path>
     </symbol>
+
+    <symbol id="catalog-list-view" viewBox="0 0 24 24">
+        <path d="M4 6H6V8H4zM4 11H6V13H4zM4 16H6V18H4zM20 8L20 6 18.8 6 9.2 6 8.023 6 8.023 8 9.2 8 18.8 8zM8 11H20V13H8zM8 16H20V18H8z"></path>
+    </symbol>
+
+    <symbol id="catalog-bar-view" viewBox="0 0 24 24">
+        <path d="M4 4H8V8H4zM10 4H14V8H10zM16 4H20V8H16zM4 10H8V14H4zM10 10H14V14H10zM16 10H20V14H16zM4 16H8V20H4zM10 16H14V20H10zM16 16H20V20H16z"></path>
+    </symbol>
 </svg>
