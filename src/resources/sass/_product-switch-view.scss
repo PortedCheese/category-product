@@ -1,7 +1,10 @@
 .product-switch-view {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  display: none;
+  @include media-breakpoint-up(md) {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
   &__btn {
     padding: 0;
     margin-left: .3125rem;
