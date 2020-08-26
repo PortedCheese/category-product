@@ -32,9 +32,14 @@
             @endif
         </a>
     </div>
-    <div class="card-body">
-        <a href="{{ route("catalog.products.show", ["product" => $product]) }}">
-            {{ $product->title }}
-        </a>
+    <div class="card-body product-teaser__body">
+        <div class="product-teaser__info">
+            <a href="{{ route("catalog.products.show", ["product" => $product]) }}" class="product-teaser__title">
+                {{ $product->title }}
+            </a>
+            @if ($product->short)
+                <div class="product-teaser__short">{{ $product->short }}</div>
+            @endif
+        </div>
     </div>
 </div>

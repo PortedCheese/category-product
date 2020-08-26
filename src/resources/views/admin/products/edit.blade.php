@@ -18,6 +18,7 @@
                         <input type="text"
                                id="title"
                                name="title"
+                               maxlength="100"
                                required
                                value="{{ old("title", $product->title) }}"
                                class="form-control @error("title") is-invalid @enderror">
@@ -33,6 +34,7 @@
                         <input type="text"
                                id="slug"
                                name="slug"
+                               maxlength="100"
                                value="{{ old("slug", $product->slug) }}"
                                class="form-control @error("slug") is-invalid @enderror">
                         @error("slug")
@@ -46,6 +48,7 @@
                         <label for="short">Краткое описание</label>
                         <input type="text"
                                id="short"
+                               maxlength="150"
                                name="short"
                                value="{{ old("short", $product->short) }}"
                                class="form-control @error("short") is-invalid @enderror">

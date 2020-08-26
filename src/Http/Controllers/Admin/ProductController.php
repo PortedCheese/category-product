@@ -100,9 +100,9 @@ class ProductController extends Controller
     protected function storeValidator($data)
     {
         Validator::make($data, [
-            "title" => ["required", "max:250", "unique:products,title"],
+            "title" => ["required", "max:100", "unique:products,title"],
             "slug" => ["nullable", "max:250", "unique:products,slug"],
-            "short" => ["nullable", "max:250"],
+            "short" => ["nullable", "max:150"],
             "description" => ["required"],
         ], [], [
             "title" => "Заголовок",
@@ -178,9 +178,9 @@ class ProductController extends Controller
     {
         $id = $product->id;
         Validator::make($data, [
-            "title" => ["required", "max:250", "unique:products,title,{$id}"],
+            "title" => ["required", "max:100", "unique:products,title,{$id}"],
             "slug" => ["nullable", "max:250", "unique:products,slug,{$id}"],
-            "short" => ["nullable", "max:250"],
+            "short" => ["nullable", "max:150"],
             "description" => ["required"],
         ], [], [
             "title" => "Заголовок",
