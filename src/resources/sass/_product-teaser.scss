@@ -29,12 +29,38 @@
       pointer-events: none;
     }
   }
+
+  &__body {
+    padding: $grid-gutter-width / 2;
+  }
+
+  &__title {
+    color: $body-color;
+    display: inline-block;
+    padding-bottom: $grid-gutter-width / 2;
+    @include hover() {
+      text-decoration: none;
+    }
+  }
+
+  &__short {
+    display: none;
+    color: $gray-500;
+  }
 }
 
 .products-grid_list {
   .product-teaser {
     @include media-breakpoint-up(md) {
       flex-direction: row;
+
+      &__body {
+        padding: $grid-gutter-width;
+      }
+
+      &__short {
+        display: block;
+      }
     }
 
     .catalog-image {
