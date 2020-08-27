@@ -34,6 +34,8 @@ class ProductFilterManager
      * @var array
      */
     protected $categoryIds;
+
+    protected $slugValues;
     protected $ranges;
 
     public function __construct()
@@ -43,6 +45,7 @@ class ProductFilterManager
         $this->ranges = [];
         $this->query = null;
         $this->categoryIds = [];
+        $this->slugValues = [];
     }
 
     /**
@@ -234,6 +237,14 @@ class ProductFilterManager
     {
         $this->categoryIds = CategoryActions::getCategoryChildren($this->category, true);
         $this->query->whereIn("products.category_id", $this->categoryIds);
+
+        $specInfo = SpecificationActions::getCategoryChildrenSpecificationsInfo($this->category);
+        foreach ($specInfo as $item) {
+            $this->slugValues[$item->slug] = [
+                "id" => $item->id,
+                "type" => $item->type,
+            ];
+        }
     }
 
     /**
@@ -243,6 +254,12 @@ class ProductFilterManager
      */
     protected function makeFilters()
     {
+        foreach ($this->request->all() as $key => $value) {
+            if (empty($value)) continue;
+            if ($this->addSelectToQuery($key, $value)) continue;
+            if ($this->addCheckboxToQuery($key, $value)) continue;
+            if ($this->addRangeToQuery($key, $value)) continue;
+        }
         $this->query->groupBy("products.id");
         $this->addSortCondition();
         $perPage = config("category-product.categoryProductsPerPage");
@@ -271,5 +288,68 @@ class ProductFilterManager
                 $defaultSortDirection
             );
         }
+    }
+
+    /**
+     * Добавить селект в запрос.
+     *
+     * @param $key
+     * @param $value
+     * @return bool
+     */
+    protected function addSelectToQuery($key, $value)
+    {
+        if (strstr($key, "select-") === false) return false;
+
+        $slug = str_replace("select-", "", $key);
+        if (empty($this->slugValues[$slug])) return true;
+
+        $selects = DB::table("product_specification")
+            ->select("product_id")
+            ->whereJsonContains("values", $value)
+            ->where("specification_id", $this->slugValues[$slug]["id"])
+            ->groupBy("product_id");
+
+        $this->query->joinSub($selects, $slug, function (JoinClause $join) use ($slug) {
+            $join->on("products.id", "=", "{$slug}.product_id");
+        });
+
+        return true;
+    }
+
+    /**
+     * Добавить чекбоксы к запросу.
+     *
+     * @param $key
+     * @param $value
+     * @return bool
+     */
+    protected function addCheckboxToQuery($key, $value)
+    {
+        if (strstr($key, "check-") === false) return false;
+
+        $slug = str_replace("check-", "", $key);
+        if (empty($this->slugValues[$slug])) return true;
+
+        $checkboxes = DB::table("product_specification")
+            ->select("product_id", "values")
+            ->where("specification_id", $this->slugValues[$slug]["id"]);
+        $checkboxes->whereJsonContains("values", $value);
+        if (count($value) > 1) {
+            foreach ($value as $item) {
+                $checkboxes->orWhereJsonContains("values", $item);
+            }
+        }
+        $checkboxes->groupBy("product_id");
+        $this->query->joinSub($checkboxes, $slug, function (JoinClause $join) use ($slug) {
+            $join->on("products.id", "=", "{$slug}.product_id");
+        });
+
+        return true;
+    }
+
+    protected function addRangeToQuery($key, $value)
+    {
+        return false;
     }
 }

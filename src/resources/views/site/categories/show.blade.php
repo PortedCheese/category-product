@@ -2,7 +2,7 @@
 
 @section('page-title', "{$category->title} - ")
 
-@section("header-title", "{$category->title}")
+@section("header-upper-title", "{$category->title}")
 
 @if (! empty($filters))
     @section("sidebar")
