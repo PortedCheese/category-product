@@ -4,6 +4,7 @@ namespace PortedCheese\CategoryProduct\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\ProductSpecification;
 use App\Specification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -64,12 +65,13 @@ class ProductSpecificationController extends Controller
         $this->storeValidator($request->all());
         $specId = $request->get("id");
 
-        $product->specifications()->syncWithoutDetaching([
-            $specId => [
+        foreach ($request->get("values") as $value) {
+            $product->specifications()->create([
                 "category_id" => $product->category->id,
-                "values" => json_encode($request->get("values"))
-            ]
-        ]);
+                "specification_id" => $specId,
+                "value" => $value,
+            ]);
+        }
         // При добавлении характеристики меняется список занчений характеристик.
         $category = $product->category;
         event(new CategorySpecificationValuesUpdate($category));
@@ -103,13 +105,12 @@ class ProductSpecificationController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Product $product, Specification $specification)
+    public function update(Request $request, ProductSpecification $value)
     {
+        $product = $value->product;
         $this->authorize("specificationManagement", $product);
         $this->updateValidator($request->all());
-        $product->specifications()->updateExistingPivot($specification, [
-            "values" => $request->get("values"),
-        ]);
+        $value->update($request->all());
         // При изменении характеристики меняется список занчений характеристик.
         $category = $product->category;
         event(new CategorySpecificationValuesUpdate($category));
@@ -126,24 +127,24 @@ class ProductSpecificationController extends Controller
     protected function updateValidator($data)
     {
         Validator::make($data, [
-            "values" => ["required", "array", "min:1"],
+            "value" => ["required", "max:250"],
         ], [], [
-            "values" => "Значения",
+            "values" => "Значение",
         ])->validate();
     }
 
     /**
      * Удалить значение.
      *
-     * @param Product $product
-     * @param Specification $specification
+     * @param ProductSpecification $value
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Product $product, Specification $specification)
+    public function destroy(ProductSpecification $value)
     {
+        $product = $value->product;
         $this->authorize("specificationManagement", $product);
-        $product->specifications()->detach($specification);
+        $value->delete();
         // При удалении характеристики меняется список занчений характеристик.
         $category = $product->category;
         event(new CategorySpecificationValuesUpdate($category));

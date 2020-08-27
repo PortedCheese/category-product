@@ -70,15 +70,13 @@ class Specification extends Model
     }
 
     /**
-     * Товары со значением.
+     * Значения полей.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function products()
     {
-        return $this->belongsToMany(\App\Product::class)
-            ->withPivot("values", "category_id")
-            ->withTimestamps();
+        return $this->hasMany(\App\ProductSpecification::class);
     }
 
     /**

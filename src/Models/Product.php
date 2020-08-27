@@ -46,15 +46,13 @@ class Product extends Model
     }
 
     /**
-     * Занчения.
+     * Значения характеристик.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return HasMany
      */
     public function specifications()
     {
-        return $this->belongsToMany(\App\Specification::class)
-            ->withPivot("values", "category_id")
-            ->withTimestamps();
+        return $this->hasMany(\App\ProductSpecification::class);
     }
 
     /**

@@ -20,7 +20,7 @@
                             <th>Заголовок</th>
                             <th>Тип</th>
                             <th>Группа</th>
-                            <th>Значения</th>
+                            <th>Значение</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -32,11 +32,7 @@
                                 <span v-if="specification.group_title">{{ specification.group_title }}</span>
                             </td>
                             <td>
-                                <ul class="list-unstyled">
-                                    <li v-for="value in specification.values">
-                                        {{ value }}
-                                    </li>
-                                </ul>
+                                {{ specification.value }}
                             </td>
                             <td>
                                 <div class="btn-group">

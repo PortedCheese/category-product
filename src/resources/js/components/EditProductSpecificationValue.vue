@@ -3,7 +3,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editSpecModalLabel">Редактировать характеристику</h5>
+                    <h5 class="modal-title" id="editSpecModalLabel">Редактировать характеристику {{ specification.title }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -20,37 +20,12 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="input-group mb-3" v-for="(item, index) in currentValues" :key="index">
-                                <input type="text"
-                                       v-model="item.text"
-                                       class="form-control"
-                                       placeholder="Значение"
-                                       aria-label="Значение">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-danger"
-                                            @click="removeValue(index)"
-                                            :disabled="loading"
-                                            type="button">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <input type="text"
-                                       v-model="newValue"
-                                       class="form-control"
-                                       placeholder="Значение"
-                                       aria-label="Значение">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-success"
-                                            :disabled="! newValue.length || loading"
-                                            @click="addNewValue"
-                                            type="button">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            <label for="value">Значение</label>
+                            <input type="text"
+                                   id="value"
+                                   name="value"
+                                   v-model="currentValue"
+                                   class="form-control">
                         </div>
                     </form>
                 </div>
@@ -58,8 +33,8 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                     <button type="button"
                             class="btn btn-primary"
-                            @click="updateValues"
-                            :disabled="! currentValues.length || loading">
+                            @click="updateValue"
+                            :disabled="! currentValue.length || loading">
                         Обновить
                     </button>
                 </div>
@@ -78,7 +53,7 @@
                 errors: [],
                 newValue: "",
                 loading: false,
-                currentValues: [],
+                currentValue: "",
             }
         },
 
@@ -86,50 +61,18 @@
             this.$parent.$on("new-edit-show", this.initEditable);
         },
 
-        computed: {
-            newSpecValues() {
-                let values = [];
-                for (let item in this.currentValues) {
-                    if (this.currentValues.hasOwnProperty(item)) {
-                        values.push(this.currentValues[item].text);
-                    }
-                }
-                return values;
-            }
-        },
-
         methods: {
             initEditable(specification) {
                 this.specification = specification;
-                this.currentValues = [];
                 $("#editSpecModal").modal("show");
-                if (specification.hasOwnProperty("values")) {
-                    for (let item in this.specification.values) {
-                        if (this.specification.values.hasOwnProperty(item)) {
-                            this.currentValues.push({
-                                text: this.specification.values[item],
-                            })
-                        }
-                    }
-                }
+                this.currentValue = this.specification.value;
             },
-            // Удалить значение.
-            removeValue(index) {
-                this.currentValues.splice(index, 1);
-            },
-            // Добавить новое значение в список.
-            addNewValue() {
-                this.currentValues.push({
-                    text: this.newValue
-                });
-                this.newValue = "";
-            },
-            updateValues() {
+            updateValue() {
                 this.loading = true;
                 this.errors = [];
                 axios
                     .put(this.specification.updateUrl, {
-                        values: this.newSpecValues
+                        value: this.currentValue
                     })
                     .then(response => {
                         let data = response.data;

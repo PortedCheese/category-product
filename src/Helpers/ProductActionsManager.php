@@ -14,9 +14,9 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use PortedCheese\BaseSettings\Exceptions\PreventActionException;
-use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
+use PortedCheese\CategoryProduct\Http\Resources\ProductSpecification as ValueResource;
 
 class ProductActionsManager
 {
@@ -25,51 +25,23 @@ class ProductActionsManager
      *
      * @param Product $product
      * @param bool $collection
-     * @return array|\Illuminate\Support\Collection
+     * @return Collection|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function getProductSpecifications(Product $product, bool $collection = false)
     {
-        $specifications = DB::table("product_specification")
-            ->where("product_id", $product->id)
-            ->join("category_specification", function (JoinClause $join) {
-                $join->on("product_specification.specification_id", "=", "category_specification.specification_id")
-                    ->on("product_specification.category_id", "=", "category_specification.category_id");
+        $specifications = $product->specifications()
+            ->join("category_specification", function(JoinClause $join) {
+                $join->on("product_specifications.specification_id", "=", "category_specification.specification_id")
+                    ->on("product_specifications.category_id", "=", "category_specification.category_id");
             })
-            ->join("specifications", "product_specification.specification_id", "=", "specifications.id")
-            ->leftJoin("specification_groups", "specifications.group_id", "specification_groups.id")
-            ->select(
-                "product_specification.specification_id",
-                "product_specification.product_id",
-                "product_specification.values",
-                "category_specification.title",
-                "category_specification.priority",
-                "category_specification.filter",
-                "specifications.slug as spec_slug",
-                "specifications.type as spec_type",
-                "specification_groups.title as group_title"
-            )
+            ->with("specification", "category", "specification.group")
             ->orderBy("category_specification.priority")
+            ->orderBy("value")
             ->get();
         if ($collection) {
             return $specifications;
         }
-        $array = [];
-        foreach ($specifications as $item) {
-            if (! empty($item->values)) {
-                $item->values = json_decode($item->values, true);
-            }
-            $item->spec_type_title = Specification::getTypeByKey($item->spec_type);
-            $item->deleteUrl = route(
-                "admin.products.specifications.destroy",
-                ["product" => $product, "specification" => $item->spec_slug]
-            );
-            $item->updateUrl = route(
-                "admin.products.specifications.update",
-                ["product" => $product, "specification" => $item->spec_slug]
-            );
-            $array[] = $item;
-        }
-        return $array;
+        return ValueResource::collection($specifications);
     }
 
     /**

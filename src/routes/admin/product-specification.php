@@ -23,10 +23,17 @@ Route::group([
 
     Route::post("/", "ProductSpecificationController@store")
         ->name("store");
+});
 
-    Route::put("/{specification}", "ProductSpecificationController@update")
+Route::group([
+    "namespace" => "App\Http\Controllers\Vendor\CategoryProduct\Admin",
+    "middleware" => ["web", "management"],
+    "as" => "admin.products.specifications.",
+    "prefix" => "admin/ajax/product-specifications/{value}",
+], function () {
+    Route::put("/", "ProductSpecificationController@update")
         ->name("update");
 
-    Route::delete("/{specification}", "ProductSpecificationController@destroy")
+    Route::delete("/", "ProductSpecificationController@destroy")
         ->name("destroy");
 });

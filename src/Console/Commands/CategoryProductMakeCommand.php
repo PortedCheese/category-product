@@ -45,7 +45,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      */
     protected $models = [
         "Category", "Specification", "SpecificationGroup",
-        "Product", "ProductLabel",
+        "Product", "ProductLabel", "ProductSpecification",
     ];
 
     /**
