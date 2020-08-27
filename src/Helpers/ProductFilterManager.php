@@ -304,10 +304,10 @@ class ProductFilterManager
         $slug = str_replace("select-", "", $key);
         if (empty($this->slugValues[$slug])) return true;
 
-        $selects = DB::table("product_specification")
+        $selects = DB::table("product_specifications")
             ->select("product_id")
-            ->whereJsonContains("values", $value)
             ->where("specification_id", $this->slugValues[$slug]["id"])
+            ->where("value", $value)
             ->groupBy("product_id");
 
         $this->query->joinSub($selects, $slug, function (JoinClause $join) use ($slug) {
@@ -331,16 +331,12 @@ class ProductFilterManager
         $slug = str_replace("check-", "", $key);
         if (empty($this->slugValues[$slug])) return true;
 
-        $checkboxes = DB::table("product_specification")
-            ->select("product_id", "values")
-            ->where("specification_id", $this->slugValues[$slug]["id"]);
-        $checkboxes->whereJsonContains("values", $value);
-        if (count($value) > 1) {
-            foreach ($value as $item) {
-                $checkboxes->orWhereJsonContains("values", $item);
-            }
-        }
-        $checkboxes->groupBy("product_id");
+        $checkboxes = DB::table("product_specifications")
+            ->select("product_id")
+            ->where("specification_id", $this->slugValues[$slug]["id"])
+            ->whereIn("value", $value)
+            ->groupBy("product_id");
+
         $this->query->joinSub($checkboxes, $slug, function (JoinClause $join) use ($slug) {
             $join->on("products.id", "=", "{$slug}.product_id");
         });

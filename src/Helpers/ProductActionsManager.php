@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use PortedCheese\BaseSettings\Exceptions\PreventActionException;
@@ -125,8 +126,8 @@ class ProductActionsManager
         return Cache::rememberForever($key, function() use ($category, $includeSubs) {
             $pIds = $this->getCategoryProductIds($category, $includeSubs);
             // Найти значения товаров.
-            $productValues = DB::table("product_specification")
-                ->select("specification_id", "values")
+            $productValues = DB::table("product_specifications")
+                ->select("specification_id", "value")
                 ->whereIn("product_id", $pIds)
                 ->orderBy("product_id")
                 ->get();
@@ -136,10 +137,9 @@ class ProductActionsManager
                 if (empty($specValues[$specId])) {
                     $specValues[$specId] = [];
                 }
-                if (! empty($item->values)) {
-                    $array = json_decode($item->values);
+                if (! empty($item->value)) {
                     $specValues[$specId] = array_unique(
-                        array_merge($specValues[$specId], $array)
+                        array_merge($specValues[$specId], Arr::wrap($item->value))
                     );
                 }
             }
