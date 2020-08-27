@@ -50,9 +50,10 @@ class CategoryController extends Controller
             $categories = $collection->get();
             $products = ProductFilters::filterByCategory($request, $category);
             $productView = Cookie::get("products-view", config("category-product.defaultProductView"));
+            $filters = ProductFilters::getFilters($category, true);
             return view(
                 "category-product::site.categories.show",
-                compact("category", "categories", "products", "productView")
+                compact("category", "categories", "products", "productView", "filters")
             );
         }
     }

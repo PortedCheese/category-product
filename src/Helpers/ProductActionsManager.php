@@ -11,8 +11,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use PortedCheese\BaseSettings\Exceptions\PreventActionException;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 
 class ProductActionsManager
@@ -135,6 +138,105 @@ class ProductActionsManager
          */
         $this->changeProductPivots($original->id, $categoryId, $product->id);
         CategoryActions::copyParentSpec($category, $original);
+        // При переносе товара в другую категорию у двух категорий меняется набор значений характеристик.
+        event(new CategorySpecificationValuesUpdate($category));
+        event(new CategorySpecificationValuesUpdate($original));
+    }
+
+    /**
+     * Получить значения характеристик товаров.
+     *
+     * @param Category $category
+     * @param bool $includeSubs
+     * @return array
+     */
+    public function getProductSpecificationValues(Category $category, $includeSubs = false)
+    {
+        $key = "product-actions-getProductSpecificationValues:{$category->id}";
+        $key .= $includeSubs ? "-true" : "-false";
+        return Cache::rememberForever($key, function() use ($category, $includeSubs) {
+            $pIds = $this->getCategoryProductIds($category, $includeSubs);
+            // Найти значения товаров.
+            $productValues = DB::table("product_specification")
+                ->select("specification_id", "values")
+                ->whereIn("product_id", $pIds)
+                ->orderBy("product_id")
+                ->get();
+            $specValues = [];
+            foreach ($productValues as $item) {
+                $specId = $item->specification_id;
+                if (empty($specValues[$specId])) {
+                    $specValues[$specId] = [];
+                }
+                if (! empty($item->values)) {
+                    $array = json_decode($item->values);
+                    $specValues[$specId] = array_unique(
+                        array_merge($specValues[$specId], $array)
+                    );
+                }
+            }
+            return $specValues;
+        });
+    }
+
+    /**
+     * Очистить кэш значений карактеристик товаров.
+     *
+     * @param Category $category
+     */
+    public function forgetProductSpecificationsValues(Category $category)
+    {
+        $key = "product-actions-getProductSpecificationValues:{$category->id}";
+        Cache::forget("$key-true");
+        Cache::forget("$key-false");
+        if (! empty($category->parent_id)) {
+            $this->forgetProductSpecificationsValues($category->parent);
+        }
+    }
+
+    /**
+     * Получить id товаров категории, либо категории и подкатегорий.
+     *
+     * @param Category $category
+     * @param $includeSubs
+     * @return mixed
+     */
+    public function getCategoryProductIds(Category $category, $includeSubs = false)
+    {
+        $key = "product-actions-getCategoryProductIds:{$category->id}";
+        $key .= $includeSubs ? "-true" : "-false";
+        return Cache::rememberForever($key, function() use ($category, $includeSubs) {
+            $query = Product::query()
+                ->select("id")
+                ->whereNotNull("published_at");
+            if ($includeSubs) {
+                $query->whereIn("category_id", CategoryActions::getCategoryChildren($category, true));
+            }
+            else {
+                $query->where("category_id", $category->id);
+            }
+            $products = $query->get();
+            $pIds = [];
+            foreach ($products as $product) {
+                $pIds[] = $product->id;
+            }
+            return $pIds;
+        });
+    }
+
+    /**
+     * Очистить кэш идентификаторов товаров.
+     *
+     * @param Category $category
+     */
+    public function forgetCategoryProductIds(Category $category)
+    {
+        $key = "product-actions-getCategoryProductIds:{$category->id}";
+        Cache::forget("$key-true");
+        Cache::forget("$key-false");
+        if (! empty($category->parent_id)) {
+            $this->forgetCategoryProductIds($category->parent);
+        }
     }
 
     /**

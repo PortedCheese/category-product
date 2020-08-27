@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use PortedCheese\CategoryProduct\Events\CategoryFieldUpdate;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
 
 class CategoryActionsManager
 {
@@ -17,7 +17,7 @@ class CategoryActionsManager
      *
      * @param Category $category
      * @param bool $includeSelf
-     * @return array|mixed
+     * @return array
      */
     public function getCategoryChildren(Category $category, $includeSelf = false)
     {
@@ -158,7 +158,7 @@ class CategoryActionsManager
              */
             $this->copyParentSpec($child);
             $this->syncSpec($child);
-            event(new CategoryFieldUpdate($child));
+            event(new CategorySpecificationUpdate($child));
         }
     }
 
@@ -211,6 +211,8 @@ class CategoryActionsManager
                     ->attach($category, $data);
             }
         }
+        // Изменились характеристики категории.
+        event(new CategorySpecificationUpdate($category));
     }
 
     /**

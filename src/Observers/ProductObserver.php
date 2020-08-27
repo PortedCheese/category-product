@@ -3,6 +3,7 @@
 namespace PortedCheese\CategoryProduct\Observers;
 
 use App\Product;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 
 class ProductObserver
 {
@@ -16,6 +17,18 @@ class ProductObserver
         $product->published_at = now();
     }
 
+    public function created(Product $product)
+    {
+        // При добавлении товара меняется список идентификаторов товаров в категории.
+        $category = $product->category;
+        event(new CategorySpecificationValuesUpdate($category));
+    }
+
+    /**
+     * После обновления.
+     *
+     * @param Product $product
+     */
     public function updated(Product $product)
     {
         $product->clearCache();
@@ -34,5 +47,8 @@ class ProductObserver
         $product->specifications()->sync([]);
         // Очистить кэш.
         $product->clearCache();
+        // При удалении товара меняется список идентификаторов товаров в категории и их значений.
+        $category = $product->category;
+        event(new CategorySpecificationValuesUpdate($category));
     }
 }

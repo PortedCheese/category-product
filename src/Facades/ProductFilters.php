@@ -10,6 +10,7 @@ use PortedCheese\CategoryProduct\Helpers\ProductFilterManager;
 use Illuminate\Http\Request;
 
 /**
+ * @method static getFilters(Category $category, $includeSubs = false)
  * @method static array getSortOptions()
  * @method static array getSortLinkData()
  * @method static filterByCategory(Request $request, Category $category)

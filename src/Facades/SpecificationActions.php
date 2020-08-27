@@ -12,6 +12,11 @@ use PortedCheese\CategoryProduct\Helpers\SpecificationActionManager;
  * @method static Collection getGroups()
  * @method static Collection getAvailableForCategory(Category $category)
  * @method static bool checkProductsSpecifications(Category $category, Specification $specification)
+ *
+ * @method static array getCategorySpecificationsInfo(Category $category, $filter = false)
+ * @method static array getCategoryChildrenSpecificationsInfo(Category $category)
+ * @method static forgetCategorySpecificationsInfo(Category $category)
+ * @method static forgetCategoryChildrenSpecificationInfo(Category $category)
  * 
  * @package PortedCheese\CategoryProduct\Facade
  * @see SpecificationActionManager

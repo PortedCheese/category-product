@@ -28,7 +28,6 @@ return [
     // Sort
     "defaultSort" => "title",
     "defaultSortDirection" => "asc",
-    "enablePriceSort" => false,
     "sortOptions" => [
         "title.asc" => (object) [
             "title" => "По названию",

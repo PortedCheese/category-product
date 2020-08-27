@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Specification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use PortedCheese\CategoryProduct\Events\CategoryFieldUpdate;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\SpecificationActions;
 
@@ -96,13 +96,16 @@ class SpecificationController extends Controller
             "priority" => $request->get("priority", 1),
         ]);
 
-        event(new CategoryFieldUpdate($category));
+        event(new CategorySpecificationUpdate($category));
 
         return redirect()
             ->route("admin.categories.specifications.index", ["category" => $category])
             ->with("success", "Характеристика добавлена");
     }
 
+    /**
+     * @param array $data
+     */
     protected function storeValidator(array $data)
     {
         Validator::make($data, [
@@ -150,7 +153,7 @@ class SpecificationController extends Controller
         $categories = $specification->categories;
         if ($categories->count()) {
             foreach ($categories as $category) {
-                event(new CategoryFieldUpdate($category));
+                event(new CategorySpecificationUpdate($category));
             }
         }
         return redirect()
@@ -158,6 +161,9 @@ class SpecificationController extends Controller
             ->with("success", "Обновлено");
     }
 
+    /**
+     * @param $data
+     */
     protected function updateValidator($data)
     {
         Validator::make($data, [
@@ -201,7 +207,7 @@ class SpecificationController extends Controller
                 "filter" => $request->has("filter") ? 1 : 0,
                 "priority" => $request->get("priority", 1)
             ]);
-        event(new CategoryFieldUpdate($category));
+        event(new CategorySpecificationUpdate($category));
         return redirect()
             ->route("admin.categories.specifications.index", ["category" => $category])
             ->with("success", "Успешно обновлено");
@@ -236,7 +242,7 @@ class SpecificationController extends Controller
 
         $category->specifications()->detach($specification);
         $specification->checkCategoryOnDetach();
-        event(new CategoryFieldUpdate($category));
+        event(new CategorySpecificationUpdate($category));
         return redirect()
             ->route("admin.categories.specifications.index", ["category" => $category])
             ->with("success", "Характеристика удалена");

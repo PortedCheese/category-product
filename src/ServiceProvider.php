@@ -14,6 +14,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Blade;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
+use PortedCheese\CategoryProduct\Events\CategoryChangePosition;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
+use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\ProductFilters;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserLg;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserMd;
@@ -27,6 +31,9 @@ use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXl;
 use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXs;
 use PortedCheese\CategoryProduct\Filters\ProductSimpleTeaserLg;
 use PortedCheese\CategoryProduct\Filters\ProductTeaserLg;
+use PortedCheese\CategoryProduct\Listeners\CategoryIdsInfoClearCache;
+use PortedCheese\CategoryProduct\Listeners\CategorySpecificationClearCache;
+use PortedCheese\CategoryProduct\Listeners\CategorySpecificationValuesClearCache;
 use PortedCheese\CategoryProduct\Listeners\ProductGalleryChange;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -114,6 +121,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         // Обновление галереи.
         $this->app["events"]->listen(ImageUpdate::class, ProductGalleryChange::class);
+        // Обновление полей.
+        $this->app["events"]->listen(CategorySpecificationUpdate::class, CategorySpecificationClearCache::class);
+        // Изменение позиции категории.
+        $this->app["events"]->listen(CategoryChangePosition::class, CategoryIdsInfoClearCache::class);
+        // Изменение значений характеристик.
+        $this->app["events"]->listen(CategorySpecificationValuesUpdate::class, CategorySpecificationValuesClearCache::class);
     }
 
     /**

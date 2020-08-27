@@ -8,10 +8,13 @@ use App\Category;
 use App\Product;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
+use PortedCheese\CategoryProduct\Facades\ProductActions;
+use PortedCheese\CategoryProduct\Facades\SpecificationActions;
 
 class ProductFilterManager
 {
@@ -40,6 +43,26 @@ class ProductFilterManager
         $this->ranges = [];
         $this->query = null;
         $this->categoryIds = [];
+    }
+
+    /**
+     * Получить данные для фильтра.
+     *
+     * @param Category $category
+     * @param bool $includeSubs
+     * @return array
+     */
+    public function getFilters(Category $category, $includeSubs = false)
+    {
+        $specInfo = $includeSubs ?
+            SpecificationActions::getCategoryChildrenSpecificationsInfo($category) :
+            SpecificationActions::getCategorySpecificationsInfo($category, true);
+
+        $specValues = ProductActions::getProductSpecificationValues($category, true);
+        // Обход полученных значений и распределение по полям.
+        $this->setProductValuesToFilters($specInfo, $specValues);
+        $this->prepareRangeFilters($specInfo);
+        return $specInfo;
     }
 
     /**
@@ -99,6 +122,74 @@ class ProductFilterManager
         $this->initQuery();
         $this->initCategoryQuery();
         return $this->makeFilters();
+    }
+
+    /**
+     * Дбавить переменные в диапазоны.
+     *
+     * @param $specInfo
+     */
+    protected function prepareRangeFilters(&$specInfo)
+    {
+        foreach ($specInfo as $key => &$filter) {
+            if ($filter->type !== "range") {
+                continue;
+            }
+            $filter->render = $this->checkCanRangeRender($filter);
+            if ($filter->render) {
+                $filter->min = min($filter->values);
+                $filter->max = max($filter->values);
+            }
+            else {
+                unset($specInfo[$key]);
+            }
+        }
+    }
+
+    /**
+     * Проверит можно ли вывести диапазон.
+     *
+     * @param $filter
+     * @return bool
+     */
+    protected function checkCanRangeRender($filter)
+    {
+        if (empty($filter->values)) return false;
+        if (count($filter->values) <= 1) return false;
+        if (! empty($filter->values)) {
+            foreach ($filter->values as $value) {
+                if (! is_numeric($value)) return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Добавить значения для фильтров и убрать пустые.
+     *
+     * @param $specInfo
+     * @param $specValues
+     */
+    protected function setProductValuesToFilters(&$specInfo, $specValues)
+    {
+        // Записать значения для характеристик.
+        foreach ($specInfo as &$spec) {
+            if (! isset($spec->values)) {
+                $spec->values = [];
+            }
+            $specId = $spec->id;
+            if (empty($specValues[$specId])) {
+                continue;
+            }
+            $spec->values = Arr::sort($specValues[$specId]);
+        }
+
+        // Убрать пустые.
+        foreach ($specInfo as $key => $item) {
+            if (empty($item->values)) {
+                unset($specInfo[$key]);
+            }
+        }
     }
 
     /**

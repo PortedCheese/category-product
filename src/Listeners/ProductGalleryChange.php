@@ -7,13 +7,6 @@ use PortedCheese\BaseSettings\Events\ImageUpdate;
 
 class ProductGalleryChange
 {
-    protected $ids;
-
-    public function __construct()
-    {
-        $this->ids = [];
-    }
-
     public function handle(ImageUpdate $event)
     {
         $morph = $event->morph;

@@ -9,6 +9,7 @@ use App\Product;
 use App\ProductLabel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
 
@@ -278,6 +279,9 @@ class ProductController extends Controller
         $this->authorize("publish", $product);
         $product->published_at = $product->published_at ? null : now();
         $product->save();
+        $category = $product->category;
+        // При отключении товара меняется набор характеристик для фильтрации.
+        event(new CategorySpecificationValuesUpdate($category));
         return redirect()
             ->back()
             ->with("success", "Статус публикации изменен");

@@ -4,6 +4,7 @@ namespace PortedCheese\CategoryProduct\Observers;
 
 use App\Category;
 use PortedCheese\BaseSettings\Exceptions\PreventDeleteException;
+use PortedCheese\CategoryProduct\Events\CategoryChangePosition;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 
 class CategoryObserver
@@ -29,8 +30,8 @@ class CategoryObserver
     {
         // Скопировать поля родителя.
         CategoryActions::copyParentSpec($category);
-        // Очистить список id категорий.
-        CategoryActions::forgetCategoryChildrenIdsCache($category);
+
+        event(new CategoryChangePosition($category));
     }
 
     /**
@@ -56,9 +57,9 @@ class CategoryObserver
     {
         if (! empty($parent)) {
             $parent = Category::find($parent);
-            CategoryActions::forgetCategoryChildrenIdsCache($parent);
+            event(new CategoryChangePosition($parent));
         }
-        CategoryActions::forgetCategoryChildrenIdsCache($category);
+        event(new CategoryChangePosition($category));
     }
 
     /**

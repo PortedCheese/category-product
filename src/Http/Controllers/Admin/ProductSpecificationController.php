@@ -7,6 +7,7 @@ use App\Product;
 use App\Specification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
 
 class ProductSpecificationController extends Controller
@@ -69,6 +70,9 @@ class ProductSpecificationController extends Controller
                 "values" => json_encode($request->get("values"))
             ]
         ]);
+        // При добавлении характеристики меняется список занчений характеристик.
+        $category = $product->category;
+        event(new CategorySpecificationValuesUpdate($category));
         return response()
             ->json([
                 "success" => true,
@@ -106,6 +110,9 @@ class ProductSpecificationController extends Controller
         $product->specifications()->updateExistingPivot($specification, [
             "values" => $request->get("values"),
         ]);
+        // При изменении характеристики меняется список занчений характеристик.
+        $category = $product->category;
+        event(new CategorySpecificationValuesUpdate($category));
         return response()
             ->json([
                 "success" => true,
@@ -137,6 +144,9 @@ class ProductSpecificationController extends Controller
     {
         $this->authorize("specificationManagement", $product);
         $product->specifications()->detach($specification);
+        // При удалении характеристики меняется список занчений характеристик.
+        $category = $product->category;
+        event(new CategorySpecificationValuesUpdate($category));
         return response()
             ->json([
                 "success" => true,
