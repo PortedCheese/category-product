@@ -62,6 +62,7 @@ class ProductFilterManager
         // Обход полученных значений и распределение по полям.
         $this->setProductValuesToFilters($specInfo, $specValues);
         $this->prepareRangeFilters($specInfo);
+        $this->prepareCheckboxFilters($specInfo);
         return $specInfo;
     }
 
@@ -125,6 +126,33 @@ class ProductFilterManager
     }
 
     /**
+     * Добавить переменные в чекбоксы.
+     *
+     * @param $specInfo
+     */
+    protected function prepareCheckboxFilters(&$specInfo)
+    {
+        $request = app(Request::class);
+        foreach ($specInfo as $key => &$filter) {
+            if ($filter->type !== "checkbox") continue;
+            $current = $request->get("check-{$filter->slug}", []);
+            $vueValues = [];
+            $i = 0;
+            foreach ($filter->values as $id => $value) {
+                $i++;
+                $vueValues[] = [
+                    "id" => $id,
+                    "value" => $value,
+                    "checked" => in_array($value, $current),
+                    "inputName" => "check-{$filter->slug}[]",
+                    "inputId" => "{$id}-{$filter->slug}-{$i}",
+                ];
+            }
+            $filter->vueValues = $vueValues;
+        }
+    }
+
+    /**
      * Дбавить переменные в диапазоны.
      *
      * @param $specInfo
@@ -132,9 +160,7 @@ class ProductFilterManager
     protected function prepareRangeFilters(&$specInfo)
     {
         foreach ($specInfo as $key => &$filter) {
-            if ($filter->type !== "range") {
-                continue;
-            }
+            if ($filter->type !== "range") continue;
             $filter->render = $this->checkCanRangeRender($filter);
             if ($filter->render) {
                 $filter->min = min($filter->values);

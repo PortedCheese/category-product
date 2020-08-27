@@ -106,7 +106,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         Blade::include("category-product::site.includes.sort-text", "sortText");
         Blade::include("category-product::site.includes.sort-link", "sortLink");
 
-        view()->composer("category-product::site.products.includes.grid-sort", function (View $view) {
+        view()->composer(["category-product::site.products.includes.grid-sort", "category-product::site.filters.form"], function (View $view) {
             list($options, $field, $order) = ProductFilters::getSortOptions();
             $view->with("sortOptions", $options);
             $view->with("sortBy", $field);

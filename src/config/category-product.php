@@ -28,6 +28,7 @@ return [
     // Sort
     "defaultSort" => "title",
     "defaultSortDirection" => "asc",
+    "defaultCheckboxLimit" => 3,
     "sortOptions" => [
         "title.asc" => (object) [
             "title" => "По названию",

@@ -87,7 +87,9 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             'admin-category-list' => "CategoryListComponent",
             "admin-product-specifications" => "ProductSpecificationsComponent",
         ],
-        'app' => [],
+        'app' => [
+            "catalog-filter-checkbox" => "FilterCheckboxComponent",
+        ],
     ];
 
     protected $jsIncludes = [

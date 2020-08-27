@@ -4,13 +4,11 @@
 
 @section("header-title", "{$category->title}")
 
-@section("sidebar")
-    <div class="row">
-        <div class="col-12">
-            aside
-        </div>
-    </div>
-@endsection
+@if (! empty($filters))
+    @section("sidebar")
+        @include("category-product::site.filters.sidebar")
+    @endsection
+@endif
 
 @section("contents")
     @if ($categories->count())

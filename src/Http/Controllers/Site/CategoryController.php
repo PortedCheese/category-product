@@ -53,7 +53,7 @@ class CategoryController extends Controller
             $filters = ProductFilters::getFilters($category, true);
             return view(
                 "category-product::site.categories.show",
-                compact("category", "categories", "products", "productView", "filters")
+                compact("category", "categories", "products", "productView", "filters", "request")
             );
         }
     }
