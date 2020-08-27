@@ -53,12 +53,8 @@ class ProductActionsManager
      */
     public function getAvailableSpecifications(Product $product, bool $collection = false)
     {
-        $productId = $product->id;
         $category = $product->category()
-            ->with(["specifications" => function (BelongsToMany $query) use ($productId) {
-                $query->whereDoesntHave("products", function (Builder $query) use ($productId) {
-                    $query->where("product_id", $productId);
-                });
+            ->with(["specifications" => function (BelongsToMany $query) {
                 $query->orderBy("priority");
             }])
             ->first();
