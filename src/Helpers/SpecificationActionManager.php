@@ -77,12 +77,13 @@ class SpecificationActionManager
                     "type" => $item->type,
                     "slug" => $item->slug,
                     "group_id" => $item->group_id,
+                    "priority" => $pivot->priority,
                 ];
             }
             return $fields;
         });
 
-        if ($specs) {
+        if ($filter) {
             return $this->sortSpecificationsForFilter($specs);
         }
         return $specs;

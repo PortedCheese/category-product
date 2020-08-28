@@ -1,4 +1,5 @@
-<form action="{{ route("catalog.categories.show", ["category" => $category]) }}" method="get">
+<form action="{{ route("catalog.categories.show", ["category" => $category]) }}"
+      method="get">
     <input type="hidden" name="sort-by" value="{{ $sortBy }}">
     <input type="hidden" name="sort-order" value="{{ $sortDirection }}">
 

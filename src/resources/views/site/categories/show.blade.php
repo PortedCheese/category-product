@@ -2,7 +2,7 @@
 
 @section('page-title', "{$category->title} - ")
 
-@section("header-upper-title", "{$category->title}")
+@section("header-title", "{$category->title}")
 
 @if (! empty($filters))
     @section("sidebar")
@@ -17,7 +17,7 @@
 
     @include("category-product::site.products.includes.sort-view", ["productView" => $productView])
 
-    @include("category-product::site.products.includes.grid", ["products" => $products, "productView" => $productView])
+    @include("category-product::site.products.includes.grid", ["products" => $products, "productView" => $productView, "presentFilters" => ! empty($filters)])
 @endsection
 
 @push("more-scripts")
