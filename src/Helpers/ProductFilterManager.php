@@ -258,8 +258,9 @@ class ProductFilterManager
             if (empty($value)) continue;
             if ($this->addSelectToQuery($key, $value)) continue;
             if ($this->addCheckboxToQuery($key, $value)) continue;
-            if ($this->addRangeToQuery($key, $value)) continue;
+            if ($this->prepareRangesForQuery($key, $value)) continue;
         }
+        $this->addRangesToQuery();
         $this->query->groupBy("products.id");
         $this->addSortCondition();
         $perPage = config("category-product.categoryProductsPerPage");
@@ -344,8 +345,53 @@ class ProductFilterManager
         return true;
     }
 
-    protected function addRangeToQuery($key, $value)
+    /**
+     * Подготовить диапазоны.
+     *
+     * @param $key
+     * @param $value
+     * @return bool
+     */
+    protected function prepareRangesForQuery($key, $value)
     {
-        return false;
+        if (strstr($key, "range-") === false) return false;
+
+        $sub = str_replace("range-", "", $key);
+        if (strstr($sub, "from-") !== false) {
+            $operator = "from";
+            $slug = str_replace("from-", "", $sub);
+        }
+        elseif (strstr($sub, "to-") !== false) {
+            $operator = "to";
+            $slug = str_replace("to-", "", $sub);
+        }
+        if (empty($this->slugValues[$slug])) return false;
+        if (empty($this->ranges[$slug])) {
+            $this->ranges[$slug] = [
+                "from" => false,
+                "to" => false,
+            ];
+        }
+        $this->ranges[$slug][$operator] = (int) $value;
+
+        return true;
+    }
+
+    /**
+     * Добавить диапазоны к запросу.
+     */
+    protected function addRangesToQuery()
+    {
+        foreach ($this->ranges as $slug => $range) {
+            $ranges = DB::table("product_specifications")
+                ->select("product_id")
+                ->where("specification_id", $this->slugValues[$slug]["id"])
+                ->whereBetween("value", [$range["from"], $range["to"]])
+                ->groupBy("product_id");
+
+            $this->query->joinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
+                $join->on("products.id", "=", "{$slug}.product_id");
+            });
+        }
     }
 }
