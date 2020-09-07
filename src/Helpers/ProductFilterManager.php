@@ -306,25 +306,24 @@ class ProductFilterManager
      */
     protected function addSortCondition()
     {
-        $defaultSort = true;
-        if ($sort = $this->request->get("sort-by", false)) {
-            $direction = $this->getCurrentSortDirection();
+        // Если нужно отсортировать по нескольким параметрам в порядке a -> b -> c
+        // Сортировки должны быть вызваны в обратном порядке.
+        $sort = $this->request->get("sort-by", config("category-product.defaultSort"));
 
-            if (Schema::hasColumn("products", $sort)) {
-                $this->query->orderBy("products.{$sort}", $direction);
-                $defaultSort = false;
-            }
-            elseif ($sort == "price" && config("product-variation.enablePriceSort")) {
-                $this->query->orderBy("priceSort", $direction);
-                $defaultSort = false;
-            }
+        $direction = $this->getCurrentSortDirection();
+
+        // Если доступна сортировка по цене, нужно отправить на всех сортировках пустые в конец.
+        if ($sort != "price" && config("product-variation.enablePriceSort")) {
+            $this->query->orderBy("priceSort", $direction);
         }
-        if ($defaultSort) {
-            $this->query->orderBy(
-                "products." . config("category-product.defaultSort"),
-                $this->getCurrentSortDirection()
-            );
+
+        if (Schema::hasColumn("products", $sort)) {
+            $this->query->orderBy("products.{$sort}", $direction);
         }
+        elseif ($sort == "price" && config("product-variation.enablePriceSort")) {
+            $this->query->orderBy("priceSort", $direction);
+        }
+
         // Сортирует с помощью стандартной сортировки элементы с одинаковым значением.
         $this->query->orderBy(
             "products." . config("category-product.defaultSort"),
@@ -443,7 +442,7 @@ class ProductFilterManager
             ) {
                 $ranges = ProductVariationActions::getPriceQuery($range);
 
-                $this->query->leftJoinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
+                $this->query->joinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
                     $join->on("products.id", "=", "{$slug}.product_id");
                 });
             }
@@ -464,6 +463,7 @@ class ProductFilterManager
             $range = ["from" => 0, "to" => 0];
             $ranges = ProductVariationActions::getPriceQuery($range, false);
             $key = config("product-variation.priceFilterKey");
+            // joinSub нужен что бы при отсутсвии фильтра по цене, выводил все, даже те что пустые
             $this->query->leftJoinSub($ranges, $key, function(JoinClause $join) use ($key) {
                 $join->on("products.id", "=", "{$key}.product_id");
             });
