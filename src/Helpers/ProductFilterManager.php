@@ -250,7 +250,10 @@ class ProductFilterManager
             else {
                 $value = config("product-variation.priceSortReplaceNull");
             }
-            $this->query->select("*", DB::raw("if (`minimal` is not null, `minimal`, $value) `priceSort`"));
+            $this->query->select(
+                "id",
+                DB::raw("if (`minimal` is not null, `minimal`, $value) `priceSort`")
+            );
         }
         else {
             $this->query->select("*");
@@ -306,29 +309,17 @@ class ProductFilterManager
      */
     protected function addSortCondition()
     {
-        // Если нужно отсортировать по нескольким параметрам в порядке a -> b -> c
-        // Сортировки должны быть вызваны в обратном порядке.
         $sort = $this->request->get("sort-by", config("category-product.defaultSort"));
 
         $direction = $this->getCurrentSortDirection();
 
-        // Если доступна сортировка по цене, нужно отправить на всех сортировках пустые в конец.
-        if ($sort != "price" && config("product-variation.enablePriceSort")) {
-            $this->query->orderBy("priceSort", $direction);
-        }
-
         if (Schema::hasColumn("products", $sort)) {
-            $this->query->orderBy("products.{$sort}", $direction);
+//            $this->query->orderBy("products.{$sort}", $direction);
+            $this->query->orderBy(DB::raw("isnull(`minimal`), `{$sort}`"), $direction);
         }
         elseif ($sort == "price" && config("product-variation.enablePriceSort")) {
             $this->query->orderBy("priceSort", $direction);
         }
-
-        // Сортирует с помощью стандартной сортировки элементы с одинаковым значением.
-        $this->query->orderBy(
-            "products." . config("category-product.defaultSort"),
-            config("category-product.defaultSortDirection")
-        );
     }
 
     /**
@@ -440,11 +431,19 @@ class ProductFilterManager
                 config("product-variation.enablePriceFilter") &&
                 $slug == config("product-variation.priceFilterKey")
             ) {
-                $ranges = ProductVariationActions::getPriceQuery($range);
-
-                $this->query->joinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
-                    $join->on("products.id", "=", "{$slug}.product_id");
-                });
+                $prices = ProductVariationActions::getPricesForCategory($this->category, true);
+                $max = (int) max($prices);
+                $min = (int) min($prices);
+                $notBetween = $range["from"] != $min || $range["to"] != $max;
+                if ($notBetween) {
+                    $ranges = ProductVariationActions::getPriceQuery($range);
+                    $this->query->joinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
+                        $join->on("products.id", "=", "{$slug}.product_id");
+                    });
+                }
+                else {
+                    unset($this->ranges[$slug]);
+                }
             }
             else {
                 $ranges = DB::table("product_specifications")

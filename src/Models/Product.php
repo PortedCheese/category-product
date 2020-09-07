@@ -93,8 +93,9 @@ class Product extends Model
     public function getTeaserData()
     {
         $key = "productTeaserData:{$this->id}";
-        $product = $this;
-        return Cache::rememberForever($key, function () use ($product) {
+        $id = $this->id;
+        return Cache::rememberForever($key, function () use ($id) {
+            $product = \App\Product::find($id);
             $product->cover;
             $product->labels;
             return $product;
