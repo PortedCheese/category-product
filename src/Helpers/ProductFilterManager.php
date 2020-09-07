@@ -241,8 +241,21 @@ class ProductFilterManager
      */
     protected function initQuery()
     {
-        $this->query = Product::query()
-            ->whereNotNull("products.published_at");
+        $this->query = Product::query();
+        // Если есть пакет с ценами и включена сортировка по цене добавить поле по которому сортировать.
+        if (config("product-variation.enablePriceSort")) {
+            if ($this->getCurrentSortDirection() == "desc") {
+                $value = -1;
+            }
+            else {
+                $value = config("product-variation.priceSortReplaceNull");
+            }
+            $this->query->select("*", DB::raw("if (`minimal` is not null, `minimal`, $value) `priceSort`"));
+        }
+        else {
+            $this->query->select("*");
+        }
+        $this->query->whereNotNull("products.published_at");
     }
 
     /**
@@ -294,27 +307,42 @@ class ProductFilterManager
     protected function addSortCondition()
     {
         $defaultSort = true;
-        $defaultSortDirection = config("category-product.defaultSortDirection");
         if ($sort = $this->request->get("sort-by", false)) {
-            $direction = $this->request->get("sort-order", $defaultSortDirection);
-            if (! in_array($direction, ["asc", "desc"])) $direction = $defaultSortDirection;
+            $direction = $this->getCurrentSortDirection();
 
             if (Schema::hasColumn("products", $sort)) {
                 $this->query->orderBy("products.{$sort}", $direction);
                 $defaultSort = false;
             }
             elseif ($sort == "price" && config("product-variation.enablePriceSort")) {
-                $key = config("product-variation.priceFilterKey");
-                $this->query->orderBy("$key.minimal", $direction);
+                $this->query->orderBy("priceSort", $direction);
                 $defaultSort = false;
             }
         }
         if ($defaultSort) {
             $this->query->orderBy(
                 "products." . config("category-product.defaultSort"),
-                $defaultSortDirection
+                $this->getCurrentSortDirection()
             );
         }
+        // Сортирует с помощью стандартной сортировки элементы с одинаковым значением.
+        $this->query->orderBy(
+            "products." . config("category-product.defaultSort"),
+            config("category-product.defaultSortDirection")
+        );
+    }
+
+    /**
+     * Текущее направление сортировки.
+     *
+     * @return \Illuminate\Config\Repository|mixed
+     */
+    protected function getCurrentSortDirection()
+    {
+        $defaultSortDirection = config("category-product.defaultSortDirection");
+        $direction = $this->request->get("sort-order", $defaultSortDirection);
+        if (! in_array($direction, ["asc", "desc"])) $direction = $defaultSortDirection;
+        return $direction;
     }
 
     /**
@@ -414,6 +442,10 @@ class ProductFilterManager
                 $slug == config("product-variation.priceFilterKey")
             ) {
                 $ranges = ProductVariationActions::getPriceQuery($range);
+
+                $this->query->leftJoinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
+                    $join->on("products.id", "=", "{$slug}.product_id");
+                });
             }
             else {
                 $ranges = DB::table("product_specifications")
@@ -421,18 +453,18 @@ class ProductFilterManager
                     ->where("specification_id", $this->slugValues[$slug]["id"])
                     ->whereBetween("value", [$range["from"], $range["to"]])
                     ->groupBy("product_id");
-            }
 
-            $this->query->joinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
-                $join->on("products.id", "=", "{$slug}.product_id");
-            });
+                $this->query->joinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
+                    $join->on("products.id", "=", "{$slug}.product_id");
+                });
+            }
         }
 
         if (config("product-variation.enablePriceSort") && empty($this->ranges[config("product-variation.priceFilterKey")])) {
             $range = ["from" => 0, "to" => 0];
             $ranges = ProductVariationActions::getPriceQuery($range, false);
             $key = config("product-variation.priceFilterKey");
-            $this->query->joinSub($ranges, $key, function(JoinClause $join) use ($key) {
+            $this->query->leftJoinSub($ranges, $key, function(JoinClause $join) use ($key) {
                 $join->on("products.id", "=", "{$key}.product_id");
             });
         }
