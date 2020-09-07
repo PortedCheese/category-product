@@ -42,4 +42,7 @@
             @endif
         </div>
     </div>
+    <div class="card-footer product-teaser__footer">
+        @includeFirst(["product-variation::site.variations.teaser-price", "category-product::site.products.includes.teaser-footer"])
+    </div>
 </div>

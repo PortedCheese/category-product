@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Schema;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
 use PortedCheese\CategoryProduct\Facades\SpecificationActions;
+use PortedCheese\ProductVariation\Facades\ProductVariationActions;
 
 class ProductFilterManager
 {
@@ -64,6 +65,7 @@ class ProductFilterManager
         $specValues = ProductActions::getProductSpecificationValues($category, true);
         // Обход полученных значений и распределение по полям.
         $this->setProductValuesToFilters($specInfo, $specValues);
+        $this->setPriceFilter($category, $specInfo, $includeSubs);
         $this->prepareRangeFilters($specInfo);
         $this->prepareCheckboxFilters($specInfo);
         return $specInfo;
@@ -126,6 +128,19 @@ class ProductFilterManager
         $this->initQuery();
         $this->initCategoryQuery();
         return $this->makeFilters();
+    }
+
+    /**
+     * Фильтр по цене.
+     *
+     * @param Category $category
+     * @param array $specInfo
+     * @param bool $includeSubs
+     */
+    protected function setPriceFilter(Category $category, array &$specInfo, bool $includeSubs)
+    {
+        if (! config("product-variation.enablePriceFilter")) return;
+        $specInfo = ProductVariationActions::addPriceFilter($category, $specInfo, $includeSubs);
     }
 
     /**
@@ -243,6 +258,12 @@ class ProductFilterManager
             $this->slugValues[$item->slug] = [
                 "id" => $item->id,
                 "type" => $item->type,
+            ];
+        }
+        if (config("product-variation.enablePriceFilter")) {
+            $this->slugValues[config("product-variation.priceFilterKey")] = [
+                "id" => 0,
+                "type" => "range",
             ];
         }
     }
@@ -383,11 +404,19 @@ class ProductFilterManager
     protected function addRangesToQuery()
     {
         foreach ($this->ranges as $slug => $range) {
-            $ranges = DB::table("product_specifications")
-                ->select("product_id")
-                ->where("specification_id", $this->slugValues[$slug]["id"])
-                ->whereBetween("value", [$range["from"], $range["to"]])
-                ->groupBy("product_id");
+            if (
+                config("product-variation.enablePriceFilter") &&
+                $slug == config("product-variation.priceFilterKey")
+            ) {
+                $ranges = ProductVariationActions::getPriceQuery($range);
+            }
+            else {
+                $ranges = DB::table("product_specifications")
+                    ->select("product_id")
+                    ->where("specification_id", $this->slugValues[$slug]["id"])
+                    ->whereBetween("value", [$range["from"], $range["to"]])
+                    ->groupBy("product_id");
+            }
 
             $this->query->joinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
                 $join->on("products.id", "=", "{$slug}.product_id");

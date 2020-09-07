@@ -17,7 +17,6 @@ use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
 use PortedCheese\CategoryProduct\Events\CategoryChangePosition;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
-use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\ProductFilters;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserLg;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserMd;
