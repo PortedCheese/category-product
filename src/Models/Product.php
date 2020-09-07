@@ -95,10 +95,10 @@ class Product extends Model
         $key = "productTeaserData:{$this->id}";
         $id = $this->id;
         return Cache::rememberForever($key, function () use ($id) {
-            $product = \App\Product::find($id);
-            $product->cover;
-            $product->labels;
-            return $product;
+            return \App\Product::query()
+                ->where("id", $id)
+                ->with("cover", "labels")
+                ->first();
         });
     }
 
