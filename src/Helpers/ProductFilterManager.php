@@ -303,6 +303,11 @@ class ProductFilterManager
                 $this->query->orderBy("products.{$sort}", $direction);
                 $defaultSort = false;
             }
+            elseif ($sort == "price" && config("product-variation.enablePriceSort")) {
+                $key = config("product-variation.priceFilterKey");
+                $this->query->orderBy("$key.minimal", $direction);
+                $defaultSort = false;
+            }
         }
         if ($defaultSort) {
             $this->query->orderBy(
@@ -420,6 +425,15 @@ class ProductFilterManager
 
             $this->query->joinSub($ranges, $slug, function (JoinClause $join) use ($slug) {
                 $join->on("products.id", "=", "{$slug}.product_id");
+            });
+        }
+
+        if (config("product-variation.enablePriceSort") && empty($this->ranges[config("product-variation.priceFilterKey")])) {
+            $range = ["from" => 0, "to" => 0];
+            $ranges = ProductVariationActions::getPriceQuery($range, false);
+            $key = config("product-variation.priceFilterKey");
+            $this->query->joinSub($ranges, $key, function(JoinClause $join) use ($key) {
+                $join->on("products.id", "=", "{$key}.product_id");
             });
         }
     }
