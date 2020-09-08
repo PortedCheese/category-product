@@ -89,6 +89,8 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
         ],
         'app' => [
             "catalog-filter-checkbox" => "FilterCheckboxComponent",
+            "favorite-product" => "FavoriteProductComponent",
+            "favorite-state" => "FavoriteStateComponent",
         ],
     ];
 
@@ -142,6 +144,8 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "category-product/product-switch-view",
             "category-product/product-switch-sort",
             "category-product/product-filters-modal",
+            "category-product/favorite-product",
+            "category-product/favorite-state",
 
             "category-product/category-teaser",
             "category-product/category-children",

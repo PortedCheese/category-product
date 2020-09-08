@@ -1,5 +1,6 @@
 <div class="card product-teaser">
     <div class="product-teaser__image-cover">
+        @include("category-product::site.products.includes.favorite", ["teaser" => true, "product" => $product])
         @if ($product->labels->count())
             <div class="product-teaser__labels">
                 @foreach ($product->labels as $label)

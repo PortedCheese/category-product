@@ -1,0 +1,36 @@
+.favorite-state {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  &.nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 100%;
+  }
+
+  &__cover {
+    position: relative;
+  }
+
+  &__count {
+    position: absolute;
+    top: -.25rem;
+    right: -.25rem;
+    font-size: .625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__ico {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  &__title {
+    padding-left: .25rem;
+  }
+}

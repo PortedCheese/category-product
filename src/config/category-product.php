@@ -15,6 +15,7 @@ return [
     "specificationFacade" => \PortedCheese\CategoryProduct\Helpers\SpecificationActionManager::class,
     "productFacade" => \PortedCheese\CategoryProduct\Helpers\ProductActionsManager::class,
     "productFilterFacade" => \PortedCheese\CategoryProduct\Helpers\ProductFilterManager::class,
+    "productFavoriteFacade" => \PortedCheese\CategoryProduct\Helpers\ProductFavoriteManager::class,
 
     // Site
     "categorySiteRoutes" => true,

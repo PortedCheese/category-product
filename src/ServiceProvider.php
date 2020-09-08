@@ -17,6 +17,7 @@ use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
 use PortedCheese\CategoryProduct\Events\CategoryChangePosition;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
+use PortedCheese\CategoryProduct\Facades\ProductFavorite;
 use PortedCheese\CategoryProduct\Facades\ProductFilters;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserLg;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserMd;
@@ -111,6 +112,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $view->with("sortBy", $field);
             $view->with("sortDirection", $order);
         });
+
+        view()->composer(["category-product::site.products.includes.favorite", "category-product::site.includes.favorite-state"], function (View $view) {
+            $view->with("items", ProductFavorite::getCurrentFavorite());
+        });
     }
 
     /**
@@ -169,6 +174,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         $this->app->singleton("product-filters", function () {
             $class = config("category-product.productFilterFacade");
+            return new $class;
+        });
+
+        $this->app->singleton("product-favorite", function() {
+            $class = config("category-product.productFavoriteFacade");
             return new $class;
         });
     }
