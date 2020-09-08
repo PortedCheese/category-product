@@ -11,3 +11,13 @@ Route::group([
     Route::get("/{product}", "ProductController@show")
         ->name("show");
 });
+
+Route::group([
+    "namespace" => "App\Http\Controllers\Vendor\CategoryProduct\Site",
+    "middleware" => ["web"],
+    "as" => "catalog.labels.",
+    "prefix" => "labels",
+], function () {
+    Route::get("/{label}", "ProductController@label")
+        ->name("show");
+});

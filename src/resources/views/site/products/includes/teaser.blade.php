@@ -3,7 +3,8 @@
         @if ($product->labels->count())
             <div class="product-teaser__labels">
                 @foreach ($product->labels as $label)
-                    <a href="#" class="product-teaser__label product-label product-label_{{ $label->color }}">
+                    <a href="{{ route("catalog.labels.show", ["label" => $label]) }}"
+                       class="product-teaser__label product-label product-label_{{ $label->color }}">
                         {{ $label->title }}
                     </a>
                 @endforeach
@@ -13,15 +14,15 @@
            class="catalog-image catalog-image_product{{ config("category-product.useSimpleTeaser") ? "" : " catalog-image_upsize" }}">
             @if ($product->cover)
                 @pic([
-                "image" => $product->cover,
-                "template" => "catalog-teaser-xs",
-                "grid" => [
-                "catalog-teaser-xl" => 1200,
-                "product-teaser-lg" => 992,
-                "catalog-teaser-md" => 768,
-                "catalog-teaser-sm" => 576,
-                ],
-                "imgClass" => "card-img-top",
+                    "image" => $product->cover,
+                    "template" => "catalog-teaser-xs",
+                    "grid" => [
+                        "catalog-teaser-xl" => 1200,
+                        "product-teaser-lg" => 992,
+                        "catalog-teaser-md" => 768,
+                        "catalog-teaser-sm" => 576,
+                    ],
+                    "imgClass" => "card-img-top",
                 ])
             @else
                 <div class="catalog-image__empty">

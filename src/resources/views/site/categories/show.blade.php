@@ -18,6 +18,14 @@
     @include("category-product::site.products.includes.sort-view", ["productView" => $productView])
 
     @include("category-product::site.products.includes.grid", ["products" => $products, "productView" => $productView, "presentFilters" => ! empty($filters)])
+
+    @if ($products->lastPage() > 1)
+        <div class="row">
+            <div class="col-12">
+                {{ $products->links() }}
+            </div>
+        </div>
+    @endif
 @endsection
 
 @push("more-scripts")
