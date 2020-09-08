@@ -6,6 +6,7 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductFilters;
 
 class CategoryController extends Controller
@@ -23,7 +24,14 @@ class CategoryController extends Controller
             ->whereNull("parent_id")
             ->orderBy("priority")
             ->get();
-        return view("category-product::site.categories.index", compact("categories"));
+        $siteBreadcrumb = [
+            (object) [
+                'active' => true,
+                'url' => route("catalog.categories.index"),
+                'title' => config("category-product.catalogPageName"),
+            ]
+        ];
+        return view("category-product::site.categories.index", compact("categories", "siteBreadcrumb"));
     }
 
     /**
@@ -39,11 +47,13 @@ class CategoryController extends Controller
             ->children()
             ->orderBy("priority");
 
+        $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category);
+
         if (config("category-product.subCategoriesPage")) {
             $categories = $collection->with("image")->get();
             return view(
                 "category-product::site.categories.index",
-                compact("categories", "category")
+                compact("categories", "category", "siteBreadcrumb")
             );
         }
         else {
@@ -53,7 +63,7 @@ class CategoryController extends Controller
             $filters = ProductFilters::getFilters($category, true);
             return view(
                 "category-product::site.categories.show",
-                compact("category", "categories", "products", "productView", "filters", "request")
+                compact("category", "categories", "products", "productView", "filters", "request", "siteBreadcrumb")
             );
         }
     }

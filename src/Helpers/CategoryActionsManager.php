@@ -60,6 +60,51 @@ class CategoryActionsManager
     }
 
     /**
+     * Хлебные крошки для сайта.
+     *
+     * @param Category $category
+     * @param bool $isProductPage
+     * @param bool $parent
+     * @return array
+     */
+    public function getSiteBreadcrumb(Category $category, $isProductPage = false, $parent = false)
+    {
+        $breadcrumb = [];
+        if (! empty($category->parent_id)) {
+            $breadcrumb = $this->getSiteBreadcrumb($category->parent, false, true);
+        }
+        else {
+            $breadcrumb[] = (object) [
+                "title" => config("category-product.catalogPageName"),
+                "url" => route("catalog.categories.index"),
+                "active" => false,
+            ];
+        }
+
+        $breadcrumb[] = (object) [
+            "title" => $category->title,
+            "url" => route("catalog.categories.show", ["category" => $category]),
+            "active" => false,
+        ];
+
+        if ($isProductPage) {
+            $routeParams = Route::current()->parameters();
+            $product = $routeParams["product"];
+            $breadcrumb[] = (object) [
+                "title" => $product->title,
+                "url" => route("catalog.products.show", ["product" => $product]),
+                "active" => true,
+            ];
+        }
+        elseif (! $parent) {
+            $length = count($breadcrumb);
+            $breadcrumb[$length - 1]->active = true;
+        }
+
+        return $breadcrumb;
+    }
+
+    /**
      * Собрать хлебные крошки для админки.
      *
      * @param Category $category

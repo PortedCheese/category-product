@@ -24,6 +24,7 @@ return [
     // @var ["list", "bar"]
     "defaultProductView" => "bar",
     "useSimpleTeaser" => true,
+    "catalogPageName" => "Каталог",
 
     // Sort
     "defaultSort" => "title",
