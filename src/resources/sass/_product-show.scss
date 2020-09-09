@@ -87,4 +87,18 @@
       }
     }
   }
+
+  .nav {
+    margin-top: $grid-gutter-width;
+    margin-bottom: $grid-gutter-width / 2;
+    .nav-link {
+      color: $gray-500;
+      font-weight: $font-weight-bold;
+      padding: .5rem 2rem .5rem 0;
+      font-size: 1.375rem;
+      &.active {
+        color: $body-color;
+      }
+    }
+  }
 }
