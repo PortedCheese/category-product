@@ -12,9 +12,10 @@
         @endif
         @foreach ($gallery as $item)
             <div class="carousel-cell">
-                @pic([
+                @img([
                     "image" => $item,
                     "template" => "product-show-xl",
+                    "lightbox" => "lightGroupProduct",
                     "grid" => [
                         "product-show-xl" => 1200,
                         "product-show-lg" => 992,

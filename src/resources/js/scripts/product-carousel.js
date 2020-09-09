@@ -14,7 +14,8 @@ import "flickity/css/flickity.css";
             prevNextButtons: false,
             pageDots: false,
             wrapAround: true,
-            cellSelector: '.carousel-cell'
+            cellSelector: '.carousel-cell',
+            draggable: false
         });
 
         if (! $(".product-gallery-thumbs").length) return;
