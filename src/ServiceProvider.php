@@ -29,7 +29,13 @@ use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserMd;
 use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserSm;
 use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXl;
 use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXs;
+use PortedCheese\CategoryProduct\Filters\ProductShowLg;
+use PortedCheese\CategoryProduct\Filters\ProductShowMd;
+use PortedCheese\CategoryProduct\Filters\ProductShowSm;
 use PortedCheese\CategoryProduct\Filters\ProductShowXl;
+use PortedCheese\CategoryProduct\Filters\ProductSimpleShowLg;
+use PortedCheese\CategoryProduct\Filters\ProductSimpleShowMd;
+use PortedCheese\CategoryProduct\Filters\ProductSimpleShowSm;
 use PortedCheese\CategoryProduct\Filters\ProductSimpleShowXl;
 use PortedCheese\CategoryProduct\Filters\ProductSimpleTeaserLg;
 use PortedCheese\CategoryProduct\Filters\ProductTeaserLg;
@@ -281,6 +287,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $imagecache["catalog-teaser-xs"] = CatalogSimpleTeaserXs::class;
 
             $imagecache["product-show-xl"] = ProductSimpleShowXl::class;
+            $imagecache["product-show-lg"] = ProductSimpleShowLg::class;
+            $imagecache["product-show-md"] = ProductSimpleShowMd::class;
+            $imagecache["product-show-sm"] = ProductSimpleShowSm::class;
             $imagecache["product-show-thumb"] = ProductThumbSimpleShow::class;
         }
         else {
@@ -292,6 +301,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $imagecache["catalog-teaser-xs"] = CatalogTeaserXs::class;
 
             $imagecache["product-show-xl"] = ProductShowXl::class;
+            $imagecache["product-show-lg"] = ProductShowLg::class;
+            $imagecache["product-show-md"] = ProductShowMd::class;
+            $imagecache["product-show-sm"] = ProductShowSm::class;
             $imagecache["product-show-thumb"] = ProductThumbShow::class;
         }
         app()->config['imagecache.templates'] = $imagecache;

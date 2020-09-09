@@ -1,4 +1,4 @@
-<div class="col-12 col-md-6">
+<div class="col-12 col-lg-6">
     <div class="product-gallery-top">
         @if ($product->labels->count())
             <div class="product-show__labels">
@@ -13,10 +13,15 @@
         @foreach ($gallery as $item)
             <div class="carousel-cell">
                 @pic([
-                "image" => $item,
-                "template" => "product-show-xl",
-                "grid" => [],
-                "imgClass" => "img-fluid",
+                    "image" => $item,
+                    "template" => "product-show-xl",
+                    "grid" => [
+                        "product-show-xl" => 1200,
+                        "product-show-lg" => 992,
+                        "product-show-md" => 768,
+                        "product-show-sm" => 576,
+                    ],
+                    "imgClass" => "img-fluid",
                 ])
             </div>
         @endforeach
@@ -37,12 +42,14 @@
         </div>
     @endif
 </div>
-<div class="col-12 col-md-6">
-    <h1>{{ $product->title }}</h1>
-    @include("category-product::site.products.includes.favorite")
-    @includeFirst([
-            "variation-cart::site.variations.show",
-            "product-variation::site.variations.show",
-            "category-product::site.products.includes.short",
-        ], ["product" => $product])
+<div class="col-12 col-lg-6">
+    <div class="product-show__text-cover">
+        <h1>{{ $product->title }}</h1>
+        @include("category-product::site.products.includes.favorite")
+        @includeFirst([
+                "variation-cart::site.variations.show",
+                "product-variation::site.variations.show",
+                "category-product::site.products.includes.short",
+            ], ["product" => $product])
+    </div>
 </div>

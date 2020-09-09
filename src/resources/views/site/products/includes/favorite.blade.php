@@ -2,4 +2,4 @@
                   remove-url="{{ route("catalog.favorite.remove-from-favorite", ["product" => $product]) }}"
                   :product-id="{{ $product->id }}"
                   :current="{{ json_encode($items) }}"
-                  @if (isset($teser)) :simple="true" @endif></favorite-product>
+                  @if (isset($teaser)) :simple="true" @endif></favorite-product>
