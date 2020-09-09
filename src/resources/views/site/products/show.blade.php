@@ -3,17 +3,11 @@
 @section('page-title', "{$product->title} - ")
 
 @section("contents")
-    <div class="row">
-        <div class="col-12 col-md-6">
-            Image
-        </div>
-        <div class="col-12 col-md-6">
-            <h1>{{ $product->title }}</h1>
-            @includeFirst([
-                    "variation-cart::site.variations.show",
-                    "product-variation::site.variations.show",
-                    "category-product::site.products.includes.short",
-                ], ["product" => $product])
+    <div class="row product-show">
+        <div class="col-12">
+            <div class="product-show__cover">
+                @include("category-product::site.products.includes.show-top-section")
+            </div>
         </div>
     </div>
 @endsection

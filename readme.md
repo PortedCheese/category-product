@@ -25,6 +25,9 @@
                             {--vue : Export vue}
                             {--js : Export scripts}
                             
+    npm install flickity
+    npm install flickity-as-nav-for
+                            
 ## Config
 
 Если надо выгрузить конфиг:

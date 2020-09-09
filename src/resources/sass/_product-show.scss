@@ -1,0 +1,46 @@
+@mixin top-gallery-sizes($both: true) {
+  width: auto;
+  @if $both {
+    height: auto;
+  }
+  @include media-breakpoint-up(xl) {
+    width: 465px;
+    @if $both {
+      height: 465px;
+    }
+  }
+}
+
+.product-show {
+  &__cover {
+    background-color: $white;
+    border: 1px solid $gray-500;
+    padding-top: $grid-gutter-width;
+    padding-bottom: $grid-gutter-width;
+    @include border-radius($card-border-radius);
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .product-gallery {
+    &-top {
+      overflow: hidden;
+      margin: 0 auto;
+      @include top-gallery-sizes;
+      .carousel-cell {
+        margin-right: $grid-gutter-width / 2;
+        @include top-gallery-sizes;
+      }
+    }
+    &-thumbs {
+      overflow: hidden;
+      margin: $grid-gutter-width / 2 auto;
+      @include top-gallery-sizes(false);
+      height: 65px;
+      .carousel-cell {
+        margin-right: $grid-gutter-width / 2;
+        width: 65px;
+        height: 65px;
+      }
+    }
+  }
+}

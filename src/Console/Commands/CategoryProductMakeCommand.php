@@ -95,7 +95,10 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
     ];
 
     protected $jsIncludes = [
-        "app" => ["category-product/products-grid"]
+        "app" => [
+            "category-product/products-grid",
+            "category-product/product-carousel",
+        ]
     ];
 
     /**
@@ -150,6 +153,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "category-product/category-teaser",
             "category-product/category-children",
             "category-product/product-teaser",
+            "category-product/product-show",
         ],
         "admin" => ["category-product/product-labels"],
     ];

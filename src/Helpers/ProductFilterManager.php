@@ -314,8 +314,12 @@ class ProductFilterManager
         $direction = $this->getCurrentSortDirection();
 
         if (Schema::hasColumn("products", $sort)) {
-//            $this->query->orderBy("products.{$sort}", $direction);
-            $this->query->orderBy(DB::raw("isnull(`minimal`), `{$sort}`"), $direction);
+            if (config("product-variation.enablePriceSort")) {
+                $this->query->orderBy(DB::raw("isnull(`minimal`), `{$sort}`"), $direction);
+            }
+            else {
+                $this->query->orderBy("products.{$sort}", $direction);
+            }
         }
         elseif ($sort == "price" && config("product-variation.enablePriceSort")) {
             $this->query->orderBy("priceSort", $direction);

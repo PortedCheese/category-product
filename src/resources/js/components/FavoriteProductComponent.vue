@@ -3,11 +3,15 @@
         <button type="button"
                 @click="changeProduct"
                 :disabled="loading"
+                :class="simple ? '' : 'favorite-product__btn_text'"
                 class="btn btn-link favorite-product__btn">
-            <svg class="favorite-product__ico">
-                <use xlink:href="#heart-fill" v-if="isActive"></use>
-                <use xlink:href="#heart-border" v-else></use>
+            <svg class="favorite-product__ico" v-if="isActive">
+                <use xlink:href="#heart-fill"></use>
             </svg>
+            <svg class="favorite-product__ico favorite-product__ico_border" v-else>
+                <use xlink:href="#heart-border"></use>
+            </svg>
+            <span v-if="! simple" class="favorite-product__text">{{ buttonText }}</span>
         </button>
     </div>
 </template>
@@ -59,6 +63,10 @@
                     }
                 }
                 return active;
+            },
+
+            buttonText() {
+                return this.isActive ? "В избранном" : "В избранное";
             }
         },
 

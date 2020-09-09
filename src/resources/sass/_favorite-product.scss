@@ -3,13 +3,24 @@
     padding: $grid-gutter-width / 2;
     color: $primary;
     @include hover-focus() {
+      text-decoration: none;
       box-shadow: none;
       color: darken($primary, 10%);
     }
+    &_text {
+      padding: .375rem .375rem .375rem 0;
+    }
   }
+
+  &__text {
+    color: $gray-500;
+    padding-left: .25rem;
+  }
+
   &__ico {
     width: 20px;
     height: 20px;
     fill: currentColor;
+    margin-top: -.25rem;
   }
 }

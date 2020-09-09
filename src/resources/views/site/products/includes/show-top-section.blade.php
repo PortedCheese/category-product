@@ -1,0 +1,48 @@
+<div class="col-12 col-md-6">
+    <div class="product-gallery-top">
+        @if ($product->labels->count())
+            <div class="product-show__labels">
+                @foreach ($product->labels as $label)
+                    <a href="{{ route("catalog.labels.show", ["label" => $label]) }}"
+                       class="product-show__label product-label product-label_{{ $label->color }}">
+                        {{ $label->title }}
+                    </a>
+                @endforeach
+            </div>
+        @endif
+        @foreach ($gallery as $item)
+            <div class="carousel-cell">
+                @pic([
+                "image" => $item,
+                "template" => "product-show-xl",
+                "grid" => [],
+                "imgClass" => "img-fluid",
+                ])
+            </div>
+        @endforeach
+    </div>
+
+    @if ($gallery->count() > 2)
+        <div class="product-gallery-thumbs">
+            @foreach ($gallery as $item)
+                <div class="carousel-cell">
+                    @pic([
+                    "image" => $item,
+                    "template" => "product-show-thumb",
+                    "grid" => [],
+                    "imgClass" => "img-fluid",
+                    ])
+                </div>
+            @endforeach
+        </div>
+    @endif
+</div>
+<div class="col-12 col-md-6">
+    <h1>{{ $product->title }}</h1>
+    @include("category-product::site.products.includes.favorite")
+    @includeFirst([
+            "variation-cart::site.variations.show",
+            "product-variation::site.variations.show",
+            "category-product::site.products.includes.short",
+        ], ["product" => $product])
+</div>

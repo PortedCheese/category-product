@@ -20,8 +20,10 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $category = $product->category;
+        $gallery = $product->images()->orderBy("weight")->get();
+        debugbar()->info($gallery);
         $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category, true);
-        return view("category-product::site.products.show", compact("product", "siteBreadcrumb"));
+        return view("category-product::site.products.show", compact("product", "siteBreadcrumb", "gallery"));
     }
 
     /**
