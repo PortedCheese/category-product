@@ -2,22 +2,22 @@
 
 namespace PortedCheese\CategoryProduct\Events;
 
-use App\Product;
+use App\Category;
 use Illuminate\Queue\SerializesModels;
 
 class ProductListChange
 {
     use SerializesModels;
 
-    public $product;
+    public $category;
 
     /**
      * Create a new event instance.
      *
-     * @param Product $product
+     * @param Category $category
      */
-    public function __construct(Product $product)
+    public function __construct(Category $category)
     {
-        $this->product = $product;
+        $this->category = $category;
     }
 }

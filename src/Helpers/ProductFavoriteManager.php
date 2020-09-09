@@ -124,10 +124,10 @@ class ProductFavoriteManager
     protected function checkDiffInArrays($first, $second)
     {
         foreach ($first as $item) {
-            if (in_array($item, $second)) return true;
+            if (! in_array($item, $second)) return true;
         }
         foreach ($second as $item) {
-            if (in_array($item, $first)) return true;
+            if (! in_array($item, $first)) return true;
         }
         return false;
     }

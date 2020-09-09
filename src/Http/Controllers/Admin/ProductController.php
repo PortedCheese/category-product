@@ -10,6 +10,7 @@ use App\ProductLabel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
+use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
 
@@ -282,6 +283,8 @@ class ProductController extends Controller
         $category = $product->category;
         // При отключении товара меняется набор характеристик для фильтрации.
         event(new CategorySpecificationValuesUpdate($category));
+        // Вызвать событие изменения списка товаров.
+        event(new ProductListChange($category));
         return redirect()
             ->back()
             ->with("success", "Статус публикации изменен");

@@ -1,0 +1,15 @@
+.favorite-product {
+  &__btn {
+    padding: $grid-gutter-width / 2;
+    color: $primary;
+    @include hover-focus() {
+      box-shadow: none;
+      color: darken($primary, 10%);
+    }
+  }
+  &__ico {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+}

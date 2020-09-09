@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use PortedCheese\BaseSettings\Exceptions\PreventActionException;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
+use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Http\Resources\ProductSpecification as ValueResource;
 
@@ -105,9 +106,11 @@ class ProductActionsManager
          */
         $this->changeProductPivots($original->id, $categoryId, $product->id);
         CategoryActions::copyParentSpec($category, $original);
-        // При переносе товара в другую категорию у двух категорий меняется набор значений характеристик.
+        // При переносе товара в другую категорию у двух категорий меняется набор значений характеристик и товаров.
         event(new CategorySpecificationValuesUpdate($category));
+        event(new ProductListChange($category));
         event(new CategorySpecificationValuesUpdate($original));
+        event(new ProductListChange($original));
     }
 
     /**
@@ -214,7 +217,7 @@ class ProductActionsManager
      */
     protected function changeProductPivots($originalId, $newId, $productId)
     {
-        DB::table("product_specification")
+        DB::table("product_specifications")
             ->where("category_id", $originalId)
             ->where("product_id", $productId)
             ->update([
