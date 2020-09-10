@@ -7,6 +7,7 @@ use App\Product;
 use App\ProductLabel;
 use Illuminate\Http\Request;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
+use PortedCheese\CategoryProduct\Facades\ProductActions;
 use PortedCheese\CategoryProduct\Facades\ProductFavorite;
 
 class ProductController extends Controller
@@ -21,9 +22,9 @@ class ProductController extends Controller
     {
         $category = $product->category;
         $gallery = $product->images()->orderBy("weight")->get();
-        debugbar()->info($gallery);
         $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category, true);
-        return view("category-product::site.products.show", compact("product", "siteBreadcrumb", "gallery"));
+        $groups = ProductActions::getProductSpecificationsByGroups($product);
+        return view("category-product::site.products.show", compact("product", "siteBreadcrumb", "gallery", "groups"));
     }
 
     /**

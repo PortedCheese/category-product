@@ -6,6 +6,7 @@ namespace PortedCheese\CategoryProduct\Helpers;
 
 use App\Category;
 use App\Product;
+use App\ProductSpecification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\JoinClause;
@@ -17,6 +18,7 @@ use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Http\Resources\ProductSpecification as ValueResource;
+use PortedCheese\CategoryProduct\Models\SpecificationGroup;
 
 class ProductActionsManager
 {
@@ -42,6 +44,75 @@ class ProductActionsManager
             return $specifications;
         }
         return ValueResource::collection($specifications);
+    }
+
+    /**
+     * Разбить характеристики по группам.
+     *
+     * @param Product $product
+     * @param Collection|null $collection
+     * @return array
+     */
+    public function getProductSpecificationsByGroups(Product $product, Collection $collection = null)
+    {
+        if (empty($collection)) $collection = $this->getProductSpecifications($product, true);
+        $groups = [];
+        $noGroup = [];
+        foreach ($collection as $item) {
+            /**
+             * @var ProductSpecification $item
+             */
+            $specification = $item->specification;
+            $group = $specification->group;
+            if (! empty($group)) {
+                $groupId = $group->id;
+                if (empty($groups[$groupId])) {
+                    $groups[$groupId] = [
+                        "model" => $group,
+                        "title" => $group->title,
+                        "specifications" => [],
+                    ];
+                }
+                if (empty($groups[$groupId]["specifications"][$specification->id])) {
+                    $groups[$groupId]["specifications"][$specification->id] = (object) [
+                        "values" => [],
+                        "title" => $item->title,
+                    ];
+                }
+                $groups[$groupId]["specifications"][$specification->id]->values[] = $item->value;
+            }
+            else {
+                if (empty($noGroup[$specification->id])) {
+                    $noGroup[$specification->id] = (object) [
+                        "values" => [],
+                        "title" => $item->title,
+                    ];
+                }
+                $noGroup[$specification->id]->values[] = $item->value;
+            }
+        }
+        $groupsInfo = [];
+        // Если есть значения буз группы, их надо в начало.
+        if (! empty($noGroup)) {
+            $groupsInfo[] = (object) [
+                "model" => false,
+                "title" => "No group",
+                "specifications" => $noGroup,
+            ];
+        }
+        // Определяем порядок групп.
+        if (! empty($groups)) {
+            $groupIds = array_keys($groups);
+            $collectionOfIds = SpecificationGroup::query()
+                ->select("id")
+                ->whereIn("id", $groupIds)
+                ->orderBy("priority")
+                ->get();
+            foreach ($collectionOfIds as $item) {
+                $groupsInfo[] = (object) $groups[$item->id];
+            }
+        }
+        return $groupsInfo;
     }
 
     /**
