@@ -9,7 +9,7 @@
                 @include("category-product::site.products.includes.show-top-section")
             </div>
         </div>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-lg-8">
             <ul class="nav" id="productTab" role="tablist">
                 <li class="nav-item">
                     <a id="about-tab" href="#about-text" class="nav-link active" data-toggle="tab" aria-selected="true">О товаре</a>
