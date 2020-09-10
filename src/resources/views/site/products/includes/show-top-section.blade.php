@@ -45,7 +45,7 @@
 </div>
 <div class="col-12 col-lg-6">
     <div class="product-show__text-cover">
-        <h1>{{ $product->title }}</h1>
+        <h1 class="product-show__title">{{ $product->title }}</h1>
         @include("category-product::site.products.includes.favorite")
         @includeFirst([
                 "variation-cart::site.variations.show",

@@ -40,6 +40,10 @@
     flex-wrap: wrap;
   }
 
+  &__title {
+    font-size: 1.75rem;
+  }
+
   &__text-cover {
     @include media-breakpoint-down(md) {
       @include top-gallery-sizes(false);
