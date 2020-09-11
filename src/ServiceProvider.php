@@ -290,6 +290,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $imagecache["product-show-lg"] = ProductSimpleShowLg::class;
             $imagecache["product-show-md"] = ProductSimpleShowMd::class;
             $imagecache["product-show-sm"] = ProductSimpleShowSm::class;
+
             $imagecache["product-show-thumb"] = ProductThumbSimpleShow::class;
         }
         else {
@@ -304,6 +305,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $imagecache["product-show-lg"] = ProductShowLg::class;
             $imagecache["product-show-md"] = ProductShowMd::class;
             $imagecache["product-show-sm"] = ProductShowSm::class;
+
             $imagecache["product-show-thumb"] = ProductThumbShow::class;
         }
         app()->config['imagecache.templates'] = $imagecache;

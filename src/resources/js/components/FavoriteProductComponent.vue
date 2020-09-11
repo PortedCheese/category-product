@@ -50,6 +50,10 @@
             }
         },
 
+        mounted() {
+            this.$root.$on("change-favorite", this.changeItems);
+        },
+
         created() {
             this.items = this.current;
         },
@@ -78,6 +82,10 @@
                 else {
                     this.addProduct();
                 }
+            },
+
+            changeItems(items) {
+                this.items = items;
             },
 
             addProduct() {
