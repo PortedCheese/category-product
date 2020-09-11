@@ -22,7 +22,7 @@
                         "product-show-md" => 768,
                         "product-show-sm" => 576,
                     ],
-                    "imgClass" => "img-fluid",
+                    "imgClass" => "img-fluid rounded",
                 ])
             </div>
         @endforeach
@@ -36,7 +36,7 @@
                     "image" => $item,
                     "template" => "product-show-thumb",
                     "grid" => [],
-                    "imgClass" => "img-fluid",
+                    "imgClass" => "img-fluid rounded",
                     ])
                 </div>
             @endforeach

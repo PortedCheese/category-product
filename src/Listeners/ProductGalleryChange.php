@@ -10,7 +10,7 @@ class ProductGalleryChange
     public function handle(ImageUpdate $event)
     {
         $morph = $event->morph;
-        if (get_class($morph) == Product::class) {
+        if (! empty($morph) && get_class($morph) == Product::class) {
             $morph->updated_at = now();
             $morph->save();
         }
