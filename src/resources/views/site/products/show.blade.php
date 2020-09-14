@@ -61,4 +61,18 @@
             </div>
         </div>
     </div>
+    @if (! empty($watch))
+        <div class="row mb-3">
+            <div class="col-12">
+                <h2>Вы смотрели</h2>
+            </div>
+        </div>
+        <div class="row">
+            @foreach ($watch as $item)
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 products-grid-col">
+                    @include("category-product::site.products.includes.teaser", ["product" => $item->getTeaserData()])
+                </div>
+            @endforeach
+        </div>
+    @endif
 @endsection

@@ -24,7 +24,11 @@ class ProductController extends Controller
         $gallery = $product->images()->orderBy("weight")->get();
         $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category, true);
         $groups = ProductActions::getProductSpecificationsByGroups($product);
-        return view("category-product::site.products.show", compact("product", "siteBreadcrumb", "gallery", "groups"));
+        $watch = ProductActions::getYouWatch($product);
+        return view(
+            "category-product::site.products.show",
+            compact("product", "siteBreadcrumb", "gallery", "groups", "watch")
+        );
     }
 
     /**

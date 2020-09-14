@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use PortedCheese\BaseSettings\Exceptions\PreventActionException;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
@@ -276,6 +277,69 @@ class ProductActionsManager
         Cache::forget("$key-false");
         if (! empty($category->parent_id)) {
             $this->forgetCategoryProductIds($category->parent);
+        }
+    }
+
+    /**
+     * Список просмотренных нредавно товаров.
+     *
+     * @param Product $product
+     * @return array|\Illuminate\Database\Eloquent\Builder[]|Collection
+     */
+    public function getYouWatch(Product $product)
+    {
+        $watch = $this->getWatchCookie($product);
+        if (count($watch) > 5) unset($watch[4]);
+        $result = Product::query()
+            ->whereIn("id", $watch)
+            ->get();
+        $items = [];
+        foreach ($result as $item) {
+            $items[$item->id] = $item;
+        }
+        $result = [];
+        foreach ($watch as $key => $value) {
+            if (! empty($items[$value])) $result[] = $items[$value];
+        }
+        return $result;
+    }
+
+    /**
+     * Получить список из куки.
+     *
+     * @param Product $product
+     * @return array|mixed|string|null
+     */
+    protected function getWatchCookie(Product $product)
+    {
+        $watch = Cookie::get("product-watch");
+        $watch = empty($watch) ? [] : json_decode($watch, true);
+        $this->clearWatchCurrentProduct($product, $watch);
+        $watch = Arr::prepend($watch, $product->id);
+
+        if (count($watch) > 5) unset($watch[4]);
+
+        Cookie::queue("product-watch", json_encode($watch));
+        $this->clearWatchCurrentProduct($product, $watch);
+
+        return $watch;
+    }
+
+    /**
+     * Убрать текущий товар.
+     *
+     * @param Product $product
+     * @param $watch
+     */
+    protected function clearWatchCurrentProduct(Product $product, &$watch)
+    {
+        if (in_array($product->id, $watch)) {
+            foreach ($watch as $key => $value) {
+                if ($value == $product->id) {
+                    unset($watch[$key]);
+                    break;
+                }
+            }
         }
     }
 

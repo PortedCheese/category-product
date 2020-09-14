@@ -19,6 +19,8 @@ use PortedCheese\CategoryProduct\Helpers\ProductActionsManager;
  * @method static array getCategoryProductIds(Category $category, $includeSubs = false)
  * @method static forgetCategoryProductIds(Category $category)
  *
+ * @method static array getYouWatch(Product $product)
+ *
  * @see ProductActionsManager
  */
 class ProductActions extends Facade
