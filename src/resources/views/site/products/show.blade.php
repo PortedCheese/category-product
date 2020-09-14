@@ -23,7 +23,9 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="about-text" role="tabpanel" aria-labelledby="about-tab">
-                    {!! $product->description !!}
+                    <div class="description product-show__description">
+                        {!! $product->description !!}
+                    </div>
                 </div>
                 @if (! empty($groups))
                     <div class="tab-pane" id="spec-text" role="tabpanel" aria-labelledby="spec-tab">
