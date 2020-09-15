@@ -17,6 +17,7 @@ use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
 use PortedCheese\CategoryProduct\Events\CategoryChangePosition;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductFavorite;
 use PortedCheese\CategoryProduct\Facades\ProductFilters;
 use PortedCheese\CategoryProduct\Filters\CatalogTeaserLg;
@@ -125,6 +126,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         view()->composer(["category-product::site.products.includes.favorite", "category-product::site.includes.favorite-state"], function (View $view) {
             $view->with("items", ProductFavorite::getCurrentFavorite());
+        });
+
+        view()->composer("category-product::site.includes.categories-menu", function (View $view) {
+            debugbar()->info(CategoryActions::getTree());
+            $view->with("categoriesTree", CategoryActions::getTree());
         });
     }
 

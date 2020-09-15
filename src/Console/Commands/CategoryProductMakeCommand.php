@@ -149,6 +149,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "category-product/product-filters-modal",
             "category-product/favorite-product",
             "category-product/favorite-state",
+            "category-product/catalog-menu",
 
             "category-product/category-teaser",
             "category-product/category-children",

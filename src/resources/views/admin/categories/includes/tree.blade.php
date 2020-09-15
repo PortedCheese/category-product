@@ -1,5 +1,6 @@
 @can("update", \App\Category::class)
     <admin-category-list :structure="{{ json_encode($categories) }}"
+                         :nesting="{{ config("category-product.categoryNest") }}"
                          :update-url="'{{ route("admin.categories.item-priority") }}'">
     </admin-category-list>
 @else

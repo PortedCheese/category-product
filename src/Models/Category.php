@@ -62,4 +62,17 @@ class Category extends Model
     {
         return $this->hasMany(\App\Product::class);
     }
+
+    /**
+     * Уровень вложенности.
+     * 
+     * @return int
+     */
+    public function getNestingAttribute()
+    {
+        if (empty($this->parent_id)) {
+            return 1;
+        }
+        return $this->parent->nesting + 1;
+    }
 }

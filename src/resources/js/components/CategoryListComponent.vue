@@ -1,9 +1,9 @@
 <template>
     <div class="row">
         <div class="col-12">
-            <nested-draggable :items="changeable" v-on:changed="checkMove" />
+            <nested-draggable :items="changeable" :nesting="nesting - 1" v-on:changed="checkMove" />
 
-            <button class="btn btn-success position-fixed fixed-bottom mx-auto mb-3"
+            <button class="btn btn-success mb-3"
                     v-if="weightChanged"
                     @click="changeOrder"
                     :disabled="loading"
@@ -29,6 +29,10 @@
             updateUrl: {
                 type: String,
                 required: true,
+            },
+            nesting: {
+                type: Number,
+                default: 3
             }
         },
         data() {

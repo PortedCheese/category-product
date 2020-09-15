@@ -26,6 +26,7 @@ return [
     "defaultProductView" => "bar",
     "useSimpleTeaser" => true,
     "catalogPageName" => "Каталог",
+    "categoryNest" => 3,
 
     // Sort
     "defaultSort" => "title",

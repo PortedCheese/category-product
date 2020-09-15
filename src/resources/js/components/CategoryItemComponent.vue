@@ -4,11 +4,11 @@
                :list="items"
                @change="checkMove"
                :group="{ name: 'g1' }" handle=".category-handle">
-        <li v-for="element in items" :key="element.id" class="dragArea__item">
+        <li v-for="element in items" :key="element.id" class="dragArea__item" :class="nesting > 0 ? 'dragArea__item_nest' : ''">
             <i class="fa fa-align-justify handle cursor-move category-handle"></i>
             <a :href="element.url">{{ element.title }}</a>
             <span class="badge badge-primary" v-if="element.children.length">{{ element.children.length }}</span>
-            <nested-draggable :items="element.children" v-on:changed="checkMove" />
+            <nested-draggable :nesting="nesting - 1" :items="element.children" v-on:changed="checkMove" v-if="nesting > 0"/>
         </li>
     </draggable>
 </template>
@@ -19,6 +19,10 @@
             items: {
                 required: true,
                 type: Array
+            },
+            nesting: {
+                type: Number,
+                required: true
             }
         },
         components: {
@@ -40,8 +44,11 @@
     .dragArea__item {
         border: 1px solid rgba(0,0,0,.125);
         background-color: #fff;
-        padding: .75rem 1.25rem 0;
+        padding: .75rem 1.25rem;
         margin-bottom: -1px;
+    }
+    .dragArea__item_nest {
+        padding-bottom: 0;
     }
     .dragArea__item:first-child {
         border-top-left-radius: .25rem;

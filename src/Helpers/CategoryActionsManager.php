@@ -399,7 +399,8 @@ class CategoryActionsManager
                 "priority" => $category->priority,
                 "id" => $category->id,
                 'children' => [],
-                "url" => route(config("category-product.categoryShowRouteName"), ['category' => $category->slug])
+                "url" => route(config("category-product.categoryShowRouteName"), ['category' => $category->slug]),
+                "siteUrl" => route("catalog.categories.show", ["category" => $category->slug]),
             ];
             if (empty($category->parent_id)) {
                 $noParent[] = $category->id;

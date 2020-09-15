@@ -46,10 +46,12 @@
                                    href="{{ route('admin.categories.create') }}">
                                     Основную
                                 </a>
-                                <a class="dropdown-item"
-                                   href="{{ route('admin.categories.create-child', ['category' => $category]) }}">
-                                    Подкатегорию
-                                </a>
+                                @if ($category->nesting < config("category-product.categoryNest"))
+                                    <a class="dropdown-item"
+                                       href="{{ route('admin.categories.create-child', ['category' => $category]) }}">
+                                        Подкатегорию
+                                    </a>
+                                @endif
                             </div>
                         </li>
                     @endcan

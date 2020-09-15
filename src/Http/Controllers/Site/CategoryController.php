@@ -46,18 +46,20 @@ class CategoryController extends Controller
         $collection = $category
             ->children()
             ->orderBy("priority");
+        if (config("category-product.subCategoriesPage")) {
+            $collection->with("image");
+        }
+        $categories = $collection->get();
 
         $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category);
 
-        if (config("category-product.subCategoriesPage")) {
-            $categories = $collection->with("image")->get();
+        if (config("category-product.subCategoriesPage") && $categories->count()) {
             return view(
                 "category-product::site.categories.index",
                 compact("categories", "category", "siteBreadcrumb")
             );
         }
         else {
-            $categories = $collection->get();
             $products = ProductFilters::filterByCategory($request, $category);
             $productView = Cookie::get("products-view", config("category-product.defaultProductView"));
             $filters = ProductFilters::getFilters($category, true);
