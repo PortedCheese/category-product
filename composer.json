@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-      "portedcheese/base-settings": "^v1.7",
+      "portedcheese/base-settings": "^v2.0",
       "portedcheese/seo-integration": "^v1.2",
       "portedcheese/admin-site-menu": "^v1.4"
     },
