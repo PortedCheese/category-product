@@ -42,7 +42,7 @@ class CategoryObserver
     public function updating(Category $category)
     {
         $original = $category->getOriginal();
-        if ($original["parent_id"] != $category->parent_id) {
+        if (isset($original["parent_id"]) && $original["parent_id"] != $category->parent_id) {
             $this->categoryChangedParent($category, $original["parent_id"]);
         }
     }
