@@ -5,9 +5,11 @@
   justify-content: flex-start;
 
   &.nav-link {
-    padding-top: 0;
-    padding-bottom: 0;
     height: 100%;
+    @include media-breakpoint-up(md) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
 
   &__cover {

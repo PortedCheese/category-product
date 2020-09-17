@@ -30,6 +30,10 @@
                             
 ## Config
 
+Шаблон для меню:
+    
+    category-product::site.includes.categories-menu
+
 Выгрузка конфигурации:
     
     php artisan vendor:publish --provider="PortedCheese\CategoryProduct\ServiceProvider" --tag=config

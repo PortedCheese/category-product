@@ -5,6 +5,13 @@
     border-color: $primary;
   }
 
+  .favorite-product {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+  }
+
   &__image-cover {
     position: relative;
   }
