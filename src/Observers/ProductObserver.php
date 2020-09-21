@@ -43,12 +43,15 @@ class ProductObserver
     {
         // Очистить метки.
         $product->labels()->detach();
-        // Очистить значения полей.
-        $product->specifications()->sync([]);
         // Очистить кэш.
         $product->clearCache();
         // При удалении товара меняется список идентификаторов товаров в категории и их значений.
         $category = $product->category;
         event(new CategorySpecificationValuesUpdate($category));
+
+        // Очистить значения полей.
+        foreach ($product->specifications as $specification) {
+            $specification->delete();
+        }
     }
 }
