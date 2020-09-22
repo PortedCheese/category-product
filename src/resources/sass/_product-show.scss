@@ -74,9 +74,15 @@
       overflow: hidden;
       margin: 0 auto;
       @include top-gallery-sizes;
+      display: block;
       .carousel-cell {
         margin-right: $grid-gutter-width / 2;
         @include top-gallery-sizes;
+        .figure > a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
     }
     &-thumbs {
@@ -84,10 +90,14 @@
       margin: $grid-gutter-width / 2 auto;
       @include top-gallery-sizes(false);
       height: 65px;
+      display: block;
       .carousel-cell {
         margin-right: $grid-gutter-width / 2;
         width: 65px;
         height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
