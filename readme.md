@@ -67,3 +67,11 @@
     defaultSortDirection(asc) - Стандартное направление сортировки
     defaultCheckboxLimit(3) - Сколько элементов группы чекбоксов в фильтре будут показаны, больше будут скрыты и появится поиск
     sortOptions - Список сортировок
+    
+### Versions
+
+    v1.0.4:
+        - Добавлены стили для слайдера
+    Обновление:
+        - php artisan vendor:publish --provider="PortedCheese\CategoryProduct\ServiceProvider" --tag=public --force
+        - npm run prod
