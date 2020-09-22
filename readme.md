@@ -70,8 +70,9 @@
     
 ### Versions
 
-    v1.0.4:
-        - Добавлены стили для слайдера
+    v1.0.5:
+        - Добавлены стили для слайдера и задержна на загрузку
+        - Добавлена синхронизация названий характеристик
     Обновление:
         - php artisan vendor:publish --provider="PortedCheese\CategoryProduct\ServiceProvider" --tag=public --force
         - npm run prod
