@@ -28,7 +28,7 @@
         @endif
     </div>
 
-    @if ($gallery->count() > 2)
+    @if ($gallery->count() >= 2)
         <div class="product-gallery-thumbs">
             @foreach ($gallery as $item)
                 <div class="carousel-cell">
