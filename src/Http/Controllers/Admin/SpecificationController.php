@@ -176,8 +176,32 @@ class SpecificationController extends Controller
     }
 
     /**
+     * Синхронизировать название.
+     *
+     * @param Specification $specification
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function syncTitle(Specification $specification)
+    {
+        foreach ($specification->categories as $category) {
+            /**
+             * @var Category $category
+             */
+            $category->specifications()
+                ->updateExistingPivot($specification->id, [
+                    "title" => $specification->title,
+                ]);
+            event(new CategorySpecificationUpdate($category));
+        }
+        return redirect()
+            ->back()
+            ->with("success", "Заголовоки успешно обновлены");
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
+     * @param Category $category
      * @param  \App\Specification  $specification
      * @return \Illuminate\Http\Response
      */

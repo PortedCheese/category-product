@@ -99,12 +99,28 @@
                     <ul>
                         @foreach($categories as $category)
                             <li>
-                                <a href="{{ route('admin.categories.show', ['category' => $category]) }}">
-                                    {{ $category->title }}
+                                <a href="{{ route('admin.categories.specifications.index', ['category' => $category]) }}">
+                                    {{ $category->title }} ({{ $category->pivot->title }})
                                 </a>
                             </li>
                         @endforeach
                     </ul>
+                    @can('update', $specification)
+                        <button type="button" class="btn btn-warning" data-confirm="{{ "sync-form-{$specification->id}" }}">
+                            Синхронизировать заголовки
+                        </button>
+                        <confirm-form :id="'{{ "sync-form-{$specification->id}" }}'" confirm-text="Да, синхронизировать!">
+                            <template>
+                                <form action="{{ route('admin.specifications.sync', ["specification" => $specification]) }}"
+                                      id="sync-form-{{ $specification->id }}"
+                                      class="btn-group"
+                                      method="post">
+                                    @csrf
+                                    @method("put")
+                                </form>
+                            </template>
+                        </confirm-form>
+                    @endcan
                 </div>
             @endcan
         </div>

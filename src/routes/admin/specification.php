@@ -11,11 +11,14 @@ Route::group([
     // Все характеристики.
     Route::get("specifications", "SpecificationController@list")
         ->name("specifications.index");
+    // Синхронизировать название
+    Route::put("specifications/{specification}/sync", "SpecificationController@syncTitle")
+        ->name("specifications.sync");
     // Характеристики внутри категории.
     Route::resource("categories.specifications", "SpecificationController")
         ->except("edit", "destroy")
         ->shallow();
-    // Инхронизация.
+    // Синхронизация.
     Route::put("cateries/{category}/specification/list/sync", "SpecificationController@sync")
     ->name("categories.specifications.sync");
     // Редактировать связки.

@@ -75,9 +75,17 @@
       margin: 0 auto;
       @include top-gallery-sizes;
       display: block;
+      &.flickity-enabled .carousel-cell {
+        display: block !important;
+      }
       .carousel-cell {
         margin-right: $grid-gutter-width / 2;
         @include top-gallery-sizes;
+
+        &:not(:first-child) {
+          display: none;
+        }
+
         .figure > a {
           display: flex;
           align-items: center;
@@ -90,7 +98,10 @@
       margin: $grid-gutter-width / 2 auto;
       @include top-gallery-sizes(false);
       height: 65px;
-      display: block;
+      display: none;
+      &.flickity-enabled {
+        display: block;
+      }
       .carousel-cell {
         margin-right: $grid-gutter-width / 2;
         width: 65px;

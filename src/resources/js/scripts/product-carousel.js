@@ -3,7 +3,7 @@ import "flickity/css/flickity.css";
 
 (function ($) {
     $(document).ready(function(){
-        initProductCarousel();
+        setTimeout(initProductCarousel, 1000);
     });
 
     function initProductCarousel() {
