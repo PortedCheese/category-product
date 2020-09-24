@@ -11,7 +11,7 @@
                     </li>
                 @endcan
 
-                @can("update")
+                @can("update", \App\SpecificationGroup::class)
                     <li class="nav-item">
                         <a href="{{ route("admin.specification-groups.priority") }}"
                            class="nav-link{{ $currentRoute === "admin.specification-groups.priority" ? " active" : "" }}">

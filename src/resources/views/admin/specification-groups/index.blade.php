@@ -34,7 +34,7 @@
                         <thead>
                         <tr>
                             <th>Заголовок</th>
-                            @canany(["delete", "view"], \App\CategoryFieldGroup::class)
+                            @canany(["delete", "view"], \App\SpecificationGroup::class)
                                 <th>Действия</th>
                             @endcanany
                         </tr>
