@@ -47,10 +47,14 @@
     <div class="product-show__text-cover">
         <h1 class="product-show__title">{{ $product->title }}</h1>
         @include("category-product::site.products.includes.favorite")
-        @includeFirst([
-                "variation-cart::site.variations.show",
-                "product-variation::site.variations.show",
-                "category-product::site.products.includes.short",
-            ], ["product" => $product])
+        @if ($product->published_at)
+            @includeFirst([
+                    "variation-cart::site.variations.show",
+                    "product-variation::site.variations.show",
+                    "category-product::site.products.includes.short",
+                ], ["product" => $product])
+        @else
+            @include("category-product::site.products.includes.out-of-stock")
+        @endif
     </div>
 </div>
