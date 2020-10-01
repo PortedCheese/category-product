@@ -39,7 +39,7 @@
                 </div>
             @endcan
             <div class="card-body">
-                <h5>Поля относящиеся к группе</h5>
+                <h5>Характеристики относящиеся к группе</h5>
                 <ul>
                     @foreach ($specifications as $item)
                         <li>
