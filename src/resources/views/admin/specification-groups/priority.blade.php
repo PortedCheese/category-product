@@ -1,8 +1,8 @@
 @extends("admin.layout")
 
-@section("page-title", "Притет груп - ")
+@section("page-title", "Приоритет груп - ")
 
-@section('header-title', "Притет груп")
+@section('header-title', "Приоритет груп")
 
 @section('admin')
     @include("category-product::admin.specification-groups.includes.pills")
