@@ -54,6 +54,8 @@
     productFilterFacade - Класс для фасада фильтрации товара
     productFavoriteFacade - Класс для фасада избранных товаров
     
+    productSpecificationResource - Класс для ресурса характеристик
+    
     categorySiteRoutes(true) - Роуты категорий для сайта
     subCategoriesPage(false) - Включить страницу подкатегорий
     categoryProductsPerPage(18) - Товаров на страницу

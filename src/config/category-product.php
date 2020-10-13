@@ -17,6 +17,9 @@ return [
     "productFilterFacade" => \PortedCheese\CategoryProduct\Helpers\ProductFilterManager::class,
     "productFavoriteFacade" => \PortedCheese\CategoryProduct\Helpers\ProductFavoriteManager::class,
 
+    // Resources.
+    "productSpecificationResource" => \PortedCheese\CategoryProduct\Http\Resources\ProductSpecification::class,
+
     // Site
     "categorySiteRoutes" => true,
     "subCategoriesPage" => false,

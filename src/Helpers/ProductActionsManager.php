@@ -18,7 +18,6 @@ use PortedCheese\BaseSettings\Exceptions\PreventActionException;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
-use PortedCheese\CategoryProduct\Http\Resources\ProductSpecification as ValueResource;
 use PortedCheese\CategoryProduct\Models\SpecificationGroup;
 
 class ProductActionsManager
@@ -44,7 +43,8 @@ class ProductActionsManager
         if ($collection) {
             return $specifications;
         }
-        return ValueResource::collection($specifications);
+        $class = config("category-product.productSpecificationResource");
+        return $class::collection($specifications);
     }
 
     /**
