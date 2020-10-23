@@ -284,34 +284,34 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $imagecache = app()->config["imagecache.templates"];
         // Тизеры.
         if (config("category-product.useSimpleTeaser")) {
-            $imagecache["catalog-teaser-xl"] = CatalogSimpleTeaserXl::class;
-            $imagecache["catalog-teaser-lg"] = CatalogSimpleTeaserLg::class;
-            $imagecache["product-teaser-lg"] = ProductSimpleTeaserLg::class;
-            $imagecache["catalog-teaser-md"] = CatalogSimpleTeaserMd::class;
-            $imagecache["catalog-teaser-sm"] = CatalogSimpleTeaserSm::class;
-            $imagecache["catalog-teaser-xs"] = CatalogSimpleTeaserXs::class;
+            if (empty($imagecache["catalog-teaser-xl"])) $imagecache["catalog-teaser-xl"] = CatalogSimpleTeaserXl::class;
+            if (empty($imagecache["catalog-teaser-lg"])) $imagecache["catalog-teaser-lg"] = CatalogSimpleTeaserLg::class;
+            if (empty($imagecache["product-teaser-lg"])) $imagecache["product-teaser-lg"] = ProductSimpleTeaserLg::class;
+            if (empty($imagecache["catalog-teaser-md"])) $imagecache["catalog-teaser-md"] = CatalogSimpleTeaserMd::class;
+            if (empty($imagecache["catalog-teaser-sm"])) $imagecache["catalog-teaser-sm"] = CatalogSimpleTeaserSm::class;
+            if (empty($imagecache["catalog-teaser-xs"])) $imagecache["catalog-teaser-xs"] = CatalogSimpleTeaserXs::class;
 
-            $imagecache["product-show-xl"] = ProductSimpleShowXl::class;
-            $imagecache["product-show-lg"] = ProductSimpleShowLg::class;
-            $imagecache["product-show-md"] = ProductSimpleShowMd::class;
-            $imagecache["product-show-sm"] = ProductSimpleShowSm::class;
+            if (empty($imagecache["product-show-xl"])) $imagecache["product-show-xl"] = ProductSimpleShowXl::class;
+            if (empty($imagecache["product-show-lg"])) $imagecache["product-show-lg"] = ProductSimpleShowLg::class;
+            if (empty($imagecache["product-show-md"])) $imagecache["product-show-md"] = ProductSimpleShowMd::class;
+            if (empty($imagecache["product-show-sm"])) $imagecache["product-show-sm"] = ProductSimpleShowSm::class;
 
-            $imagecache["product-show-thumb"] = ProductThumbSimpleShow::class;
+            if (empty($imagecache["product-show-thumb"])) $imagecache["product-show-thumb"] = ProductThumbSimpleShow::class;
         }
         else {
-            $imagecache["catalog-teaser-xl"] = CatalogTeaserXl::class;
-            $imagecache["catalog-teaser-lg"] = CatalogTeaserLg::class;
-            $imagecache["product-teaser-lg"] = ProductTeaserLg::class;
-            $imagecache["catalog-teaser-md"] = CatalogTeaserMd::class;
-            $imagecache["catalog-teaser-sm"] = CatalogTeaserSm::class;
-            $imagecache["catalog-teaser-xs"] = CatalogTeaserXs::class;
+            if (empty($imagecache["catalog-teaser-xl"])) $imagecache["catalog-teaser-xl"] = CatalogTeaserXl::class;
+            if (empty($imagecache["catalog-teaser-lg"])) $imagecache["catalog-teaser-lg"] = CatalogTeaserLg::class;
+            if (empty($imagecache["product-teaser-lg"])) $imagecache["product-teaser-lg"] = ProductTeaserLg::class;
+            if (empty($imagecache["catalog-teaser-md"])) $imagecache["catalog-teaser-md"] = CatalogTeaserMd::class;
+            if (empty($imagecache["catalog-teaser-sm"])) $imagecache["catalog-teaser-sm"] = CatalogTeaserSm::class;
+            if (empty($imagecache["catalog-teaser-xs"])) $imagecache["catalog-teaser-xs"] = CatalogTeaserXs::class;
 
-            $imagecache["product-show-xl"] = ProductShowXl::class;
-            $imagecache["product-show-lg"] = ProductShowLg::class;
-            $imagecache["product-show-md"] = ProductShowMd::class;
-            $imagecache["product-show-sm"] = ProductShowSm::class;
+            if (empty($imagecache["product-show-xl"])) $imagecache["product-show-xl"] = ProductShowXl::class;
+            if (empty($imagecache["product-show-lg"])) $imagecache["product-show-lg"] = ProductShowLg::class;
+            if (empty($imagecache["product-show-md"])) $imagecache["product-show-md"] = ProductShowMd::class;
+            if (empty($imagecache["product-show-sm"])) $imagecache["product-show-sm"] = ProductShowSm::class;
 
-            $imagecache["product-show-thumb"] = ProductThumbShow::class;
+            if (empty($imagecache["product-show-thumb"])) $imagecache["product-show-thumb"] = ProductThumbShow::class;
         }
         app()->config['imagecache.templates'] = $imagecache;
     }
