@@ -4,6 +4,7 @@ namespace PortedCheese\CategoryProduct\Http\Controllers\Site;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Meta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
@@ -31,7 +32,11 @@ class CategoryController extends Controller
                 'title' => config("category-product.catalogPageName"),
             ]
         ];
-        return view("category-product::site.categories.index", compact("categories", "siteBreadcrumb"));
+        $pageMetas = Meta::getByPageKey("catalog");
+        return view(
+            "category-product::site.categories.index",
+            compact("categories", "siteBreadcrumb", "pageMetas")
+        );
     }
 
     /**
@@ -52,11 +57,12 @@ class CategoryController extends Controller
         $categories = $collection->get();
 
         $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category);
+        $pageMetas = Meta::getByModelKey($category);
 
         if (config("category-product.subCategoriesPage") && $categories->count()) {
             return view(
                 "category-product::site.categories.index",
-                compact("categories", "category", "siteBreadcrumb")
+                compact("categories", "category", "siteBreadcrumb", "pageMetas")
             );
         }
         else {
@@ -65,7 +71,7 @@ class CategoryController extends Controller
             $filters = ProductFilters::getFilters($category, true);
             return view(
                 "category-product::site.categories.show",
-                compact("category", "categories", "products", "productView", "filters", "request", "siteBreadcrumb")
+                compact("category", "categories", "products", "productView", "filters", "request", "siteBreadcrumb", "pageMetas")
             );
         }
     }

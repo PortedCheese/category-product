@@ -3,6 +3,7 @@
 namespace PortedCheese\CategoryProduct\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Meta;
 use App\Product;
 use App\ProductLabel;
 use Illuminate\Http\Request;
@@ -23,11 +24,12 @@ class ProductController extends Controller
         $category = $product->category;
         $gallery = $product->images()->orderBy("weight")->get();
         $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category, true);
+        $pageMetas = Meta::getByModelKey($product);
         $groups = ProductActions::getProductSpecificationsByGroups($product);
         $watch = ProductActions::getYouWatch($product);
         return view(
             "category-product::site.products.show",
-            compact("product", "siteBreadcrumb", "gallery", "groups", "watch")
+            compact("product", "siteBreadcrumb", "gallery", "groups", "watch", "pageMetas")
         );
     }
 
