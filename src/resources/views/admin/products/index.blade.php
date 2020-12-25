@@ -136,4 +136,13 @@
             </div>
         </div>
     </div>
+    @if ($products->lastPage() > 1)
+        <div class="col-12 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    {{ $products->links() }}
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
