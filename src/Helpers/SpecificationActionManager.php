@@ -48,7 +48,7 @@ class SpecificationActionManager
      */
     public function checkProductsSpecifications(Category $category, Specification $specification)
     {
-        return DB::table("product_specification")
+        return DB::table("product_specifications")
             ->where("specification_id", $specification->id)
             ->where("category_id", $category->id)
             ->count();
