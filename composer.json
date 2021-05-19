@@ -11,9 +11,9 @@
     ],
     "minimum-stability": "dev",
     "require": {
-      "portedcheese/base-settings": "^v2.0",
-      "portedcheese/seo-integration": "^v1.2",
-      "portedcheese/admin-site-menu": "^v1.4"
+      "portedcheese/base-settings": "^3.0",
+      "portedcheese/seo-integration": "^1.4",
+      "portedcheese/admin-site-menu": "^1.6"
     },
     "autoload": {
         "psr-4": {

@@ -298,7 +298,7 @@ class ProductFilterManager
             if ($this->prepareRangesForQuery($key, $value)) continue;
         }
         $this->addRangesToQuery();
-        $this->query->groupBy("products.id");
+        //$this->query->groupBy("products.id");
         $this->addSortCondition();
         $perPage = config("category-product.categoryProductsPerPage");
         return $this->query->paginate($perPage)->appends($this->request->input());
