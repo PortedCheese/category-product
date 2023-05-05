@@ -292,6 +292,7 @@ class ProductActionsManager
         if (count($watch) > 5) unset($watch[4]);
         $result = Product::query()
             ->whereIn("id", $watch)
+            ->whereNotNull("published_at")
             ->get();
         $items = [];
         foreach ($result as $item) {

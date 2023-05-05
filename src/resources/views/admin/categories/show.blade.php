@@ -26,8 +26,12 @@
             <div class="card-body">
                 <dl class="row">
                     @if ($category->short)
-                        <dt class="col-sm-3">Описание</dt>
+                        <dt class="col-sm-3">Краткое описание</dt>
                         <dd class="col-sm-9">{{ $category->short }}</dd>
+                    @endif
+                    @if ($category->description)
+                        <dt class="col-sm-3">Описание</dt>
+                        <dd class="col-sm-9">{!! $category->description !!}</dd>
                     @endif
                     @if ($category->parent)
                         <dt class="col-sm-3">Родитель</dt>

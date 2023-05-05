@@ -26,6 +26,14 @@
             </div>
         </div>
     @endif
+
+    @if ($category->description)
+        <div class="row">
+            <div class="col-12">
+                {!! $category->description !!}
+            </div>
+        </div>
+    @endif
 @endsection
 
 @push("more-scripts")

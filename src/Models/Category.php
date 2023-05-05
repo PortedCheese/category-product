@@ -15,6 +15,7 @@ class Category extends Model
         "title",
         "slug",
         "short",
+        "description",
     ];
 
     protected $metaKey = "categories";

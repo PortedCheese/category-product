@@ -77,6 +77,21 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="description">Описание</label>
+                        <textarea class="form-control tiny  @error("short") is-invalid @enderror"
+                                  name="description"
+                                  id="description"
+                                  rows="8">
+                            {{ old('description') }}
+                        </textarea>
+                        @error("description")
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
                     <div class="btn-group"
                          role="group">
                         <button type="submit" class="btn btn-success">Добавить</button>
