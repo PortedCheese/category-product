@@ -19,6 +19,7 @@ class CategoryObserver
             ->where("parent_id", $category->parent_id)
             ->max("priority");
         $category->priority = $max + 1;
+        $category->published_at = ! $category->isParentPublished() ? null : now();
     }
 
     /**
@@ -28,6 +29,8 @@ class CategoryObserver
      */
     public function created(Category $category)
     {
+        //$category->published_at = ! $category->isParentPublished() ? null : now();
+        //$category->save();
         // Скопировать поля родителя.
         CategoryActions::copyParentSpec($category);
 
@@ -45,6 +48,13 @@ class CategoryObserver
         if (isset($original["parent_id"]) && $original["parent_id"] != $category->parent_id) {
             $this->categoryChangedParent($category, $original["parent_id"]);
         }
+        if (! $category->isParentPublished()  && $category->published_at )
+            $category->publishCascade();
+    }
+
+    public function updated(Category $category)
+    {
+        event(new CategoryChangePosition($category));
     }
 
     /**

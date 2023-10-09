@@ -71,13 +71,27 @@
     sortOptions - Список сортировок
     
 ### Versions
+    v2.0.0:
+        - Публикация/Снятие с публикации Категории (add published_at, default value = now())
+        - Добавлены права на публикацию
+        - Если снять с публикации категорию - снимаются с публикации все подкатегории и товары
+        - Невозможно опубликовать товар в неопубликованной категории
+        - Невозможно опубликовать подкатегории, если родитель снять с публикации
+    Обновление:
+        - php artidan migrate 
+    Проверить переопределение:
+        - ProductActionsManager, Admin/ParoductController > changePublished, Site/CategoryController > index,show, CategoryObserver > creationg, updated
+        - шаблонов: admin.catrgories.includes.table-list
 
+    v1.1.2: 
+        - base 4.0
     v1.1.1:
         - Добавлено описание к категории
         - В метках, избранном и блоке "вы смотрели" не показываются снятые с публикации товары (дополнен ProductController & ProductActionManager)
     Обновление:
         - php artisan migrate
-        - проверить переопределение админ-шаблонов категории и ProductController & ProductActionManager
+        - проверить переопределение шаблонов категории (admin.catefories.create, admin.categories.edit, admin.categories.show, site.categories.show) 
+        - Проверить переопределение модели Category > fillable, ProductController > label & favouriteList,  ProductActionManager > getYouWatch
     v1.1.0:
         - base-settings 3.0 & fix productFilter
     v1.0.5:

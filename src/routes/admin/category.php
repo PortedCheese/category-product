@@ -27,5 +27,8 @@ Route::group([
         // Meta.
         Route::get("metas", "CategoryController@metas")
             ->name("metas");
+        // Отключение\включение товара.
+        Route::put("published", "CategoryController@changePublished")
+            ->name("published");
     });
 });

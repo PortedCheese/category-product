@@ -23,6 +23,7 @@ class CategoryController extends Controller
         $categories = Category::query()
             ->with("image")
             ->whereNull("parent_id")
+            ->whereNotNull("published_at")
             ->orderBy("priority")
             ->get();
         $siteBreadcrumb = [
@@ -44,36 +45,43 @@ class CategoryController extends Controller
      *
      * @param Request $request
      * @param Category $category
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
      */
     public function show(Request $request, Category $category)
     {
-        $collection = $category
-            ->children()
-            ->orderBy("priority");
-        if (config("category-product.subCategoriesPage")) {
-            $collection->with("image");
-        }
-        $categories = $collection->get();
+        if ($category->published_at) {
+            $collection = $category
+                ->children()
+                ->whereNotNull("published_at")
+                ->orderBy("priority");
+            if (config("category-product.subCategoriesPage")) {
+                $collection->with("image");
+            }
+            $categories = $collection->get();
 
-        $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category);
-        $pageMetas = Meta::getByModelKey($category);
+            $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category);
+            $pageMetas = Meta::getByModelKey($category);
 
-        if (config("category-product.subCategoriesPage") && $categories->count()) {
-            return view(
-                "category-product::site.categories.index",
-                compact("categories", "category", "siteBreadcrumb", "pageMetas")
-            );
+            if (config("category-product.subCategoriesPage") && $categories->count()) {
+                return view(
+                    "category-product::site.categories.index",
+                    compact("categories", "category", "siteBreadcrumb", "pageMetas")
+                );
+            }
+            else {
+                $products = ProductFilters::filterByCategory($request, $category);
+                $productView = Cookie::get("products-view", config("category-product.defaultProductView"));
+                $filters = ProductFilters::getFilters($category, true);
+                return view(
+                    "category-product::site.categories.show",
+                    compact("category", "categories", "products", "productView", "filters", "request", "siteBreadcrumb", "pageMetas")
+                );
+            }
         }
-        else {
-            $products = ProductFilters::filterByCategory($request, $category);
-            $productView = Cookie::get("products-view", config("category-product.defaultProductView"));
-            $filters = ProductFilters::getFilters($category, true);
-            return view(
-                "category-product::site.categories.show",
-                compact("category", "categories", "products", "productView", "filters", "request", "siteBreadcrumb", "pageMetas")
-            );
-        }
+        else
+            return redirect(route("catalog.categories.index"));
+
     }
 
     /**

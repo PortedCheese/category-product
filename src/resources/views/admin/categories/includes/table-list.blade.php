@@ -35,6 +35,15 @@
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 @endcan
+                                @can("publish", $item)
+                                    <div class="btn-group">
+                                        <button type="button"
+                                                class="btn btn-{{ $item->published_at ? "success" : "secondary" }}"
+                                                data-confirm="{{ "change-published-form-{$item->id}" }}">
+                                            <i class="fas fa-toggle-{{ $item->published_at ? "on" : "off" }}"></i>
+                                        </button>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
                         @can("delete", \App\Category::class)
@@ -46,6 +55,20 @@
                                           method="post">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">
+                                    </form>
+                                </template>
+                            </confirm-form>
+                        @endcan
+                        @can("publish", $item)
+                            <confirm-form :id="'{{ "change-published-form-{$item->id}" }}'"
+                                          confirm-text="Да, изменить!"
+                                          text="Это изменит статус показа категории и товаров на сайте">
+                                <template>
+                                    <form id="change-published-form-{{ $item->id }}"
+                                          action="{{ route("admin.categories.published", ['category' => $item]) }}"
+                                          method="post">
+                                        @method('put')
+                                        @csrf
                                     </form>
                                 </template>
                             </confirm-form>

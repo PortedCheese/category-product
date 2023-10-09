@@ -4,7 +4,6 @@ namespace PortedCheese\CategoryProduct\Facades;
 
 use App\Category;
 use Illuminate\Support\Facades\Facade;
-use phpDocumentor\Reflection\Types\Static_;
 use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
 
 /**
@@ -17,6 +16,8 @@ use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
  * @method static syncSpec(Category $category)
  * @method static copyParentSpec(Category $category, Category $customParent = null)
  * @method static array getAllList()
+ * @method static void runParentEvents(Category $category)
+ * @method static void unPublishChildren($collection, $cascade = true)
  *
  * @see CategoryActionsManager
  */

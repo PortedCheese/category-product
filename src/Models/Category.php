@@ -5,6 +5,9 @@ namespace PortedCheese\CategoryProduct\Models;
 use Illuminate\Database\Eloquent\Model;
 use PortedCheese\BaseSettings\Traits\ShouldImage;
 use PortedCheese\BaseSettings\Traits\ShouldSlug;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
+use PortedCheese\CategoryProduct\Events\ProductListChange;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\SeoIntegration\Traits\ShouldMetas;
 
 class Category extends Model
@@ -76,4 +79,66 @@ class Category extends Model
         }
         return $this->parent->nesting + 1;
     }
+
+
+
+    /**
+     * Change publish status all children and products
+     *
+     */
+    public function publishCascade()
+    {
+        $children = $this->children;
+        $parentPublished = $this->isParentPublished();
+
+        if ($parentPublished){
+            // change publish status
+            $this->publish();
+            if(! $this->published_at){
+                CategoryActions::runParentEvents($this);
+                CategoryActions::unPublishChildren($children);
+                CategoryActions::unPublishChildren($this->products, false);
+            }
+            return true;
+        }
+        else
+        {
+            if (! $this->published_at){
+                return false;
+            }
+            else {
+                $this->publish();
+                CategoryActions::unPublishChildren($children);
+                CategoryActions::unPublishChildren($this->products, false);
+                return true;
+            }
+        }
+
+
+    }
+
+    /**
+     * Get parent publish status
+     *
+     * @return \Illuminate\Support\Carbon|mixed
+     */
+
+    public function isParentPublished(){
+
+        $parent = $this->parent;
+        return $parent ? $parent->published_at : now();
+
+    }
+
+    /**
+     * Change publish status
+     *
+     */
+    protected function publish()
+    {
+        $this->published_at = $this->published_at  ? null : now();
+        $this->save();
+    }
+
+
 }

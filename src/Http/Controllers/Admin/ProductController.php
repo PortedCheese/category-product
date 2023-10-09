@@ -278,7 +278,15 @@ class ProductController extends Controller
     public function changePublished(Product $product)
     {
         $this->authorize("publish", $product);
-        $product->published_at = $product->published_at ? null : now();
+        if ($product->category->published_at || $product->published_at) {
+            $product->published_at = $product->published_at ? null : now();
+        }
+        else
+        {
+            return redirect()
+                ->back()
+                ->with("danger", "Статус публикации не может быть изменен: категория не опубликована");
+        }
         $product->save();
         $category = $product->category;
         // При отключении товара меняется набор характеристик для фильтрации.

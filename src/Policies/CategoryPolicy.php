@@ -18,6 +18,8 @@ class CategoryPolicy
     const CREATE = 8;
     const UPDATE = 16;
     const DELETE = 32;
+    const PUBLISH = 64;
+
 
     public function __construct()
     {
@@ -37,6 +39,7 @@ class CategoryPolicy
             self::CREATE => "Добавление",
             self::UPDATE => "Обновление",
             self::DELETE => "Удаление",
+            self::PUBLISH => "Публикация",
         ];
     }
 
@@ -47,7 +50,7 @@ class CategoryPolicy
      */
     public static function defaultRules()
     {
-        return self::VIEW_ALL + self::VIEW + self::CREATE + self::UPDATE + self::DELETE;
+        return self::VIEW_ALL + self::VIEW + self::CREATE + self::UPDATE + self::DELETE + self::PUBLISH;
     }
 
     /**
@@ -104,4 +107,16 @@ class CategoryPolicy
     {
         return $user->hasPermission($this->model, self::DELETE);
     }
+
+    /**
+     * Публикация категории.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function publish(User $user)
+    {
+        return $user->hasPermission($this->model, self::PUBLISH);
+    }
+
 }

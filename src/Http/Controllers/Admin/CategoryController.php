@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Meta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
+use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 
 class CategoryController extends Controller
@@ -226,5 +228,28 @@ class CategoryController extends Controller
             return response()
                 ->json("Ошибка, недостаточно данных");
         }
+    }
+    /**
+     * Смена статуса публикации.
+     *
+     * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function changePublished(Category $category)
+    {
+        $this->authorize("publish", $category);
+
+        if ($category->publishCascade())
+            return
+                redirect()
+                    ->back()
+                    ->with("success", "Успешно изменено");
+        else
+            return
+                redirect()
+                    ->back()
+                    ->with("danger",  "Статус не может быть изменен");
+
     }
 }

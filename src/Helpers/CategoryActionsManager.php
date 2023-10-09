@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
+use PortedCheese\CategoryProduct\Events\ProductListChange;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 
 class CategoryActionsManager
 {
@@ -407,5 +410,38 @@ class CategoryActionsManager
             }
         }
         return [$tree, $noParent];
+    }
+
+    /**
+     * @param Category $category
+     * @return void
+     */
+    public static function runParentEvents(Category $category){
+        if ($category->parent){
+            // При отключении категории меняется набор характеристик для фильтрации.
+            event(new CategorySpecificationValuesUpdate($category->parent));
+            // Вызвать событие изменения списка товаров.
+            event(new ProductListChange($category->parent));
+        }
+    }
+
+    /**
+     * UnPublish children
+     *
+     * @param $collection
+     * @param $cascade
+     * @return void
+     */
+    public static function unPublishChildren($collection, $cascade = true){
+        if ($collection->count() > 0) {
+            foreach ($collection as $child) {
+                $child->published_at = null;
+                $child->save();
+                if ($cascade) {
+                    CategoryActions::unPublishChildren($child->children);
+                    CategoryActions::unPublishChildren($child->products, false);
+                }
+            }
+        }
     }
 }

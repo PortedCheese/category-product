@@ -170,6 +170,9 @@ class ProductActionsManager
         catch (\Exception $exception) {
             throw new PreventActionException("Категория не найдена");
         }
+        if (! $original->published_at)
+            $product->published_at = null;
+
         $product->category_id = $categoryId;
         $product->save();
         /**
