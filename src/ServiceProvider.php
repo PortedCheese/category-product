@@ -129,7 +129,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         });
 
         view()->composer("category-product::site.includes.categories-menu", function (View $view) {
-            $view->with("categoriesTree", CategoryActions::getTree());
+            $view->with("categoriesTree", CategoryActions::getTree(true));
         });
     }
 

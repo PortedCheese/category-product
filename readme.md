@@ -71,6 +71,10 @@
     sortOptions - Список сортировок
     
 ### Versions
+    v1.2.3:
+        - обновление выборки дерева категорий для меню каталога
+    Проверить переопределение:
+        - CategoryActions > getTree, makeTreeDataWithNoParent 
     v1.2.0-v1.2.2:
         - Публикация/Снятие с публикации Категории (add published_at, default value = now())
         - Добавлены права на публикацию
@@ -78,7 +82,7 @@
         - Невозможно опубликовать товар в неопубликованной категории
         - Невозможно опубликовать подкатегории, если родитель снять с публикации
     Обновление:
-        - php artidan migrate   (добавит поле публикации с текущей датой ко всем категориям проекта)
+        - php artisan migrate   (добавит поле публикации с текущей датой ко всем категориям проекта)
         - если в проекте есть выборки категорий, доавить в выборку проверку статуса публикации
     Проверить переопределение:
         - ProductActionsManager, Admin/ParoductController > changePublished, Site/CategoryController > index,show, CategoryObserver > creationg, updated

@@ -165,16 +165,17 @@ class CategoryActionsManager
     /**
      * Получить дерево категорий.
      * 
-     * @param bool $forJs
+     * @param bool $published
      * @return array
      */
-    public function getTree()
+    public function getTree(Bool $published = false)
     {
-        list($tree, $noParent) = $this->makeTreeDataWithNoParent();
+        list($tree, $noParent) = $this->makeTreeDataWithNoParent($published);
         $this->addChildren($tree);
         $this->clearTree($tree, $noParent);
         return $this->sortByPriority($tree);
     }
+
 
     /**
      * Сохранить порядок.
@@ -382,15 +383,18 @@ class CategoryActionsManager
 
     /**
      * Получить данные по категориям.
+     * @param Bool $published
      *
      * @return array
      */
-    protected function makeTreeDataWithNoParent()
+    protected function makeTreeDataWithNoParent(Bool $published = false)
     {
-        $categories = DB::table("categories")
+        $query = DB::table("categories")
             ->select("id", "title", "slug", "parent_id", "priority")
-            ->orderBy("parent_id")
-            ->get();
+            ->orderBy("parent_id");
+        if ($published)
+            $query->whereNotNull("published_at");
+        $categories =  $query->get();
 
         $tree = [];
         $noParent = [];
