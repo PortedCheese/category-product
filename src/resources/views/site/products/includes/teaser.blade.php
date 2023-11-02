@@ -1,4 +1,4 @@
-<div class="card product-teaser">
+<div class="card product-teaser{{ ! $product->published_at ? ' product-teaser_disable' : '' }}">
     <div class="product-teaser__image-cover">
         @include("category-product::site.products.includes.favorite", ["teaser" => true, "product" => $product])
         @if ($product->labels->count())

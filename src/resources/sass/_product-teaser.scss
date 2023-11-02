@@ -5,6 +5,12 @@
     border-color: $primary;
   }
 
+  &_disable{
+    &:hover{
+      border-color: $gray-500 !important;
+    }
+  }
+
   .favorite-product {
     position: absolute;
     z-index: 1;

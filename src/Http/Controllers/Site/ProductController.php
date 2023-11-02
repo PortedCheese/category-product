@@ -66,7 +66,6 @@ class ProductController extends Controller
         $products = Product::query()
             ->select("id", "slug")
             ->whereIn("id", $favorite)
-            ->whereNotNull("published_at")
             ->orderBy("title")
             ->paginate($perPage)
             ->appends($request->input());

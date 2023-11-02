@@ -71,6 +71,14 @@
     sortOptions - Список сортировок
     
 ### Versions
+    v1.2.4:
+        - вывод неопубликованных товаров в избранном 
+    Проверить переопределение:
+        - тизера товара site.products.includes.teaser
+        - метода Site/ProductController > favoriteList
+    Обновление:
+        - php artisan vendor:publish --provider="PortedCheese\CategoryProduct\ServiceProvider" --tag=public --force
+        - npm run prod
     v1.2.3:
         - обновление выборки дерева категорий для меню каталога
     Проверить переопределение:
