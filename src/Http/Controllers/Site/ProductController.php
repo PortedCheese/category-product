@@ -62,10 +62,11 @@ class ProductController extends Controller
     public function favoriteList(Request $request)
     {
         $perPage = config("category-product.categoryProductsPerPage");
-        $favorite = ProductFavorite::getCurrentFavorite();
+        $actualFavorite = ProductFavorite::getActualFavorite();
+
         $products = Product::query()
             ->select("id", "slug")
-            ->whereIn("id", $favorite)
+            ->whereIn("id", $actualFavorite)
             ->orderBy("title")
             ->paginate($perPage)
             ->appends($request->input());

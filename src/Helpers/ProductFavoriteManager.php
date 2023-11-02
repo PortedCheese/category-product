@@ -7,6 +7,7 @@ namespace PortedCheese\CategoryProduct\Helpers;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use PortedCheese\CategoryProduct\Facades\ProductFavorite;
 
 class ProductFavoriteManager
 {
@@ -41,6 +42,49 @@ class ProductFavoriteManager
     public function removeFromFavorite(Product $product)
     {
         $id = $product->id;
+        $favorite = $this->findCurrentFavorite();
+        if (($key = array_search($id, $favorite)) !== false) {
+            unset($favorite[$key]);
+            $result = $this->saveFavorite($favorite);
+        }
+        else {
+            $result = $favorite;
+        }
+        return array_values($result);
+    }
+
+    /**
+     * Очищаем избранное от товаров, которые были удалены
+     *
+     * @return array
+     */
+    public function getActualFavorite():array
+    {
+        $favorite = $this->findCurrentFavorite();
+        $actualFavorite = [];
+        foreach ($favorite as $id) {
+            try {
+                $find = Product::query()
+                    ->select("id")
+                    ->where("id","=",intval($id))
+                    ->firstOrFail();
+                $actualFavorite[] = $find->id;
+            }
+            catch (\Exception $e){
+                $this->removeFromFavoriteById($id);
+            }
+        }
+        return $actualFavorite;
+    }
+
+    /**
+     * Удалить из збранного по ID (удаленный товар).
+     *
+     * @param $id
+     * @return array|string|null
+     */
+    protected function removeFromFavoriteById($id)
+    {
         $favorite = $this->findCurrentFavorite();
         if (($key = array_search($id, $favorite)) !== false) {
             unset($favorite[$key]);
