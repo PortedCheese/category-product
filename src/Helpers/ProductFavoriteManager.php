@@ -133,6 +133,7 @@ class ProductFavoriteManager
     protected function findCurrentFavorite()
     {
         $favorite = Cookie::get(self::COOKIE_NAME, "[]");
+        if (! isset($favorite)) $favorite = "[]";
         $favorite = array_values(json_decode($favorite));
         return $this->checkUserFavorite($favorite);
     }
