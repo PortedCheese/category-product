@@ -75,6 +75,21 @@
                             </ul>
                         </dd>
                     @endif
+                    @if ($collections->count())
+                        <dt class="col-sm-3">Коллекции:</dt>
+                        <dd class="col-sm-9">
+                            <ul class="list-unstyled rounded bg-light p-3">
+                                @foreach ($collections as $collection)
+                                    <li>
+                                        <a href="{{ route("admin.product-collections.show", ["collection" => $collection]) }}"
+                                           target="_blank">
+                                           {{ $collection->title }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </dd>
+                    @endif
                 </dl>
             </div>
         </div>

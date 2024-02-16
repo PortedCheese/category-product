@@ -72,7 +72,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group border border-light rounded p-3">
                         <label>Метки</label>
                         @foreach($labels as $label)
                             <div class="custom-control custom-checkbox">
@@ -87,6 +87,27 @@
                                 </label>
                             </div>
                         @endforeach
+                    </div>
+
+                    <div class="form-group bg-light rounded p-3">
+                        <label>Коллекции</label>
+                        <div class="form-row">
+                            @foreach($collections as $collection)
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input"
+                                               type="checkbox"
+                                               {{ (! count($errors->all()) && in_array($collection->id, $currentCollections)) || in_array($collection->id, old("collections[]", [])) ? "checked" : "" }}
+                                               value="{{ $collection->id }}"
+                                               id="check-collection-{{ $collection->id }}"
+                                               name="collections[]">
+                                        <label class="custom-control-label" for="check-collection-{{ $collection->id }}">
+                                            {{ $collection->title }}
+                                        </label>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
 
                     <div class="btn-group"

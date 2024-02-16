@@ -6,6 +6,7 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use App\Meta;
 use App\Product;
+use App\ProductCollection;
 use App\ProductLabel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -68,9 +69,10 @@ class ProductController extends Controller
     public function create(Category $category)
     {
         $labels = ProductLabel::query()->orderBy("title")->get();
+        $collections = ProductCollection::query()->orderBy("title")->get();
         return view(
             "category-product::admin.products.create",
-            compact("category", "labels")
+            compact("category", "labels", "collections")
         );
     }
 
@@ -91,6 +93,9 @@ class ProductController extends Controller
         // Метки.
         $labels = $request->get("labels", []);
         $product->labels()->sync($labels);
+        // Коллекции.
+        $collections = $request->get("collections", []);
+        $product->collections()->sync($collections);
         return redirect()
             ->route("admin.products.show", ["product" => $product])
             ->with("success", "Товар добавлен");
@@ -124,10 +129,11 @@ class ProductController extends Controller
     {
         $category = $product->category;
         $labels = $product->labels;
+        $collections = $product->collections;
         $categories = CategoryActions::getAllList();
         return view(
             "category-product::admin.products.show",
-            compact("product", "category", "labels", "categories")
+            compact("product", "category", "labels", "collections", "categories")
         );
     }
 
@@ -145,9 +151,14 @@ class ProductController extends Controller
         foreach ($product->labels as $label) {
             $currentLabels[] = $label->id;
         }
+        $collections = ProductCollection::query()->orderBy("title")->get();
+        $currentCollections = [];
+        foreach ($product->collections as $collection) {
+            $currentCollections[] = $collection->id;
+        }
         return view(
             "category-product::admin.products.edit",
-            compact("product", "category", "labels", "currentLabels")
+            compact("product", "category", "labels", "currentLabels", "collections","currentCollections")
         );
     }
 
@@ -166,10 +177,13 @@ class ProductController extends Controller
         // Метки.
         $labels = $request->get("labels", []);
         $product->labels()->sync($labels);
+        // Коллекции.
+        $collections = $request->get("collections", []);
+        $product->collections()->sync($collections);
         $product->clearCache();
         return redirect()
             ->route("admin.products.show", ["product" => $product])
-            ->with("success", "Товар добавлен");
+            ->with("success", "Товар обновлен");
     }
 
     /**
@@ -293,6 +307,7 @@ class ProductController extends Controller
         event(new CategorySpecificationValuesUpdate($category));
         // Вызвать событие изменения списка товаров.
         event(new ProductListChange($category));
+        //event(new ProductCollectionListChange($collection));
         return redirect()
             ->back()
             ->with("success", "Статус публикации изменен");

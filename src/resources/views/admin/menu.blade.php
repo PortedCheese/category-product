@@ -3,7 +3,8 @@
               (strstr($currentRoute, ".products.") !== false) ||
               (strstr($currentRoute, ".specification-groups.") !== false) ||
               (strstr($currentRoute, ".specifications.") !== false) ||
-              (strstr($currentRoute, ".product-labels.") !== false);
+              (strstr($currentRoute, ".product-labels.") !== false) ||
+              (strstr($currentRoute, ".product-collections.") !== false);
 @endphp
 
 @if ($theme == "sb-admin")
@@ -47,6 +48,13 @@
                     <a href="{{ route("admin.product-labels.index") }}"
                        class="collapse-item{{ strstr($currentRoute, ".product-labels.") !== false ? " active" : "" }}">
                         <span>Метки товаров</span>
+                    </a>
+                @endcan
+
+                @can("viewAny", \App\ProductCollection::class)
+                    <a href="{{ route("admin.product-collections.index") }}"
+                       class="collapse-item{{ strstr($currentRoute, ".product-collections.") !== false ? " active" : "" }}">
+                        <span>Коллекции товаров</span>
                     </a>
                 @endcan
 

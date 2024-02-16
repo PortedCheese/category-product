@@ -243,6 +243,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if (config("category-product.productLabelAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/product-label.php");
         }
+        // Управление коллекциями товаров.
+        if (config("category-product.productCollectionAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/product-collection.php");
+        }
         // Управление товарами.
         if (config("category-product.productAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/product.php");
@@ -272,6 +276,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // Подключаем изображения.
         $imagecache = app()->config['imagecache.paths'];
         $imagecache[] = 'storage/categories';
+        $imagecache[] = 'storage/product_collections';
         $imagecache[] = 'storage/gallery/products';
         app()->config['imagecache.paths'] = $imagecache;
 

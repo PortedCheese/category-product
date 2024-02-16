@@ -46,6 +46,17 @@ class Product extends Model
     }
 
     /**
+     * Коллекции товара.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function collections()
+    {
+        return $this->belongsToMany(\App\ProductCollection::class)
+            ->withTimestamps();
+    }
+
+    /**
      * Значения характеристик.
      *
      * @return HasMany
