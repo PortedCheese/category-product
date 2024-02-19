@@ -43,6 +43,8 @@ class ProductObserver
     {
         // Очистить метки.
         $product->labels()->detach();
+        /// Очистить коллекции
+        $product->collections()->detach();
         // Очистить кэш.
         $product->clearCache();
         // При удалении товара меняется список идентификаторов товаров в категории и их значений.

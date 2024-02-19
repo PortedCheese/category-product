@@ -26,10 +26,12 @@ return [
     "subCategoriesPage" => false,
     "categoryProductsPerPage" => 18,
     "productSiteRoutes" => true,
+    "productCollectionSiteRoutes" => true,
     // @var ["list", "bar"]
     "defaultProductView" => "bar",
     "useSimpleTeaser" => true,
     "catalogPageName" => "Каталог",
+    "productCollectionsName" => "Коллекции",
     "categoryNest" => 3,
 
     // Sort

@@ -45,6 +45,7 @@
     specificationAdminRoutes(true) - Использовать роуты для управления характеристиками из пакета
     specificationGroupAdminRoutes(true) - Использовать роуты для управления группами характеристик из пакета
     productLabelAdminRoutes(true) - Использовать роуты для управления метками товара из пакета
+    productCollectionAdminRoutes - Использовать роуты для управления коллекциями товара из пакета
     productAdminRoutes(true) - Использовать роуты для управления товарами из пакета
     productSpecificationAdminRoutes(true) - Использовать роуты для управления значениями характеристик из пакета
     
@@ -60,9 +61,11 @@
     subCategoriesPage(false) - Включить страницу подкатегорий
     categoryProductsPerPage(18) - Товаров на страницу
     productSiteRoutes(true) - Роуты товаров для сайта
+    productCollectionSiteRoutes (true) - Роуты коллекций товаров для сайта
     defaultProductView(bar) - Отображение товаров по умолчанию
-    useSimpleTeaser(true) - Использовать изображение, которые убдут обрезаны по размеру. Если переключить изображения не будут обрезаться
+    useSimpleTeaser(true) - Использовать изображение, которые будут обрезаны по размеру. Если переключить изображения не будут обрезаться
     catalogPageName(Каталог) - Заголовок страницы каталога
+    productCollectionsName(Коллекции) - Заголовок страницы Коллекций
     categoryNest(3) - максимальная вложенность категорий
     
     defaultSort(title) - Сортировка товаров по умолчанию
@@ -71,7 +74,18 @@
     sortOptions - Список сортировок
     
 ### Versions
-    v1.2.6:
+    v1.3.0:
+        - Коллекции товаров: управление, отображение + настройки конфига для коллекций
+    Проверить переопределение:
+        - Модели Product (связка)
+        - ProductObserver (очистка коллекций)
+        - Admin/ProductController > create, edit, show
+        - Шаблонов admin.menu & admin.products.create&edit&show
+        - Шаблона site.products.includes.show-top=section (вывод подборок)
+    Обновление:
+        - php artisan migrate
+        - php artisan make:category-products --models --observers --controllers --policies  (создать коллекции)
+    v1.2.6-1.2.7:
         - Актуализация Избранного (при открытии избранных товаров), очистка от удаленных товаров
     Проверить переопределение:
         - Site/ProductController > favoritelist()

@@ -220,6 +220,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if (config("category-product.productSiteRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/site/product.php");
         }
+        // Коллекциии товаров.
+        if (config("category-product.productCollectionSiteRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/site/product-collection.php");
+        }
     }
 
     /**

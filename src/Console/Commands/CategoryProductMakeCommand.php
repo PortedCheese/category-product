@@ -62,7 +62,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "ProductCollectionController",
         ],
         "Site" => [
-            "CategoryController", "ProductController",
+            "CategoryController", "ProductController", "ProductCollectionController"
         ],
     ];
 
@@ -71,7 +71,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
      *
      * @var array
      */
-    protected $observers = ["ProductObserver", "CategoryObserver", "ProductLabelObserver", "SpecificationGroupObserver"];
+    protected $observers = ["ProductObserver", "CategoryObserver", "ProductLabelObserver", "ProductCollectionObserver","SpecificationGroupObserver"];
 
     /**
      * Папка для vue файлов.
