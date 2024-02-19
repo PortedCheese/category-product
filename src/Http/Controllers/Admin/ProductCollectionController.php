@@ -3,6 +3,7 @@
 namespace PortedCheese\CategoryProduct\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Meta;
 use App\ProductCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -214,5 +215,22 @@ class ProductCollectionController extends Controller
         return redirect()
             ->back()
             ->with("success", "Статус публикации изменен");
+    }
+
+    /**
+     * Метатеги.
+     *
+     * @param ProductCollection $collection
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function metas(ProductCollection $collection)
+    {
+        $this->authorize("viewAll", Meta::class);
+        $this->authorize("update", $collection);
+
+        return view("category-product::admin.product-collections.metas", [
+            'collection' => $collection,
+        ]);
     }
 }

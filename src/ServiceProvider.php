@@ -8,6 +8,7 @@ use App\Observers\Vendor\CategoryProduct\ProductLabelObserver;
 use App\Observers\Vendor\CategoryProduct\ProductObserver;
 use App\Observers\Vendor\CategoryProduct\SpecificationGroupObserver;
 use App\Product;
+use App\ProductCollection;
 use App\ProductLabel;
 use App\SpecificationGroup;
 use Illuminate\Contracts\View\View;
@@ -275,6 +276,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $seo = app()->config["seo-integration.models"];
         $seo["categories"] = Category::class;
         $seo["products"] = Product::class;
+        $seo["product_collection"] = ProductCollection::class;
         app()->config["seo-integration.models"] = $seo;
 
         // Подключаем изображения.

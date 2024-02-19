@@ -44,6 +44,15 @@
                             </a>
                         </li>
                     @endcan
+                    @can("viewAll", \App\Meta::class)
+                            <li class="nav-item">
+                                <a href="{{ route("admin.product-collections.metas", ["collection" => $collection]) }}"
+                                   class="nav-link{{ $currentRoute === "admin.product-collections.metas" ? " active" : "" }}">
+                                    Метатеги
+                                </a>
+                            </li>
+                    @endcan
+
                     @can("delete", \App\ProductCollection::class)
                         <li class="nav-item">
                             <button type="button" class="btn btn-link nav-link"
