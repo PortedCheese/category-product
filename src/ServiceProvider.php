@@ -5,6 +5,7 @@ namespace PortedCheese\CategoryProduct;
 use App\Category;
 use App\Observers\Vendor\CategoryProduct\CategoryObserver;
 use App\Observers\Vendor\CategoryProduct\ProductLabelObserver;
+use App\Observers\Vendor\CategoryProduct\ProductCollectionObserver;
 use App\Observers\Vendor\CategoryProduct\ProductObserver;
 use App\Observers\Vendor\CategoryProduct\SpecificationGroupObserver;
 use App\Product;
@@ -162,6 +163,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         }
         if (class_exists(ProductLabelObserver::class) && class_exists(ProductLabel::class)) {
             ProductLabel::observe(ProductLabelObserver::class);
+        }
+        if (class_exists(ProductCollectionObserver::class) && class_exists(ProductCollection::class)) {
+            ProductCollection::observe(ProductCollectionObserver::class);
         }
         if (class_exists(SpecificationGroupObserver::class) && class_exists(SpecificationGroup::class)) {
             SpecificationGroup::observe(SpecificationGroupObserver::class);
