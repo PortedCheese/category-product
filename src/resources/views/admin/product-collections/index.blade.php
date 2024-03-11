@@ -1,8 +1,8 @@
 @extends("admin.layout")
 
-@section("page-title", "Коллекции товаров - ")
+@section("page-title", config("category-product.productCollectionsName")." товаров - ")
 
-@section('header-title', "Коллекции товаров")
+@section('header-title', config("category-product.productCollectionsName")." товаров")
 
 @section('admin')
     @include("category-product::admin.product-collections.includes.pills")

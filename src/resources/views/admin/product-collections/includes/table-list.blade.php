@@ -75,7 +75,7 @@
                             @can("publish", $item)
                                 <confirm-form :id="'{{ "change-published-form-{$item->id}" }}'"
                                               confirm-text="Да, изменить!"
-                                              text="Это изменит статус показа коллекции на сайте">
+                                              text="Это изменит статус показа {{ config("category-product.productCollectionsName") }} на сайте">
                                     <template>
                                         <form id="change-published-form-{{ $item->id }}"
                                               action="{{ route("admin.product-collections.published", ['collection' => $item]) }}"

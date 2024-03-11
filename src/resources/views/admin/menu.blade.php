@@ -54,7 +54,7 @@
                 @can("viewAny", \App\ProductCollection::class)
                     <a href="{{ route("admin.product-collections.index") }}"
                        class="collapse-item{{ strstr($currentRoute, ".product-collections.") !== false ? " active" : "" }}">
-                        <span>Коллекции товаров</span>
+                        <span>{{ config("category-product.productCollectionsName") }} товаров</span>
                     </a>
                 @endcan
 
