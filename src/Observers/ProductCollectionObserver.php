@@ -5,11 +5,12 @@ namespace PortedCheese\CategoryProduct\Observers;
 use App\Product;
 use App\ProductCollection;
 use App\ProductLabel;
+use PortedCheese\CategoryProduct\Facades\ProductActions;
 
 class ProductCollectionObserver
 {
     /**
-     * Очистить кэш товаров при обновлении метки.
+     * Очистить кэш товаров при обновлении коллекции.
      * 
      * @param ProductCollection $collection
      */
@@ -32,6 +33,7 @@ class ProductCollectionObserver
     {
         foreach ($collection->products as $product) {
             $collection->products()->detach($product);
+            ProductActions::forgetProductCollections($product);
         }
     }
 }

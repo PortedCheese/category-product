@@ -18,6 +18,8 @@ use PortedCheese\CategoryProduct\Helpers\ProductActionsManager;
  * @method static forgetProductSpecificationsValues(Category $category)
  * @method static array getCategoryProductIds(Category $category, $includeSubs = false)
  * @method static forgetCategoryProductIds(Category $category)
+ * @method static mixed getProductCollections(Product $product)
+ * @method static forgetProductCollections(Product $product)
  *
  * @method static array getYouWatch(Product $product)
  *

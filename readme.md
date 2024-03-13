@@ -74,14 +74,14 @@
     sortOptions - Список сортировок
     
 ### Versions
-    v1.3.0 - v1.3.1:
+    v1.3.0 - v1.3.3:
         - Коллекции товаров: управление, отображение + настройки конфига для коллекций
     Проверить переопределение:
-        - Модели Product (связка)
+        - Модели Product (связка, очистка кэша коллекций)
         - ProductObserver (очистка коллекций)
         - Admin/ProductController > create, edit, show
         - Шаблонов admin.menu & admin.products.create&edit&show
-        - Шаблона site.products.includes.show-top=section (вывод подборок)
+        - Шаблона site.products.includes.show-top-section (вывод подборок)
     Обновление:
         - php artisan migrate
         - php artisan make:category-products --models --observers --controllers --policies  (создать коллекции)

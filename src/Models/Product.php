@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use PortedCheese\BaseSettings\Traits\ShouldGallery;
 use PortedCheese\BaseSettings\Traits\ShouldSlug;
+use PortedCheese\CategoryProduct\Facades\ProductActions;
 use PortedCheese\SeoIntegration\Traits\ShouldMetas;
 
 class Product extends Model
@@ -54,6 +55,16 @@ class Product extends Model
     {
         return $this->belongsToMany(\App\ProductCollection::class)
             ->withTimestamps();
+    }
+
+    /**
+     * Опубликованные коллекции
+     *
+     * @return mixed
+     */
+
+    public function collectionsPublished(){
+        return ProductActions::getProductCollections($this);
     }
 
     /**
@@ -119,5 +130,6 @@ class Product extends Model
     public function clearCache()
     {
         Cache::forget("productTeaserData:{$this->id}");
+        ProductActions::forgetProductCollections($this);
     }
 }

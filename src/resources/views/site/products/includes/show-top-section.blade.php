@@ -56,9 +56,9 @@
         @else
             @include("category-product::site.products.includes.out-of-stock")
         @endif
-        @if (count($product->collections))
+        @if (count($product->collectionsPublished()))
             <p class="text-muted">Подборки:</p>
-            @foreach($product->collections as $item)
+            @foreach($product->collectionsPublished() as $item)
                 @includeIf('category-product::site.product-collections.includes.teaser-short', ['collection' => $item])
             @endforeach
         @endif

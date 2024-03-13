@@ -363,4 +363,30 @@ class ProductActionsManager
                 "category_id" => $newId
             ]);
     }
+
+    /**
+     * Получить опубликованные коллекции
+     *
+     * @param Product $product
+     * @return mixed
+     */
+    public function getProductCollections(Product $product)
+    {
+        $key = "product-actions-getProductCollections:{$product->id}";
+        return Cache::rememberForever($key, function() use ($product) {
+            return $product->collections()->select("title", "slug","published_at")->whereNotNull("published_at")->get();
+        });
+    }
+
+    /**
+     * Забыть кэш опубликованных коллекций
+     *
+     * @param Product $product
+     * @return void
+     */
+    public function forgetProductCollections(Product $product){
+        $key = "product-actions-getProductCollections:{$product->id}";
+        Cache::forget("$key");
+    }
+
 }
