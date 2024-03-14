@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="form-group bg-light rounded p-3">
-                        <label>Коллекции</label>
+                        <label>{{ config("category-product.productCollectionsName") }}</label>
                         <div class="form-row">
                             @foreach($collections as $collection)
                                 <div class="col-12 col-sm-6 col-lg-4">
