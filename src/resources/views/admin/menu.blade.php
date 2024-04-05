@@ -58,6 +58,16 @@
                     </a>
                 @endcan
 
+                @if (class_exists(\App\Measurement::class))
+                        @can("viewAny", \App\Measurement::class)
+                            <a href="{{ route("admin.measurements.index") }}"
+                               class="collapse-item{{ strstr($currentRoute, ".measurements.") !== false ? " active" : "" }}">
+                                <span>Измерения</span>
+                            </a>
+                        @endcan
+                @endif
+
+
                 @can("viewAny", \App\Product::class)
                     <a href="{{ route("admin.products.index") }}"
                        class="collapse-item{{ strstr($currentRoute, "admin.products.index") !== false ? " active" : "" }}">
