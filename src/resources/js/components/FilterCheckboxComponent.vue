@@ -15,7 +15,7 @@
                class="form-control mb-2"
                v-model="search">
 
-        <div class="custom-control custom-checkbox"
+        <div class="custom-control custom-checkbox mb-2"
              v-for="(item, index) in visibleItems">
             <input type="checkbox"
                    :id="item.inputId + postfix"
@@ -24,7 +24,9 @@
                    v-model="checkedValues"
                    class="custom-control-input">
             <label :for="item.inputId + postfix" class="custom-control-label">
-                {{ item.value }}
+                <span v-if="filterData.type === 'color'" class="badge" :style="{backgroundColor: item.value}">&nbsp;</span>
+<!--                <span v-if="filterData.type === 'preview'" class="badge" :style="{backgroundImage: item.value}">&nbsp;</span>-->
+                <span>{{ item.value }}</span>
             </label>
         </div>
 
@@ -65,7 +67,7 @@
             limit: {
                 type: Number,
                 default: 3
-            }
+            },
         },
 
         data() {

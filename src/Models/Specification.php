@@ -13,6 +13,7 @@ class Specification extends Model
         "select" => "Список",
         "checkbox" => "Чекбокс",
         "range" => "Диапазон",
+        "color" => "Цвет",
     ];
 
     protected $fillable = [

@@ -16,6 +16,9 @@
             @case("range")
                 @include("category-product::site.filters.includes.range")
                 @break
+            @case("color")
+                @include("category-product::site.filters.includes.color")
+                @break
         @endswitch
     @endforeach
 

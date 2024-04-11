@@ -10,6 +10,7 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
@@ -68,6 +69,7 @@ class ProductFilterManager
         $this->setPriceFilter($category, $specInfo, $includeSubs);
         $this->prepareRangeFilters($specInfo);
         $this->prepareCheckboxFilters($specInfo);
+        $this->prepareCheckboxFilters($specInfo,"color", "color");
         return $specInfo;
     }
 
@@ -148,12 +150,12 @@ class ProductFilterManager
      *
      * @param $specInfo
      */
-    protected function prepareCheckboxFilters(&$specInfo)
+    protected function prepareCheckboxFilters(&$specInfo, $type = "checkbox", $param = "check")
     {
         $request = app(Request::class);
         foreach ($specInfo as $key => &$filter) {
-            if ($filter->type !== "checkbox") continue;
-            $current = $request->get("check-{$filter->slug}", []);
+            if ($filter->type !== $type) continue;
+            $current = $request->get("{$param}-{$filter->slug}", []);
             $vueValues = [];
             $i = 0;
             foreach ($filter->values as $id => $value) {
@@ -162,7 +164,7 @@ class ProductFilterManager
                     "id" => $id,
                     "value" => $value,
                     "checked" => in_array($value, $current),
-                    "inputName" => "check-{$filter->slug}[]",
+                    "inputName" => "$param-{$filter->slug}[]",
                     "inputId" => "{$id}-{$filter->slug}-{$i}",
                 ];
             }
@@ -295,6 +297,7 @@ class ProductFilterManager
             if (empty($value)) continue;
             if ($this->addSelectToQuery($key, $value)) continue;
             if ($this->addCheckboxToQuery($key, $value)) continue;
+            if ($this->addCheckboxToQuery($key, $value, "color")) continue;
             if ($this->prepareRangesForQuery($key, $value)) continue;
         }
         $this->addRangesToQuery();
@@ -366,6 +369,8 @@ class ProductFilterManager
         return true;
     }
 
+
+
     /**
      * Добавить чекбоксы к запросу.
      *
@@ -373,11 +378,11 @@ class ProductFilterManager
      * @param $value
      * @return bool
      */
-    protected function addCheckboxToQuery($key, $value)
+    protected function addCheckboxToQuery($key, $value, $param = "check")
     {
-        if (strstr($key, "check-") === false) return false;
+        if (strstr($key, "$param-") === false) return false;
 
-        $slug = str_replace("check-", "", $key);
+        $slug = str_replace("$param-", "", $key);
         if (empty($this->slugValues[$slug])) return true;
 
         $checkboxes = DB::table("product_specifications")
