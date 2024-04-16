@@ -24,8 +24,7 @@
                    v-model="checkedValues"
                    class="custom-control-input">
             <label :for="item.inputId + postfix" class="custom-control-label">
-                <span v-if="filterData.type === 'color'" class="badge" :style="{backgroundColor: item.value}">&nbsp;</span>
-<!--                <span v-if="filterData.type === 'preview'" class="badge" :style="{backgroundImage: item.value}">&nbsp;</span>-->
+                <span v-if="filterData.type === 'color'" class="badge" :style="{backgroundColor: item.code}">&nbsp;</span>
                 <span>{{ item.value }}</span>
             </label>
         </div>

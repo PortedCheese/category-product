@@ -11,6 +11,7 @@ class ProductSpecification extends Model
         "product_id",
         "category_id",
         "value",
+        "code",
     ];
 
     /**

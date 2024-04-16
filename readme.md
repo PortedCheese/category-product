@@ -74,6 +74,16 @@
     sortOptions - Список сортировок
     
 ### Versions
+    v1.5.0: Добавлено поле code (цвет) к характиеристикам товара
+        Проверить переопределение:
+        - Models/ProductSpecification > fillable, Models/Specification  > types
+        - Controllers/Admin/ProductSpecificationController > create, validator
+        - vue components: AddProductSpecificationValueComponent, EditProductSpecificaitonValue, FilterCheckboxComponent
+        - helpers: ProductActionsManagerm ProductFilterManager
+        - views: site.filters.form
+        Обновление:
+        - php artisan migrate
+        - php artisan cache:clear (очитска кэша фильтров категорий)
     v1.4.0: Добавлено Measurement в  меню админики
     v1.3.0 - v1.3.4:
         - Коллекции товаров: управление, отображение + настройки конфига для коллекций

@@ -49,14 +49,21 @@
                                 </small>
                                 <small v-else class="form-text text-muted">Выберите характеристику</small>
                             </div>
-
                             <div class="form-group" v-if="chosenSpec">
                                 <div class="input-group mb-3" v-for="(item, index) in newValues" :key="index">
                                     <input type="text"
+                                           name="text"
                                            v-model="item.text"
                                            class="form-control"
                                            placeholder="Значение"
                                            aria-label="Значение">
+                                    <input v-if="chosenSpec.type"
+                                           v-model="item.code"
+                                           type="text"
+                                           name="code"
+                                           class="form-control"
+                                           placeholder="Код"
+                                           aria-label="Код">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-danger"
                                                 @click="removeValue(index)"
@@ -65,14 +72,23 @@
                                             <i class="fas fa-minus"></i>
                                         </button>
                                     </div>
+
                                 </div>
 
                                 <div class="input-group mb-3">
                                     <input type="text"
+                                           name="text"
                                            v-model="newValue"
                                            class="form-control"
                                            placeholder="Значение"
                                            aria-label="Значение">
+                                    <input v-if="chosenSpec.type"
+                                           v-model="newCode"
+                                          type="text"
+                                          name="code"
+                                          class="form-control"
+                                          placeholder="Код"
+                                          aria-label="Код">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-success"
                                                 :disabled="! newValue.length || loading"
@@ -122,6 +138,7 @@
                 chosenSpecId: "",
                 newValues: [],
                 newValue: "",
+                newCode: "",
                 errors: [],
             }
         },
@@ -143,7 +160,7 @@
                 let values = [];
                 for (let item in this.newValues) {
                     if (this.newValues.hasOwnProperty(item)) {
-                        values.push(this.newValues[item].text);
+                        values.push({'value':this.newValues[item].text , 'code': this.newValues[item].code});
                     }
                 }
                 return values;
@@ -154,9 +171,11 @@
             // Добавить новое значение в список.
             addNewValue() {
                 this.newValues.push({
-                    text: this.newValue
+                    text: this.newValue,
+                    code: this.newCode,
                 });
                 this.newValue = "";
+                this.newCode = "";
             },
             // Удалить значение.
             removeValue(index) {

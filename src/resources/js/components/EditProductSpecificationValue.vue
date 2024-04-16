@@ -18,7 +18,6 @@
                                 </template>
                             </template>
                         </div>
-
                         <div class="form-group">
                             <label for="value">Значение</label>
                             <input type="text"
@@ -26,6 +25,14 @@
                                    name="value"
                                    v-model="currentValue"
                                    class="form-control">
+                        </div>
+                        <div class="form-group" v-if="showCode">
+                          <label for="code">Код</label>
+                          <input type="text"
+                                 id="code"
+                                 name="code"
+                                 v-model="currentCode"
+                                 class="form-control">
                         </div>
                     </form>
                 </div>
@@ -52,8 +59,11 @@
                 specification: {},
                 errors: [],
                 newValue: "",
+                newCode: "",
                 loading: false,
                 currentValue: "",
+                currentCode: "",
+                showCode: "",
             }
         },
 
@@ -66,13 +76,16 @@
                 this.specification = specification;
                 $("#editSpecModal").modal("show");
                 this.currentValue = this.specification.value;
+                this.currentCode = this.specification.code ?  this.specification.code: "";
+                this.showCode = this.specification.specification.type === 'color' ? this.specification.specification.type: false;
             },
             updateValue() {
                 this.loading = true;
                 this.errors = [];
                 axios
                     .put(this.specification.updateUrl, {
-                        value: this.currentValue
+                        value: this.currentValue,
+                        code: this.currentCode
                     })
                     .then(response => {
                         let data = response.data;

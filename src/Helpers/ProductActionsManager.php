@@ -5,6 +5,7 @@ namespace PortedCheese\CategoryProduct\Helpers;
 
 
 use App\Category;
+use App\Http\Controllers\Auth\LoginController;
 use App\Product;
 use App\ProductSpecification;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,6 +15,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use PortedCheese\BaseSettings\Exceptions\PreventActionException;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Events\ProductListChange;
@@ -147,6 +149,7 @@ class ProductActionsManager
                 "id" => $specification->id,
                 "title" => $pivot->title,
                 "filter" => $pivot->filter,
+                "type" => $specification->type === "color" ?  $specification->type : "",
             ];
         }
         return $array;
@@ -203,11 +206,12 @@ class ProductActionsManager
             $pIds = $this->getCategoryProductIds($category, $includeSubs);
             // Найти значения товаров.
             $productValues = DB::table("product_specifications")
-                ->select("specification_id", "value")
+                ->select("specification_id", "value", "code")
                 ->whereIn("product_id", $pIds)
                 ->orderBy("product_id")
                 ->get();
             $specValues = [];
+            $specCodes = [];
             foreach ($productValues as $item) {
                 $specId = $item->specification_id;
                 if (empty($specValues[$specId])) {
@@ -217,9 +221,10 @@ class ProductActionsManager
                     $specValues[$specId] = array_unique(
                         array_merge($specValues[$specId], Arr::wrap($item->value))
                     );
+                    $specCodes[$specId][$item->value] = $item->code ?? "";
                 }
             }
-            return $specValues;
+            return array($specValues, $specCodes);
         });
     }
 

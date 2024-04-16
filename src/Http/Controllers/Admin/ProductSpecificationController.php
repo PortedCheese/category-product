@@ -7,6 +7,7 @@ use App\Product;
 use App\ProductSpecification;
 use App\Specification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
@@ -64,12 +65,12 @@ class ProductSpecificationController extends Controller
 
         $this->storeValidator($request->all());
         $specId = $request->get("id");
-
         foreach ($request->get("values") as $value) {
             $product->specifications()->create([
                 "category_id" => $product->category->id,
                 "specification_id" => $specId,
-                "value" => $value,
+                "value" => $value["value"],
+                "code" => $value["code"] ?: null,
             ]);
         }
         // При добавлении характеристики меняется список занчений характеристик.
@@ -128,8 +129,10 @@ class ProductSpecificationController extends Controller
     {
         Validator::make($data, [
             "value" => ["required", "max:250"],
+            "code" => ["nullable", "max:250"],
         ], [], [
-            "values" => "Значение",
+            "value" => "Значение",
+            "code" => "Код",
         ])->validate();
     }
 

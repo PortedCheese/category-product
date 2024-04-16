@@ -63,13 +63,13 @@ class ProductFilterManager
             SpecificationActions::getCategoryChildrenSpecificationsInfo($category) :
             SpecificationActions::getCategorySpecificationsInfo($category, true);
 
-        $specValues = ProductActions::getProductSpecificationValues($category, true);
+        list($specValues, $specCodes ) = ProductActions::getProductSpecificationValues($category, true);
         // Обход полученных значений и распределение по полям.
         $this->setProductValuesToFilters($specInfo, $specValues);
         $this->setPriceFilter($category, $specInfo, $includeSubs);
         $this->prepareRangeFilters($specInfo);
         $this->prepareCheckboxFilters($specInfo);
-        $this->prepareCheckboxFilters($specInfo,"color", "color");
+        $this->prepareCheckboxFilters($specInfo,$specCodes,"color", "color");
         return $specInfo;
     }
 
@@ -150,19 +150,21 @@ class ProductFilterManager
      *
      * @param $specInfo
      */
-    protected function prepareCheckboxFilters(&$specInfo, $type = "checkbox", $param = "check")
+    protected function prepareCheckboxFilters(&$specInfo, $specCodes = [], $type = "checkbox", $param = "check")
     {
         $request = app(Request::class);
         foreach ($specInfo as $key => &$filter) {
             if ($filter->type !== $type) continue;
             $current = $request->get("{$param}-{$filter->slug}", []);
             $vueValues = [];
+            $specId = $filter->id;
             $i = 0;
             foreach ($filter->values as $id => $value) {
                 $i++;
                 $vueValues[] = [
                     "id" => $id,
                     "value" => $value,
+                    "code" => $specCodes[$specId][$value] ?? "",
                     "checked" => in_array($value, $current),
                     "inputName" => "$param-{$filter->slug}[]",
                     "inputId" => "{$id}-{$filter->slug}-{$i}",
