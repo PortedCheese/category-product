@@ -12,6 +12,7 @@ use PortedCheese\CategoryProduct\Helpers\ProductActionsManager;
  * @method static array|Collection getProductSpecifications(Product $product, bool $collection = false)
  * @method static array getProductSpecificationsByGroups(Product $product, Collection $collection = null)
  * @method static array|Collection getAvailableSpecifications(Product $product, bool $collection = false)
+ * @method static array getAvailableSpecificationsValues(Product $product)
  * @method static changeCategory(Product $product, int $categoryId)
  *
  * @method static array getProductSpecificationValues(Category $category, $includeSubs = false)

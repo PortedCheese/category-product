@@ -77,9 +77,9 @@
     v1.5.0: Добавлено поле code (цвет) к характиеристикам товара
         Проверить переопределение:
         - Models/ProductSpecification > fillable, Models/Specification  > types
-        - Controllers/Admin/ProductSpecificationController > create, validator
-        - vue components: AddProductSpecificationValueComponent, EditProductSpecificaitonValue, FilterCheckboxComponent
-        - helpers: ProductActionsManagerm ProductFilterManager
+        - Controllers/Admin/ProductSpecificationController > create, validator, current
+        - vue components: ProductSpecificationsComponent, AddProductSpecificationValueComponent, EditProductSpecificaitonValue, FilterCheckboxComponent
+        - helpers: ProductActionsManager & ProductFilterManager
         - views: site.filters.form
         Обновление:
         - php artisan migrate

@@ -5,7 +5,6 @@ namespace PortedCheese\CategoryProduct\Helpers;
 
 
 use App\Category;
-use App\Http\Controllers\Auth\LoginController;
 use App\Product;
 use App\ProductSpecification;
 use Illuminate\Database\Eloquent\Collection;
@@ -20,6 +19,7 @@ use PortedCheese\BaseSettings\Exceptions\PreventActionException;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
+use PortedCheese\CategoryProduct\Facades\ProductActions;
 use PortedCheese\CategoryProduct\Models\SpecificationGroup;
 
 class ProductActionsManager
@@ -153,6 +153,23 @@ class ProductActionsManager
             ];
         }
         return $array;
+    }
+
+    /**
+     * Заполненные значения характеристик для товаров этой категории и дочерних
+     *
+     * @param Product $product
+     * @return array
+     */
+    public function getAvailableSpecificationsValues(Product $product){
+        $category = $product->category;
+        list($specValues, $specCodes ) = ProductActions::getProductSpecificationValues($category, true);
+        $availableValues=[];
+        foreach ($specCodes as $id => $spec){
+            foreach ($spec as $value => $code)
+            $availableValues[$id][] = ["value" => $value, "code" => $code];
+        }
+        return $availableValues;
     }
 
     /**

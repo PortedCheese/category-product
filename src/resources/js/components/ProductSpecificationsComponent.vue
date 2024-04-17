@@ -2,6 +2,8 @@
     <div class="col-12">
         <div class="card">
             <add-new :available="this.available"
+                     :available-values="this.availableValues"
+                     :current-values="this.specifications"
                      v-on:add-new-spec="getList"
                      :post-url="postUrl"></add-new>
             <div class="card-body">
@@ -50,7 +52,9 @@
                 </div>
             </div>
         </div>
-        <edit-form v-on:update-spec="getList"></edit-form>
+        <edit-form v-on:update-spec="getList"
+                   :current-values="this.specifications"
+        ></edit-form>
     </div>
 </template>
 
@@ -81,6 +85,7 @@
                 loading: false,
                 available: [],
                 specifications: [],
+                availableValues: {},
                 errors: [],
             }
         },
@@ -99,6 +104,7 @@
                         let data = response.data;
                         this.available = data.available;
                         this.specifications = data.items;
+                        this.availableValues = data.availableValues? data.availableValues : {} ;
                     })
                     .catch(error => {
                         let data = error.response.data;

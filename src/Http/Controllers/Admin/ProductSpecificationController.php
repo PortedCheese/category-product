@@ -43,11 +43,11 @@ class ProductSpecificationController extends Controller
     public function current(Product $product)
     {
         $this->authorize("specificationManagement", $product);
-
         return response()
             ->json([
                 "items" => ProductActions::getProductSpecifications($product),
                 "available" => ProductActions::getAvailableSpecifications($product),
+                "availableValues" =>  ProductActions::getAvailableSpecificationsValues($product),
             ]);
     }
 

@@ -50,10 +50,27 @@
                                 <small v-else class="form-text text-muted">Выберите характеристику</small>
                             </div>
                             <div class="form-group" v-if="chosenSpec">
+                                <div class="input-group mb-3">
+                                    <select v-if="availableValues[chosenSpecId]"
+                                            class="form-control custom-select"
+                                            name="valuesList"
+                                            :id="chosenSpecId"
+                                            v-model="chosenValue"
+                                            v-on:change="fillNewValue">
+                                        <option value="" selected>Выберите из существующих...</option>
+                                        <option v-for="(option, index) in availableValues[chosenSpecId]"
+                                                :value="option.value"
+                                                :disabled="disableCurrentValue(option.value, option.code)"
+                                        >
+                                          {{ option.value }} {{ option.code ? "["+option.code+"]": "" }}
+                                        </option>
+                                    </select>
+                                </div>
                                 <div class="input-group mb-3" v-for="(item, index) in newValues" :key="index">
                                     <input type="text"
                                            name="text"
                                            v-model="item.text"
+                                           v-on:input="disableCurrentValue(item.text,item.code) ? disabledFire(item.text) : true"
                                            class="form-control"
                                            placeholder="Значение"
                                            aria-label="Значение">
@@ -80,6 +97,7 @@
                                            name="text"
                                            v-model="newValue"
                                            class="form-control"
+                                           v-on:input="disableCurrentValue(newValue,newCode) ? disabledFire(newValue) : true"
                                            placeholder="Значение"
                                            aria-label="Значение">
                                     <input v-if="chosenSpec.type"
@@ -126,6 +144,14 @@
               required: true,
               type: Array,
             },
+            currentValues:{
+              required: true,
+              type: Array,
+            },
+            availableValues: {
+              required: true,
+              type: Object,
+            },
             postUrl: {
                 required: true,
                 type: String
@@ -136,6 +162,7 @@
             return {
                 loading: false,
                 chosenSpecId: "",
+                chosenValue: "",
                 newValues: [],
                 newValue: "",
                 newCode: "",
@@ -165,17 +192,62 @@
                 }
                 return values;
             }
+
         },
 
         methods: {
+            disabledFire(disableValue){
+                Swal.fire({
+                    type: "error",
+                    title: "Упс...",
+                    text: "Дублирующее значение!",
+                    footer: disableValue
+                })
+            },
+            disableCurrentValue(optionValue, optionCode){
+                let val;
+                let disable = false;
+                for (val of this.currentValues){
+                    if (val.specification_id === this.chosenSpecId & val.value === optionValue) {
+                      disable = true;
+                      break;
+                    }
+                }
+                return disable;
+            },
+            // Добавить новое значение из селекта
+            fillNewValue: function (){
+                let duplicate = false;
+                let val;
+                for(val of this.newValues){
+                    if (val.text === this.chosenValue) {
+                      duplicate = true;
+                      break;
+                    }
+                }
+
+                if (! duplicate){
+                    for (val of this.availableValues[this.chosenSpecId]){
+                        if (val.value == this.chosenValue) {
+                            this.newValues.push({
+                                text: val.value,
+                                code: val.code,
+                            });
+                        }
+                    }
+                }
+
+            },
             // Добавить новое значение в список.
             addNewValue() {
-                this.newValues.push({
-                    text: this.newValue,
-                    code: this.newCode,
-                });
-                this.newValue = "";
-                this.newCode = "";
+                if (! this.disableCurrentValue(this.newValue, this.newCode)){
+                    this.newValues.push({
+                        text: this.newValue,
+                        code: this.newCode,
+                    });
+                    this.newValue = "";
+                    this.newCode = "";
+                }
             },
             // Удалить значение.
             removeValue(index) {

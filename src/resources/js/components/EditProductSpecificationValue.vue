@@ -27,13 +27,13 @@
                                    class="form-control">
                         </div>
                         <div class="form-group" v-if="showCode">
-                          <label for="code">Код</label>
-                          <input type="text"
-                                 id="code"
-                                 name="code"
-                                 v-model="currentCode"
-                                 class="form-control">
-                        </div>
+                            <label for="code">Код</label>
+                            <input type="text"
+                                   id="code"
+                                   name="code"
+                                   v-model="currentCode"
+                                   class="form-control">
+                          </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -41,7 +41,7 @@
                     <button type="button"
                             class="btn btn-primary"
                             @click="updateValue"
-                            :disabled="! currentValue.length || loading">
+                            :disabled="! currentValue.length || loading || disableEditValue()">
                         Обновить
                     </button>
                 </div>
@@ -53,6 +53,12 @@
 <script>
     export default {
         name: "EditProductSpecificationValue",
+        props: {
+          currentValues:{
+            required: true,
+            type: Array,
+          },
+        },
 
         data() {
             return {
@@ -72,6 +78,26 @@
         },
 
         methods: {
+            disableEditValue(val = this.currentValue, code = this.currentCode){
+                let spec;
+                let disable = false;
+                for (spec of this.currentValues){
+                    if (spec.specification_id === this.specification.specification_id && val === spec.value &&
+                        (code === spec.code || (!code && !spec.code))){
+                        disable = true;
+                        break;
+                    }
+                }
+                return disable;
+            },
+            disabledFire(disableValue){
+                Swal.fire({
+                    type: "error",
+                    title: "Упс...",
+                    text: "Дублирующее значение!",
+                    footer: disableValue
+                })
+            },
             initEditable(specification) {
                 this.specification = specification;
                 $("#editSpecModal").modal("show");
@@ -82,6 +108,11 @@
             updateValue() {
                 this.loading = true;
                 this.errors = [];
+                if (this.disableEditValue()){
+                    this.disabledFire(this.currentValue);
+                    this.loading = false;
+                    return false;
+                }
                 axios
                     .put(this.specification.updateUrl, {
                         value: this.currentValue,
