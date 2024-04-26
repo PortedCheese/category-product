@@ -2,7 +2,9 @@
 
 namespace PortedCheese\CategoryProduct\Models;
 
+use App\ProductVariation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProductSpecification extends Model
 {
@@ -24,6 +26,15 @@ class ProductSpecification extends Model
         return $this->belongsTo(\App\Specification::class);
     }
 
+    /**
+     * Вариации с данной характеристикой
+     *
+     * @return false|BelongsToMany
+     */
+    public function variations(){
+        if (! class_exists(ProductVariation::class)) return false;
+        return $this->belongsToMany(ProductVariation::class)->withTimestamps();
+    }
     /**
      * Товар.
      *

@@ -8,9 +8,11 @@ use App\Observers\Vendor\CategoryProduct\ProductLabelObserver;
 use App\Observers\Vendor\CategoryProduct\ProductCollectionObserver;
 use App\Observers\Vendor\CategoryProduct\ProductObserver;
 use App\Observers\Vendor\CategoryProduct\SpecificationGroupObserver;
+use App\Observers\Vendor\CategoryProduct\ProductSpecificationObserver;
 use App\Product;
 use App\ProductCollection;
 use App\ProductLabel;
+use App\ProductSpecification;
 use App\SpecificationGroup;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Blade;
@@ -48,6 +50,7 @@ use PortedCheese\CategoryProduct\Listeners\CategoryIdsInfoClearCache;
 use PortedCheese\CategoryProduct\Listeners\CategorySpecificationClearCache;
 use PortedCheese\CategoryProduct\Listeners\CategorySpecificationValuesClearCache;
 use PortedCheese\CategoryProduct\Listeners\ProductGalleryChange;
+
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -169,6 +172,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         }
         if (class_exists(SpecificationGroupObserver::class) && class_exists(SpecificationGroup::class)) {
             SpecificationGroup::observe(SpecificationGroupObserver::class);
+        }
+        if (class_exists(ProductSpecificationObserver::class) && class_exists(ProductSpecification::class)) {
+            ProductSpecification::observe(ProductSpecificationObserver::class);
         }
     }
 

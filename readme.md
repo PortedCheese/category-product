@@ -74,7 +74,13 @@
     sortOptions - Список сортировок
     
 ### Versions
-    v1.5.0: Добавлено поле code (цвет) к характиеристикам товара
+    v1.6.0: Использование характеристик товара в вариациях (product-variation ^1.3)
+        Проверить переопределение:
+        - Model/ProductSpecification > variations(): false | variations
+        - Надблюдатель ProductSpecificationObserver
+        Обновление:
+        - php artisan make:category-product --observers
+    v1.5.0: Добавлено поле code (цвет) к характеристикам товара
         Проверить переопределение:
         - Models/ProductSpecification > fillable, Models/Specification  > types
         - Controllers/Admin/ProductSpecificationController > create, validator, current
@@ -83,7 +89,9 @@
         - views: site.filters.form
         Обновление:
         - php artisan migrate
+        - php artisan vendor:publish --provider="PortedCheese\CategoryProduct\ServiceProvider" --tag=public --force
         - php artisan cache:clear (очитска кэша фильтров категорий)
+        - npm run
     v1.4.0: Добавлено Measurement в  меню админики
     v1.3.0 - v1.3.4:
         - Коллекции товаров: управление, отображение + настройки конфига для коллекций
