@@ -84,8 +84,7 @@
             return {
                 loading: false,
                 available: [],
-                specifications: [],
-                availableValues: {},
+                specifications: {},
                 errors: [],
             }
         },
