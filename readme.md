@@ -74,12 +74,16 @@
     sortOptions - Список сортировок
     
 ### Versions
-    v1.6.0: Использование характеристик товара в вариациях (product-variation ^1.3)
+    v1.6.0: Использование характеристик товара в вариациях (product-variation ^1.3) & jquery-bridget
         Проверить переопределение:
         - Model/ProductSpecification > variations(): false | variations
         - Надблюдатель ProductSpecificationObserver
+        - Шаблон site/products/includes/show-top-section (image: add cell[id] class)
         Обновление:
         - php artisan make:category-product --observers
+        - npm i jquery-bridget (use ProdfuctFlickity to selcetCell)
+        - npm run
+        - php artisan cache:clear
     v1.5.0: Добавлено поле code (цвет) к характеристикам товара
         Проверить переопределение:
         - Models/ProductSpecification > fillable, Models/Specification  > types

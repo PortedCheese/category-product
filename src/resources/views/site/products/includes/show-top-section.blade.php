@@ -1,7 +1,7 @@
 <div class="col-12 col-lg-6">
     <div class="product-gallery-top">
         @foreach ($gallery as $item)
-            <div class="carousel-cell">
+            <div class="carousel-cell cell{{ $item["id"] }}">
                 @img([
                     "image" => $item,
                     "template" => "product-show-xl",

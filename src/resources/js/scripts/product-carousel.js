@@ -1,5 +1,9 @@
+import jQueryBridget from "jquery-bridget";
 import ProductFlickity from "flickity-as-nav-for";
 import "flickity/css/flickity.css";
+// Flickty as Jquery plugin
+ProductFlickity.setJQuery($);
+jQueryBridget( 'productFlickity', ProductFlickity, $ );
 
 (function ($) {
     $(document).ready(function(){
@@ -9,8 +13,7 @@ import "flickity/css/flickity.css";
     function initProductCarousel() {
         if (! $(".product-gallery-top").length) return;
 
-        let top = document.querySelector(".product-gallery-top");
-        let galleryTop = new ProductFlickity(top, {
+        let $galleryTop =  $(".product-gallery-top").productFlickity({
             prevNextButtons: false,
             pageDots: false,
             wrapAround: true,
@@ -19,14 +22,19 @@ import "flickity/css/flickity.css";
         });
 
         if (! $(".product-gallery-thumbs").length) return;
+        let $galleryThumbs =  $(".product-gallery-thumbs").productFlickity({
+                prevNextButtons: false,
+                pageDots: false,
+                asNavFor: ".product-gallery-top",
+                freeScroll: true,
+                contain: true,
+        });
 
-        let thumb = document.querySelector(".product-gallery-thumbs");
-        let galleryThumbs = new ProductFlickity(thumb, {
-            prevNextButtons: false,
-            pageDots: false,
-            asNavFor: ".product-gallery-top",
-            freeScroll: true,
-            contain: true,
-        })
+        if (! $(".product-gallery-btns").length) return;
+          $('.product-gallery-btns').on( 'click', '.btn', function()  {
+            var selector = $(this).attr('data-selector');
+            $galleryTop.productFlickity( 'selectCell', selector );
+        });
+
     }
 })(jQuery);
