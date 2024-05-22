@@ -56,7 +56,6 @@
         props: {
           currentValues:{
             required: true,
-            type: Array,
           },
         },
 

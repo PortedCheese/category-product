@@ -50,9 +50,8 @@
                                 <small v-else class="form-text text-muted">Выберите характеристику</small>
                             </div>
                             <div class="form-group" v-if="chosenSpec">
-                                <div class="input-group mb-3">
-                                    <select v-if="availableValues[chosenSpecId]"
-                                            class="form-control custom-select"
+                                <div v-if="availableValues[chosenSpecId]" class="input-group mb-3">
+                                    <select class="form-control custom-select"
                                             name="valuesList"
                                             :id="chosenSpecId"
                                             v-model="chosenValue"
@@ -146,7 +145,6 @@
             },
             currentValues:{
               required: true,
-              type: Array,
             },
             availableValues: {
               required: true,
