@@ -18,6 +18,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Blade;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
 use PortedCheese\CategoryProduct\Console\Commands\CategoryProductMakeCommand;
+use PortedCheese\CategoryProduct\Events\CategoriesAddonsUpdate;
 use PortedCheese\CategoryProduct\Events\CategoryChangePosition;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
@@ -46,6 +47,7 @@ use PortedCheese\CategoryProduct\Filters\ProductSimpleTeaserLg;
 use PortedCheese\CategoryProduct\Filters\ProductTeaserLg;
 use PortedCheese\CategoryProduct\Filters\ProductThumbShow;
 use PortedCheese\CategoryProduct\Filters\ProductThumbSimpleShow;
+use PortedCheese\CategoryProduct\Listeners\CategoriesAddonsClearCache;
 use PortedCheese\CategoryProduct\Listeners\CategoryIdsInfoClearCache;
 use PortedCheese\CategoryProduct\Listeners\CategorySpecificationClearCache;
 use PortedCheese\CategoryProduct\Listeners\CategorySpecificationValuesClearCache;
@@ -151,6 +153,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->app["events"]->listen(CategoryChangePosition::class, CategoryIdsInfoClearCache::class);
         // Изменение значений характеристик.
         $this->app["events"]->listen(CategorySpecificationValuesUpdate::class, CategorySpecificationValuesClearCache::class);
+        // Изменение дополнений к товарам в дочерних категориях
+        $this->app["events"]->listen(CategoriesAddonsUpdate::class, CategoriesAddonsClearCache::class);
     }
 
     /**
@@ -269,6 +273,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // Значения характеристик.
         if (config("category-product.productSpecificationAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/product-specification.php");
+        }
+        // Управление типами дополнений.
+        if (config("category-product.addonTypesAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/addon-type.php");
         }
     }
 

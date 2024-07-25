@@ -13,12 +13,27 @@
                 @endcan
 
                 @can("create", \App\Product::class)
-                    <li class="nav-item">
-                        <a href="{{ route("admin.categories.products.create", ["category" => $category]) }}"
-                           class="nav-link{{ $currentRoute === "admin.categories.products.create" ? " active" : "" }}">
+                    <li class="nav-item dropdown">
+                        <a href="#"
+                           class="nav-link dropdown-toggle{{ $currentRoute === "admin.categories.products.create" ? " active" : "" }}"
+                           data-toggle="dropdown"
+                        >
                             Добавить
                         </a>
+                        <div class="dropdown-menu">
+                            <a href="{{ route("admin.categories.products.create", ["category" => $category]) }}"
+                               class="dropdown-item{{ $currentRoute === "admin.categories.products.create" && ! \Illuminate\Support\Facades\Request::get("addon") ? ' active':''}}">
+                                Товар
+                            </a>
+                            @if(config("category-product.useAddons",false))
+                                <a href="{{ route("admin.categories.products.create", ["category" => $category, "addon" => true]) }}"
+                                   class="dropdown-item{{ $currentRoute === "admin.categories.products.create" && \Illuminate\Support\Facades\Request::get("addon") ? ' active':''}}">
+                                    Товар-дополнение
+                                </a>
+                            @endif
+                        </div>
                     </li>
+
                 @endcan
 
                 @if (! empty($product))
@@ -56,16 +71,18 @@
                         </li>
                     @endcan
 
-                    @can("viewAny", \App\Meta::class)
-                        @can("update", $product)
-                            <li class="nav-item">
-                                <a href="{{ route("admin.products.meta", ["product" => $product]) }}"
-                                   class="nav-link{{ $currentRoute === "admin.products.meta" ? " active" : "" }}">
-                                    Метатеги
-                                </a>
-                            </li>
+                    @if (! $product->addonType)
+                        @can("viewAny", \App\Meta::class)
+                            @can("update", $product)
+                                <li class="nav-item">
+                                    <a href="{{ route("admin.products.meta", ["product" => $product]) }}"
+                                       class="nav-link{{ $currentRoute === "admin.products.meta" ? " active" : "" }}">
+                                        Метатеги
+                                    </a>
+                                </li>
+                            @endcan
                         @endcan
-                    @endcan
+                    @endif
 
                     @can("delete", $product)
                         <li class="nav-item">

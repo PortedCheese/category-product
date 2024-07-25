@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Facade;
 use PortedCheese\CategoryProduct\Helpers\CategoryActionsManager;
 
 /**
+ * @method static array getCategoryParentsIds(Category $category)
  * @method static array getCategoryChildren(Category $category, $includeSelf = false)
  * @method static forgetCategoryChildrenIdsCache(Category $category)
+ * @method static forgetCategoryParentsIdsCache(Category $category)
  * @method static array getSiteBreadcrumb(Category $category, $isProductPage = false, $parent = false)
  * @method static array getAdminBreadcrumb(Category $category, $isProductPage = false)
  * @method static array getTree()

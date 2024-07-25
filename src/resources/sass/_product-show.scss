@@ -44,10 +44,45 @@
     font-size: 1.75rem;
   }
 
+
+
   &__text-cover {
     @include media-breakpoint-down(md) {
       @include top-gallery-sizes(false);
       margin: 0 auto;
+    }
+  }
+
+  &__addon{
+    &s {
+      &-comment {
+        font-size: 1.25rem;
+      }
+    }
+    &-bg{
+      background-color: rgba($secondary, 0.1);
+    }
+    &-title{
+      font-size: 1.125rem;
+      font-weight: $headings-font-weight;
+    }
+    &-text{
+      color: $secondary;
+    }
+    &-specifications{
+      font-size: small;
+      color: $secondary;
+    }
+    &-type{
+      background-color: rgba($secondary, 0.1);
+      &.collapsed{
+        background-color: rgba($secondary, 0);
+        transition: background-color .1s;
+        &:hover{
+          background-color: rgba($secondary, 0.05);
+          color: $secondary;
+        }
+      }
     }
   }
 

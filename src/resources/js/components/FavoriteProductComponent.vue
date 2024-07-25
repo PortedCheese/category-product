@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import categoryProductEventBus from './categoryProductEventBus'
     export default {
         name: "FavoriteProductComponent",
 
@@ -51,7 +52,7 @@
         },
 
         mounted() {
-            this.$root.$on("change-favorite", this.changeItems);
+            categoryProductEventBus.$on("change-favorite", this.changeItems);
         },
 
         created() {
@@ -96,7 +97,7 @@
                         let data = response.data;
                         if (data.hasOwnProperty("items")) {
                             this.items = data["items"];
-                            this.$root.$emit("change-favorite", data["items"]);
+                            categoryProductEventBus.$emit("change-favorite", data["items"]);
                         }
                     })
                     .catch(error => {
@@ -115,7 +116,7 @@
                         let data = response.data;
                         if (data.hasOwnProperty("items")) {
                             this.items = data["items"];
-                            this.$root.$emit("change-favorite", data["items"]);
+                            categoryProductEventBus.$emit("change-favorite", data["items"]);
                         }
                     })
                     .catch(error => {

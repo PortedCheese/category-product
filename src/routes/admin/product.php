@@ -10,6 +10,8 @@ Route::group([
 ], function () {
     // Товары категори.
     Route::resource("categories.products", "ProductController")->shallow();
+    // Дополнения категори.
+    Route::resource("categories.addons", "AddonController")->shallow();
     // Все товары.
     Route::get("products", "ProductController@index")
         ->name("products.index");

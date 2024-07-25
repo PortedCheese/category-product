@@ -7,6 +7,7 @@ namespace PortedCheese\CategoryProduct\Helpers;
 use App\Category;
 use App\Product;
 use App\ProductSpecification;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\JoinClause;
@@ -14,13 +15,13 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use PortedCheese\BaseSettings\Exceptions\PreventActionException;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
 use PortedCheese\CategoryProduct\Models\SpecificationGroup;
+
 
 class ProductActionsManager
 {
@@ -275,6 +276,8 @@ class ProductActionsManager
             $query = Product::query()
                 ->select("id")
                 ->whereNotNull("published_at");
+            if (! config("category-product.enableFilterAddons", false))
+                $query->whereNull('addon_type_id');
             if ($includeSubs) {
                 $query->whereIn("category_id", CategoryActions::getCategoryChildren($category, true));
             }
@@ -318,6 +321,7 @@ class ProductActionsManager
         $result = Product::query()
             ->whereIn("id", $watch)
             ->whereNotNull("published_at")
+            ->whereNull("addon_type_id")
             ->get();
         $items = [];
         foreach ($result as $item) {
@@ -411,4 +415,87 @@ class ProductActionsManager
         Cache::forget("$key");
     }
 
+    /**
+     * Получить id доп.товаров
+     *
+     * @param Category $category
+     * @return mixed
+     */
+    public function getProductAddons(Product $product)
+    {
+        $key = "product-actions-getProductAddons:{$product->id}";
+        $cIds = CategoryActions::getCategoryParentsIds($product->category);
+        $cache =  Cache::rememberForever($key, function() use ($product, $cIds)
+        {
+            // не выводим допов, если товар неоубликован или  ни одна вариация товара не опубликована
+            if (! $product->published_at) return [];
+            if (config("product-variation.enableVariation") && isset($product->variations)){
+                $disabledCount = 0;
+                foreach ($product->variations as $variation){
+                    if ($variation->disabled_at) $disabledCount ++;
+                }
+                if ($disabledCount === count($product->variations))
+                    return [];
+            }
+
+            $pSpecs = $product->specifications()->get();
+            $addons = Product::query()
+                ->select("id","title","short", "description","addon_type_id","category_id")
+                ->whereIn('category_id',$cIds)
+                ->whereNotNull('addon_type_id')
+                ->whereNotNull('published_at')
+                ->with('addonType')
+                ->with('cover')
+                ->with('variations')
+                ->with('specifications')
+                ->get();
+
+            $ads = [];
+            foreach ($addons as $addon) {
+                // у товара без характеристик показываем все дополнения , дополнение без характеристик показываем у всех товаров
+                if (count($pSpecs) === 0 || count($addon->specifications) === 0){
+                    $ads[$addon->addonType->title][] = $addon;
+                }
+                else{
+                    // у товара с характеристиками выводим дополнения с подходящими значениями этих же характеристик
+                    $flag = false;
+                    foreach ($addon->specifications as $spec){
+                        $other = 0;
+                        foreach ($pSpecs as $pSpec){
+                            if ($spec->specification_id === $pSpec->specification_id )
+                            {
+                                if ($spec->value === $pSpec->value) {
+                                    $flag = true;
+                                    break;
+                                }
+                            }
+                            if ($spec->specification_id !== $pSpec->specification_id)
+                                $other++;
+                        }
+                        if ($flag || $other === count($pSpecs)){
+                            $flag = true;
+                            break;
+                        }
+                    }
+                    if ($flag){
+                        $ads[$addon->addonType->title][] = $addon;
+                    }
+                }
+            }
+            return $ads;
+        }
+        );
+        return $cache;
+    }
+
+    /**
+     * Удалить перечень
+     *
+     * @param Product $product
+     * @return void
+     */
+    public function forgetProductAddons(Product $product){
+        $key = "product-actions-getProductAddons:{$product->id}";
+        Cache::forget("$key");
+    }
 }

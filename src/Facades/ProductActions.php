@@ -24,6 +24,9 @@ use PortedCheese\CategoryProduct\Helpers\ProductActionsManager;
  *
  * @method static array getYouWatch(Product $product)
  *
+ * @method static mixed getProductAddons(Product $product)
+ * @method static forgetProductAddons(Product $product)
+ *
  * @see ProductActionsManager
  */
 class ProductActions extends Facade

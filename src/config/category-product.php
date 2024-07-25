@@ -10,7 +10,9 @@ return [
     "productCollectionAdminRoutes" => true,
     "productAdminRoutes" => true,
     "productSpecificationAdminRoutes" => true,
+    "addonTypesAdminRoutes" => true,
 
+    "useAddons" => true,
     // FACADES
     "categoryFacade" => \PortedCheese\CategoryProduct\Helpers\CategoryActionsManager::class,
     "specificationFacade" => \PortedCheese\CategoryProduct\Helpers\SpecificationActionManager::class,
@@ -33,6 +35,10 @@ return [
     "catalogPageName" => "Каталог",
     "productCollectionsName" => "Коллекции",
     "categoryNest" => 3,
+    "addonTypesName" => "Типы дополнений",
+    "addonsName" => "Дополнения",
+    "enableFilterAddons" => false, // need cache:clear command
+
 
     // Sort
     "defaultSort" => "title",

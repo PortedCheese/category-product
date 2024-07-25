@@ -16,6 +16,40 @@ use PortedCheese\CategoryProduct\Facades\CategoryActions;
 class CategoryActionsManager
 {
     /**
+     * Получить id всех родительских категорий.
+     *
+     * @param Category $category
+     * @return array
+     */
+    public function getCategoryParentsIds(Category $category)
+    {
+        $key = "category-actions-getCategoryParentsIds:{$category->id}";
+        return Cache::rememberForever($key, function () use ($category) {
+            $parents[] = $category->id;
+            $cat = $category;
+            while (isset($cat->parent)){
+                $cat = $cat->parent;
+                $parents[] = $cat->id;
+            }
+            return $parents;
+        });
+    }
+
+    /**
+     * Очистить кэш списка id родительских категорий.
+     *
+     * @param Category $category
+     */
+    public function forgetCategoryParentsIdsCache(Category $category)
+    {
+        Cache::forget("category-actions-getCategoryParentsIds:{$category->id}");
+        $parent = $category->parent;
+        if (! empty($parent)) {
+            $this->forgetCategoryParentsIdsCache($parent);
+        }
+    }
+
+    /**
      * Получить id всех подкатегорий.
      *
      * @param Category $category

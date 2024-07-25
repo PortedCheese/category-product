@@ -3,6 +3,7 @@
 namespace PortedCheese\CategoryProduct\Observers;
 
 use App\Product;
+use PortedCheese\CategoryProduct\Events\CategoriesAddonsUpdate;
 use PortedCheese\CategoryProduct\Events\CategorySpecificationValuesUpdate;
 
 class ProductObserver
@@ -31,6 +32,10 @@ class ProductObserver
      */
     public function updated(Product $product)
     {
+        // При создании  дополнения меняется список дополнений товаров в текущей и дочерних категориях
+        if ($product->addonType)
+            event(new CategoriesAddonsUpdate($product->category));
+
         $product->clearCache();
     }
 
@@ -50,6 +55,9 @@ class ProductObserver
         // При удалении товара меняется список идентификаторов товаров в категории и их значений.
         $category = $product->category;
         event(new CategorySpecificationValuesUpdate($category));
+        // При удалении дополнения меняется список дополнений товаров в этой и дочерних категориях
+        if ($product->addonType)
+            event(new CategoriesAddonsUpdate($category));
 
         // Очистить значения полей.
         foreach ($product->specifications as $specification) {

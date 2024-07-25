@@ -6,7 +6,10 @@
     <div class="row product-show">
         <div class="col-12">
             <div class="product-show__cover">
-                @include("category-product::site.products.includes.show-top-section")
+                    @if (config("category-product.useAddons"))
+                        @includeFirst(["category-product::site.products.includes.addons",])
+                    @endif
+                    @include("category-product::site.products.includes.show-top-section")
             </div>
         </div>
         <div class="col-12 col-lg-8">

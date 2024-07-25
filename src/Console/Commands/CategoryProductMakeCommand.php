@@ -47,7 +47,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
     protected $models = [
         "Category", "Specification", "SpecificationGroup",
         "Product", "ProductLabel", "ProductSpecification",
-        "ProductCollection"
+        "ProductCollection", "AddonType"
     ];
 
     /**
@@ -59,7 +59,7 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
         "Admin" => [
             "CategoryController", "SpecificationController", "SpecificationGroupController",
             "ProductLabelController", "ProductController", "ProductSpecificationController",
-            "ProductCollectionController",
+            "ProductCollectionController", "AddonTypeController"
         ],
         "Site" => [
             "CategoryController", "ProductController", "ProductCollectionController"
@@ -140,6 +140,11 @@ class CategoryProductMakeCommand extends BaseConfigModelCommand
             "title" => "Товары",
             "slug" => "products",
             "policy" => "ProductPolicy",
+        ],
+        [
+            "title" => "Типы дополнений",
+            "slug" => "addon-types",
+            "policy" => "AddonTypePolicy",
         ]
     ];
 

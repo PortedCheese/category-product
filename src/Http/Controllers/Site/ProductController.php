@@ -27,9 +27,10 @@ class ProductController extends Controller
         $pageMetas = Meta::getByModelKey($product);
         $groups = ProductActions::getProductSpecificationsByGroups($product);
         $watch = ProductActions::getYouWatch($product);
+        $addonsArray = ProductActions::getProductAddons($product);
         return view(
             "category-product::site.products.show",
-            compact("product", "siteBreadcrumb", "gallery", "groups", "watch", "pageMetas")
+            compact("product", "siteBreadcrumb", "gallery", "groups", "watch", "addonsArray", "pageMetas")
         );
     }
 

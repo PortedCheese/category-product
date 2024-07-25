@@ -18,6 +18,9 @@
         <div class="card">
             <div class="card-header">
                 <form action="{{ $fromRoute }}" method="get" class="form-inline">
+
+                   @include("category-product::admin.products.includes.product-filter")
+
                     <label for="title" class="sr-only">Заголовок</label>
                     <input type="text"
                            id="title"
@@ -61,7 +64,7 @@
                         <tbody>
                         @foreach ($products as $item)
                             <tr>
-                                <td>{{ $item->title }}</td>
+                                <td class="{{ isset($item->addonType) ? "text-muted" : "" }}">{{ $item->title }}</td>
                                 @empty($category)
                                     <td>
                                         <a href="{{ route("admin.categories.show", ["category" => $item->category]) }}" target="_blank">

@@ -262,6 +262,8 @@ class ProductFilterManager
         else {
             $this->query->select("*");
         }
+        if (! config("category-product.enableFilterAddons", false))
+            $this->query->whereNull('addon_type_id');
         $this->query->whereNotNull("products.published_at");
     }
 

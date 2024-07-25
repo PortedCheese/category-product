@@ -4,7 +4,8 @@
               (strstr($currentRoute, ".specification-groups.") !== false) ||
               (strstr($currentRoute, ".specifications.") !== false) ||
               (strstr($currentRoute, ".product-labels.") !== false) ||
-              (strstr($currentRoute, ".product-collections.") !== false);
+              (strstr($currentRoute, ".product-collections.") !== false) ||
+              (strstr($currentRoute, ".addon-types.") !== false);
 @endphp
 
 @if ($theme == "sb-admin")
@@ -58,7 +59,7 @@
                     </a>
                 @endcan
 
-                @if (class_exists(\App\Measurement::class))
+                @if (class_exists(\App\Measurement::class) && config("product-variation.enableVariations"))
                         @can("viewAny", \App\Measurement::class)
                             <a href="{{ route("admin.measurements.index") }}"
                                class="collapse-item{{ strstr($currentRoute, ".measurements.") !== false ? " active" : "" }}">
@@ -67,13 +68,21 @@
                         @endcan
                 @endif
 
-
                 @can("viewAny", \App\Product::class)
                     <a href="{{ route("admin.products.index") }}"
                        class="collapse-item{{ strstr($currentRoute, "admin.products.index") !== false ? " active" : "" }}">
                         <span>Товары</span>
                     </a>
                 @endcan
+
+                    @if(config("category-product.useAddons",false))
+                        @can("viewAny", \App\AddonType::class)
+                            <a href="{{ route("admin.addon-types.index") }}"
+                               class="collapse-item{{ strstr($currentRoute, "admin.addon-types.index") !== false ? " active" : "" }}">
+                                <span>{{ config("category-product.addonTypesName") }}</span>
+                            </a>
+                        @endcan
+                    @endif
             </div>
         </div>
     </li>

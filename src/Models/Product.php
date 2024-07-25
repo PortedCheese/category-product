@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use PortedCheese\BaseSettings\Traits\ShouldGallery;
 use PortedCheese\BaseSettings\Traits\ShouldSlug;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
 use PortedCheese\SeoIntegration\Traits\ShouldMetas;
 
@@ -33,6 +34,16 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(\App\Category::class);
+    }
+
+    /**
+     * Тип дополнения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|null
+     */
+
+    public function addonType(){
+        return $this->belongsTo(\App\AddonType::class);
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace PortedCheese\CategoryProduct\Http\Controllers\Admin;
 
-use App\AddonType;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Meta;
@@ -16,7 +15,7 @@ use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
 
-class ProductController extends Controller
+class AddonController extends Controller
 {
     public function __construct()
     {
@@ -33,15 +32,14 @@ class ProductController extends Controller
      */
     public function index(Request $request, Category $category = null)
     {
-        $types = AddonType::all();
-        $collection = Product::query()
+        $collection = Product::query()->whereNotNull("addon_type_id")
             ->with("category");
         if (! empty($category)) {
             $collection->where("category_id", $category->id);
-            $fromRoute = route("admin.categories.products.index", ["category" => $category]);
+            $fromRoute = route("admin.categories.addons.index", ["category" => $category]);
         }
         else {
-            $fromRoute = route("admin.products.index");
+            $fromRoute = route("admin.addons.index");
         }
         if ($title = $request->get("title", false)) {
             $collection->where("title", "like", "%$title%");
@@ -54,39 +52,27 @@ class ProductController extends Controller
                 $collection->whereNotNull("published_at");
             }
         }
-        if ($addonType = $request->get("addon_type", false)) {
-            if ($addonType === "product")
-                $collection->whereNull("addon_type_id");
-            else
-                $collection->where("addon_type_id", "=", "$addonType");
-        }
-
         $collection->orderBy("published_at", "desc");
         $products = $collection->paginate()->appends($request->input());
         return view(
             "category-product::admin.products.index",
-            compact("category", "types", "fromRoute", "products", "request")
+            compact("category", "fromRoute", "products", "request")
         );
     }
 
     /**
-     * Show create product view
+     * Show the form for creating a new resource.
      *
-     * @param Request $request
      * @param Category $category
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create(Request $request, Category $category)
+    public function create(Category $category)
     {
-        $types = null;
-        if ($addon = $request->get("addon", false)) {
-            $types = AddonType::all();
-        }
         $labels = ProductLabel::query()->orderBy("title")->get();
         $collections = ProductCollection::query()->orderBy("title")->get();
         return view(
-            "category-product::admin.products.create".($addon? "-addon":""),
-            compact("category", "labels", "collections", "types", "request")
+            "category-product::admin.products.create",
+            compact("category", "labels", "collections")
         );
     }
 
@@ -101,16 +87,6 @@ class ProductController extends Controller
     {
         $this->storeValidator($request->all());
         $product = $category->products()->create($request->all());
-        if ($addonTypeId = $request->get("addon_type", false)) {
-            $type = AddonType::find($addonTypeId);
-            if ($type)
-            {
-                $type->addons()->save($product);
-                return redirect()
-                    ->route("admin.products.show", ["product" => $product])
-                    ->with("success", "Товар-дополнение добавлен");
-            }
-        }
         /**
          * @var Product $product
          */
@@ -164,17 +140,12 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Request $request
-     * @param Product $product
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
      */
     public function edit(Product $product)
     {
         $category = $product->category;
-        $types = null;
-        if ($addon = $product->addonType) {
-            $types = AddonType::all();
-        }
         $labels = ProductLabel::query()->orderBy("title")->get();
         $currentLabels = [];
         foreach ($product->labels as $label) {
@@ -186,8 +157,8 @@ class ProductController extends Controller
             $currentCollections[] = $collection->id;
         }
         return view(
-            "category-product::admin.products.edit".($addon? "-addon":""),
-            compact("product", "category", "labels", "currentLabels", "collections","currentCollections", "types")
+            "category-product::admin.products.edit",
+            compact("product", "category", "labels", "currentLabels", "collections","currentCollections")
         );
     }
 

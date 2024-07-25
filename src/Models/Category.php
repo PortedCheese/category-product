@@ -64,7 +64,20 @@ class Category extends Model
      */
     public function products()
     {
-        return $this->hasMany(\App\Product::class);
+        return $this->hasMany(\App\Product::class)->whereNull('addon_type_id');
+    }
+
+    /**
+     * Дополнения категории.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|null
+     */
+    public function addons()
+    {
+        if (config("category-product.useAddons", false))
+            return $this->hasMany(\App\Product::class)->whereNotNull('addon_type_id');
+        else
+            return null;
     }
 
     /**

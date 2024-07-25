@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import categoryProductEventBus from './categoryProductEventBus'
+
     export default {
         name: "FavoriteStateComponent",
 
@@ -45,7 +47,7 @@
         },
 
         mounted() {
-            this.$root.$on("change-favorite", this.changeFavoriteData);
+            categoryProductEventBus.$on("change-favorite", this.changeFavoriteData);
         },
 
         methods: {

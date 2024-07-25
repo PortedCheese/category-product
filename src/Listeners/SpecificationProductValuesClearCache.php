@@ -13,7 +13,7 @@ class SpecificationProductValuesClearCache
         $category = $event->category;
         // Очистить список id категорий.
         CategoryActions::forgetCategoryChildrenIdsCache($category);
-        if (config("product-variation.enablePriceFilter")) {
+        if (class_exists(\App\ProductVariation::class) && config("product-variation.enablePriceFilter")) {
             ProductVariationActions::clearPricesCache($category);
         }
     }

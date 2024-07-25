@@ -6,6 +6,9 @@
                 <li class="breadcrumb-item{{ $item->active ? " active" : "" }}" aria-current="page">
                     @if ($item->active)
                         {{ $item->title }}
+                        @isset ($product->addonType)
+                            <small class="text-muted"> [дополнение]</small>
+                        @endisset
                     @else
                         <a href="{{ $item->url }}">
                             {{ $item->title }}
