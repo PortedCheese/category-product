@@ -21,6 +21,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        if ($product->addonType)
+            return redirect(route("catalog.categories.show",["category"=>$product->category]),"301");
         $category = $product->category;
         $gallery = $product->images()->orderBy("weight")->get();
         $siteBreadcrumb = CategoryActions::getSiteBreadcrumb($category, true);
