@@ -203,6 +203,15 @@ class ProductController extends Controller
         $this->updateValidator($request->all(), $product);
         // Обновление.
         $product->update($request->all());
+        // Тип дополнения
+        if ($addonTypeId = $request->get("addon_type", false)) {
+            $type = AddonType::find($addonTypeId);
+            if ($type && $product->addonType->id !== $type->id)
+            {
+                $product->addon_type_id = $type->id;
+                $product->save();
+            }
+        }
         // Метки.
         $labels = $request->get("labels", []);
         $product->labels()->sync($labels);
@@ -210,6 +219,7 @@ class ProductController extends Controller
         $collections = $request->get("collections", []);
         $product->collections()->sync($collections);
         $product->clearCache();
+
         return redirect()
             ->route("admin.products.show", ["product" => $product])
             ->with("success", "Товар обновлен");
