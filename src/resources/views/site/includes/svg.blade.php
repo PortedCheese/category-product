@@ -1,6 +1,6 @@
 <svg  xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0" style="position:absolute; display: none; visibility: hidden; width: 0; height: 0;">
     <symbol id="catalog-question" viewBox="0 0 24 24">
-        <path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9 17 6.243 14.757 4 12 4zM11 18H13V20H11z"></path>
+        <path d="M20 8 L20 6 8.023 6 8.023 8 9.2 8 18.8 8 M8 11 H20V13H8 M8 16H20V18H8"></path>
     </symbol>
 
     <symbol id="catalog-empty-image" viewBox="0 0 24 24">

@@ -17,7 +17,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <form action="{{ $fromRoute }}" method="get" class="form-inline">
+                <form action="{{ $fromRoute }}" method="get" class="d-lg-inline-flex">
 
                    @include("category-product::admin.products.includes.product-filter")
 
@@ -27,9 +27,9 @@
                            name="title"
                            placeholder="Заголовок"
                            value="{{ $request->get("title", "") }}"
-                           class="form-control  mb-2 mr-sm-2">
+                           class="form-control  mb-2 me-sm-2">
 
-                    <select class="custom-select mb-2 mr-sm-2" name="published" aria-label="Статус публикации">
+                    <select class="custom-select mb-2 me-sm-2" name="published" aria-label="Статус публикации">
                         <option value="all"{{ ! $request->has('published') || $request->get('published') == 'all' ? " selected" : '' }}>
                             Статус публикации
                         </option>
@@ -41,7 +41,7 @@
                         </option>
                     </select>
 
-                    <button class="btn btn-primary mb-2 mr-2" type="submit">Применить</button>
+                    <button class="btn btn-primary mb-2 me-2" type="submit">Применить</button>
                     <a href="{{ $fromRoute }}" class="btn btn-secondary mb-2">
                         Сбросить
                     </a>

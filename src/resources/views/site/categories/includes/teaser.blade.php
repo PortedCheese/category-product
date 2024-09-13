@@ -6,6 +6,7 @@
                 "image" => $category->image,
                 "template" => "catalog-teaser-xs",
                 "grid" => [
+                    "catalog-teaser-xxl" => 1400,
                     "catalog-teaser-xl" => 1200,
                     "catalog-teaser-lg" => 992,
                     "catalog-teaser-md" => 768,
@@ -27,7 +28,7 @@
             {{ $category->title }}
         </a>
         @if (! empty($category->short))
-            <div data-toggle="tooltip" data-placement="left" title="{{ $category->short }}">
+            <div data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ $category->short }}">
                 <svg class="category-teaser__question">
                     <use xlink:href="#catalog-question"></use>
                 </svg>

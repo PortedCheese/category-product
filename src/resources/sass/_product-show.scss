@@ -33,8 +33,7 @@
   &__cover {
     background-color: $white;
     border: 1px solid $gray-500;
-    padding-top: $grid-gutter-width;
-    padding-bottom: $grid-gutter-width;
+    padding: $grid-gutter-width $grid-gutter-width * .5;
     @include border-radius($card-border-radius);
     display: flex;
     flex-wrap: wrap;
@@ -47,7 +46,7 @@
 
 
   &__text-cover {
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
       @include top-gallery-sizes(false);
       margin: 0 auto;
     }
@@ -114,7 +113,7 @@
         display: block !important;
       }
       .carousel-cell {
-        margin-right: $grid-gutter-width / 2;
+        margin-right: $grid-gutter-width * .5;
         @include top-gallery-sizes;
 
         &:not(:first-child) {
@@ -130,7 +129,7 @@
     }
     &-thumbs {
       overflow: hidden;
-      margin: $grid-gutter-width / 2 auto;
+      margin: $grid-gutter-width * .5 auto;
       @include top-gallery-sizes(false);
       height: 65px;
       display: none;
@@ -138,7 +137,7 @@
         display: block;
       }
       .carousel-cell {
-        margin-right: $grid-gutter-width / 2;
+        margin-right: $grid-gutter-width * .5;
         width: 65px;
         height: 65px;
         display: flex;
@@ -150,7 +149,7 @@
 
   .nav {
     margin-top: $grid-gutter-width;
-    margin-bottom: $grid-gutter-width / 2;
+    margin-bottom: $grid-gutter-width * .5;
     .nav-link {
       color: $gray-500;
       font-weight: $font-weight-bold;

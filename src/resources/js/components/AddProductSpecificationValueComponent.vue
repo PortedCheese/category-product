@@ -3,8 +3,8 @@
         <button type="button"
                 :disabled="! available.length || loading"
                 class="btn btn-success"
-                data-toggle="modal"
-                data-target="#newSpecModal">
+                data-bs-toggle="modal"
+                data-bs-target="#newSpecModal">
             Добавить
         </button>
 
@@ -18,9 +18,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="newSpecModalLabel">Добавить характеристику</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form>
@@ -80,14 +78,14 @@
                                            class="form-control"
                                            placeholder="Код"
                                            aria-label="Код">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-danger"
+
+                                    <button class="btn btn-outline-danger"
                                                 @click="removeValue(index)"
                                                 :disabled="loading"
                                                 type="button">
                                             <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
+                                    </button>
+
 
                                 </div>
 
@@ -106,21 +104,20 @@
                                           class="form-control"
                                           placeholder="Код"
                                           aria-label="Код">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-success"
+
+                                    <button class="btn btn-outline-success"
                                                 :disabled="! newValue.length || loading"
                                                 @click="addNewValue"
                                                 type="button">
                                             <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
 
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                         <button type="button"
                                 class="btn btn-primary"
                                 @click="postNewValues"

@@ -1,7 +1,7 @@
 .product-teaser {
   height: 100%;
   border-color: $gray-500;
-  @include hover() {
+  &:hover {
     border-color: $primary;
   }
 
@@ -40,15 +40,16 @@
   }
 
   &__body {
-    padding: $grid-gutter-width / 2;
+    padding: $grid-gutter-width * .5;
   }
 
   &__title {
     color: $body-color;
     display: inline-block;
-    padding-bottom: $grid-gutter-width / 2;
+    padding-bottom: $grid-gutter-width * .5;
     line-height: 1.25;
-    @include hover() {
+    text-decoration: none;
+    &:hover {
       text-decoration: none;
     }
   }
@@ -60,7 +61,7 @@
   }
 
   &__footer {
-    padding: $grid-gutter-width / 2;
+    padding: $grid-gutter-width * .5;
     background: none;
     border-top: none;
   }
@@ -72,7 +73,7 @@
       flex-direction: row;
 
       &__body {
-        padding: $grid-gutter-width / 2;
+        padding: $grid-gutter-width * .5;
         @include media-breakpoint-up(xl) {
           padding: $grid-gutter-width;
         }
@@ -83,7 +84,7 @@
       }
 
       &__footer {
-        padding: $grid-gutter-width / 2;
+        padding: $grid-gutter-width * .5;
         flex: 0 0 25%;
         @include media-breakpoint-up(xl) {
           padding: $grid-gutter-width;
@@ -104,7 +105,7 @@
     .card-img-top {
       @include media-breakpoint-up(md) {
         @include border-top-radius(0);
-        @include border-left-radius($card-inner-border-radius);
+        @include border-start-radius($card-inner-border-radius);
       }
     }
   }

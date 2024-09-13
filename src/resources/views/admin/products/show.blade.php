@@ -11,9 +11,27 @@
         <div class="card">
             @can("changeCategory", $product)
                 <div class="card-header">
-                    <button type="button" class="btn btn-warning collapse show collapseChangeCategory" data-toggle="modal" data-target="#changeCategory">
+                    <button type="button" class="btn btn-warning collapse show" data-bs-toggle="collapse" data-bs-target="#changeCategoryAlert">
                         Изменить категорию
                     </button>
+                    <div class="collapse collapseChangeCategory" id="changeCategoryAlert">
+                        При изменении категории, характеристики, которые отсутствуют в целевой категории, будут добавлены.
+                        <button id="changeCategoryCancelBtn" type="button" class="btn btn-secondary"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#changeCategoryAlert">
+                            Отмена
+                        </button>
+                        <button type="button"
+                                class="btn btn-primary"
+                                onclick="this.style.display='none';document.querySelector('#changeCategoryCancelBtn').style.display='none'"
+                                data-bs-toggle="collapse"
+                                data-bs-target=".collapseChangeCategory"
+                                aria-expanded="false"
+                                aria-controls="collapseChangeCategory">
+                            Понятно
+                        </button>
+                    </div>
+                </div>
                     <div class="collapse mt-3 collapseChangeCategory">
                         <form class="form-inline"
                               method="post"
@@ -37,9 +55,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-success" type="submit">Обновить</button>
-                                    </div>
+                                    <button class="btn btn-success" type="submit">Обновить</button>
                                 </div>
                             </div>
                         </form>
@@ -95,33 +111,5 @@
         </div>
     </div>
 
-    @can("changeCategory", $product)
-        <div class="modal fade" id="changeCategory" tabindex="-1" role="dialog" aria-labelledby="changeCategoryLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="changeCategoryLabel">Вы уверены?</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        При изменении категории, характеристики, которые отсутствуют в целевой категории, будут добавлены.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                        <button type="button"
-                                class="btn btn-primary"
-                                data-dismiss="modal"
-                                data-toggle="collapse"
-                                data-target=".collapseChangeCategory"
-                                aria-expanded="false"
-                                aria-controls="collapseChangeCategory">
-                            Понятно
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endcan
+
 @endsection

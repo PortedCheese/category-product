@@ -1,5 +1,5 @@
 @if(config("category-product.useAddons", false))
-    <select class="custom-select mb-2 mr-sm-2" name="addon_type" aria-label="{{ config("category-product.addonTypesName") }}">
+    <select class="custom-select mb-2 me-sm-2" name="addon_type" aria-label="{{ config("category-product.addonTypesName") }}">
         <option value=""{{ ! $request->has('addon_type') || $request->get('addon_type') == '' ? " selected" : '' }}>
             Товары и дополнения
         </option>

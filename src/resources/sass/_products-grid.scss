@@ -1,5 +1,5 @@
 .products-grid {
-  margin-top: $grid-gutter-width / 2;
+  margin-top: $grid-gutter-width * .5;
   &-col {
     margin-bottom: $grid-gutter-width;
   }

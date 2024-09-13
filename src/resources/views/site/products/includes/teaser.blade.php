@@ -14,10 +14,11 @@
         <a href="{{ route("catalog.products.show", ["product" => $product]) }}"
            class="catalog-image catalog-image_product{{ config("category-product.useSimpleTeaser") ? "" : " catalog-image_upsize" }}">
             @if ($product->cover)
-                @pic([
+                @picLazy([
                     "image" => $product->cover,
                     "template" => "catalog-teaser-xs",
                     "grid" => [
+                        "catalog-teaser-xxl" => 1400,
                         "catalog-teaser-xl" => 1200,
                         "product-teaser-lg" => 992,
                         "catalog-teaser-md" => 768,

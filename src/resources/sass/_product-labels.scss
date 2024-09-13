@@ -1,17 +1,18 @@
 @mixin product-label($bg) {
-  color: color-yiq($bg);
+  color: color-contrast($bg);
   background-color: $bg;
+  text-decoration: none;
 
   @at-root a#{&} {
-    @include hover-focus() {
-      color: color-yiq($bg);
+    &:hover,&:focus{
+      color: color-contrast($bg);
       background-color: darken($bg, 10%);
     }
 
     &:focus,
     &.focus {
       outline: 0;
-      box-shadow: 0 0 0 $badge-focus-width rgba($bg, .5);
+      box-shadow: 0 0 0 .05rem rgba($bg, .5);
     }
   }
 }
@@ -67,7 +68,7 @@ $product-label-transition:                  $btn-transition !default;
   @include transition($product-label-transition);
 
   @at-root a#{&} {
-    @include hover-focus() {
+    &:hover,&:focus {
       text-decoration: none;
     }
   }

@@ -8,16 +8,16 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <form action="{{ route($currentRoute) }}" method="get" class="form-inline">
+                <form action="{{ route($currentRoute) }}" method="get" class="d-lg-flex">
                     <label class="sr-only" for="title">Заголовок</label>
                     <input type="text"
-                           class="form-control mb-2 mr-sm-2"
+                           class="form-control mb-2 me-sm-2"
                            id="title"
                            placeholder="Заголовок"
                            value="{{ $request->get("title", "") }}"
                            name="title">
 
-                    <button type="submit" class="btn btn-primary mb-2 mr-sm-2">Поиск</button>
+                    <button type="submit" class="btn btn-primary mb-2 me-sm-2">Поиск</button>
                     <a href="{{ route($currentRoute) }}" class="btn btn-outline-secondary mb-2">Сбросить</a>
                 </form>
             </div>

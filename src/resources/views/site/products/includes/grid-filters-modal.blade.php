@@ -3,7 +3,7 @@
 </div>
 
 <div class="modal slide dir-left" tabindex="-1" aria-hidden="true" role="dialog" id="filterModal">
-    <div class="modal-dialog modal-dialog-centered ml-0 my-0" role="document">
+    <div class="modal-dialog modal-dialog-centered ms-0 my-0" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4>Фильтры</h4>

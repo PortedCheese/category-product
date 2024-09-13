@@ -1,8 +1,9 @@
 .favorite-product {
   &__btn {
-    padding: $grid-gutter-width / 2;
+    padding: $grid-gutter-width * .5;
     color: $primary;
-    @include hover-focus() {
+    text-decoration: none;
+    &:hover, &:focus {
       text-decoration: none;
       box-shadow: none;
       color: darken($primary, 10%);

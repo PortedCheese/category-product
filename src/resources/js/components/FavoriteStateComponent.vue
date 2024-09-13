@@ -4,7 +4,7 @@
             <svg class="favorite-state__ico">
                 <use xlink:href="#heart-border"></use>
             </svg>
-            <span v-if="count > 0" class="badge badge-primary favorite-state__count">{{ count }}</span>
+            <span v-if="count > 0" class="badge bg-primary favorite-state__count">{{ count }}</span>
         </span>
         <span class="favorite-state__title">
             Избранное

@@ -3,9 +3,9 @@
         <div class="product-show__addons" id="addonsGroup">
             <p class="product-show__addons-comment">Добавьте к заказу:</p>
             @foreach ($addonsArray as $key => $values)
-                <button class="btn btn-outline-secondary product-show__addon-type collapsed mr-2 mb-2"
-                   data-toggle="collapse"
-                   data-target="#collapseAddonType{{ $loop->index }}"
+                <button class="btn btn-outline-secondary product-show__addon-type collapsed me-2 mb-2"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#collapseAddonType{{ $loop->index }}"
                    role="button"
                    aria-expanded="false"
                    aria-controls="collapseAddonType{{ $loop->index }}">

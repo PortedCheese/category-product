@@ -9,16 +9,16 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <form action="{{ route($currentRoute) }}" method="get" class="form-inline">
+                <form action="{{ route($currentRoute) }}" method="get" class="d-lg-flex">
                     <label for="title" class="sr-only">Заголовок</label>
                     <input type="text"
                            id="title"
                            placeholder="Заголовок"
                            name="title"
                            value="{{ $request->get("title", "") }}"
-                           class="form-control mb-2 mr-sm-2">
+                           class="form-control mb-2 me-sm-2">
 
-                    <button type="submit" class="btn btn-primary mb-2 mr-sm-2">Применить</button>
+                    <button type="submit" class="btn btn-primary mb-2 me-sm-2">Применить</button>
                     <a href="{{ route($currentRoute) }}" class="btn btn-secondary mb-2">Сбросить</a>
                 </form>
             </div>
@@ -48,7 +48,7 @@
                                 @canany(["update", "view", "delete"], $item)
                                     <td>
                                         <div role="toolbar" class="btn-toolbar">
-                                            <div class="btn-group mr-1">
+                                            <div class="btn-group me-1">
                                                 @can("update", $item)
                                                     <a href="{{ route("admin.product-labels.edit", ["label" => $item]) }}" class="btn btn-primary">
                                                         <i class="far fa-edit"></i>

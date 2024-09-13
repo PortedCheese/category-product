@@ -1,13 +1,13 @@
 .category-teaser {
   height: 100%;
   border-color: $gray-500;
-  @include hover() {
+  &:hover {
     border-color: $primary;
   }
 
   &__image {
     color: $body-color;
-    @include hover() {
+    &:hover {
       color: $body-color;
       text-decoration: none;
     }
@@ -26,7 +26,8 @@
     @include media-breakpoint-up(md) {
       font-size: .875rem;
     }
-    @include hover() {
+    text-decoration: none;
+    &:hover {
       text-decoration: none;
     }
   }

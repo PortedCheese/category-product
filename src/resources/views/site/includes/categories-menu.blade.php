@@ -2,7 +2,7 @@
     <a href="#"
        id="catalog-menu"
        class="nav-link dropdown-toggle"
-       data-toggle="dropdown"
+       data-bs-toggle="dropdown"
        aria-haspopup="true"
        aria-expanded="false">
         Каталог

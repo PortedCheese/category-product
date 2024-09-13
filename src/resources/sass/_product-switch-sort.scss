@@ -1,7 +1,7 @@
 .product-switch-sort {
   &__btn {
     padding-left: 0;
-    @include hover-focus() {
+    &:hover, &:focus {
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none;

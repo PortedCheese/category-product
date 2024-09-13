@@ -34,7 +34,9 @@ use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserLg;
 use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserMd;
 use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserSm;
 use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXl;
+use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXxl;
 use PortedCheese\CategoryProduct\Filters\CatalogSimpleTeaserXs;
+use PortedCheese\CategoryProduct\Filters\CatalogTeaserXxl;
 use PortedCheese\CategoryProduct\Filters\ProductShowLg;
 use PortedCheese\CategoryProduct\Filters\ProductShowMd;
 use PortedCheese\CategoryProduct\Filters\ProductShowSm;
@@ -313,6 +315,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $imagecache = app()->config["imagecache.templates"];
         // Тизеры.
         if (config("category-product.useSimpleTeaser")) {
+            if (empty($imagecache["catalog-teaser-xxl"])) $imagecache["catalog-teaser-xxl"] = CatalogSimpleTeaserXxl::class;
             if (empty($imagecache["catalog-teaser-xl"])) $imagecache["catalog-teaser-xl"] = CatalogSimpleTeaserXl::class;
             if (empty($imagecache["catalog-teaser-lg"])) $imagecache["catalog-teaser-lg"] = CatalogSimpleTeaserLg::class;
             if (empty($imagecache["product-teaser-lg"])) $imagecache["product-teaser-lg"] = ProductSimpleTeaserLg::class;
@@ -328,6 +331,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             if (empty($imagecache["product-show-thumb"])) $imagecache["product-show-thumb"] = ProductThumbSimpleShow::class;
         }
         else {
+            if (empty($imagecache["catalog-teaser-xxl"])) $imagecache["catalog-teaser-xxl"] = CatalogTeaserXxl::class;
             if (empty($imagecache["catalog-teaser-xl"])) $imagecache["catalog-teaser-xl"] = CatalogTeaserXl::class;
             if (empty($imagecache["catalog-teaser-lg"])) $imagecache["catalog-teaser-lg"] = CatalogTeaserLg::class;
             if (empty($imagecache["product-teaser-lg"])) $imagecache["product-teaser-lg"] = ProductTeaserLg::class;
@@ -335,6 +339,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             if (empty($imagecache["catalog-teaser-sm"])) $imagecache["catalog-teaser-sm"] = CatalogTeaserSm::class;
             if (empty($imagecache["catalog-teaser-xs"])) $imagecache["catalog-teaser-xs"] = CatalogTeaserXs::class;
 
+            if (empty($imagecache["product-show-xxl"])) $imagecache["product-show-xxl"] = ProductShowXxl::class;
             if (empty($imagecache["product-show-xl"])) $imagecache["product-show-xl"] = ProductShowXl::class;
             if (empty($imagecache["product-show-lg"])) $imagecache["product-show-lg"] = ProductShowLg::class;
             if (empty($imagecache["product-show-md"])) $imagecache["product-show-md"] = ProductShowMd::class;

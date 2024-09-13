@@ -16,7 +16,7 @@
                     <li class="nav-item dropdown">
                         <a href="#"
                            class="nav-link dropdown-toggle{{ $currentRoute === "admin.categories.products.create" ? " active" : "" }}"
-                           data-toggle="dropdown"
+                           data-bs-toggle="dropdown"
                         >
                             Добавить
                         </a>

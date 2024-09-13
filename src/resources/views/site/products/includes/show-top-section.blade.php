@@ -1,4 +1,4 @@
-<div class="col-12 col-lg-6">
+<div class="col-12 col-lg-6 col-xxl-5">
     <div class="product-gallery-top">
         @foreach ($gallery as $item)
             <div class="carousel-cell cell{{ $item["id"] }}">
@@ -43,7 +43,7 @@
         </div>
     @endif
 </div>
-<div class="col-12 col-lg-6">
+<div class="col-12 col-lg-6 col-xxl-7">
     <div class="product-show__text-cover">
         <h1 class="product-show__title">{{ $product->title }}</h1>
         @include("category-product::site.products.includes.favorite")

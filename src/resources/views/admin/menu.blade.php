@@ -5,6 +5,7 @@
               (strstr($currentRoute, ".specifications.") !== false) ||
               (strstr($currentRoute, ".product-labels.") !== false) ||
               (strstr($currentRoute, ".product-collections.") !== false) ||
+              (strstr($currentRoute, ".measurements.") !== false) ||
               (strstr($currentRoute, ".addon-types.") !== false);
 @endphp
 
@@ -12,8 +13,8 @@
     <li class="nav-item {{ $active ? " active" : "" }}">
         <a href="#"
            class="nav-link"
-           data-toggle="collapse"
-           data-target="#collapse-categories-menu"
+           data-bs-toggle="collapse"
+           data-bs-target="#collapse-categories-menu"
            aria-controls="#collapse-categories-menu"
            aria-expanded="{{ $active ? "true" : "false" }}">
             <i class="fas fa-stream"></i>

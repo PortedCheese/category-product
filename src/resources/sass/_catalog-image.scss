@@ -11,6 +11,9 @@
   @include media-breakpoint-up(xl) {
     min-height: 253px;
   }
+  @include media-breakpoint-up(xxl) {
+    min-height: 304px;
+  }
 }
 @mixin product-image-sizes() {
   @include media-breakpoint-only(lg) {

@@ -15,11 +15,11 @@
         <div class="col-12 col-lg-8">
             <ul class="nav" id="productTab" role="tablist">
                 <li class="nav-item">
-                    <a id="about-tab" href="#about-text" class="nav-link active" data-toggle="tab" aria-selected="true">О товаре</a>
+                    <a id="about-tab" href="#about-text" class="nav-link active" data-bs-toggle="tab" aria-selected="true">О товаре</a>
                 </li>
                 @if (! empty($groups))
                     <li class="nav-item">
-                        <a id="spec-tab" href="#spec-text" class="nav-link" data-toggle="tab" aria-selected="false">Характеристики</a>
+                        <a id="spec-tab" href="#spec-text" class="nav-link" data-bs-toggle="tab" aria-selected="false">Характеристики</a>
                     </li>
                 @endif
             </ul>

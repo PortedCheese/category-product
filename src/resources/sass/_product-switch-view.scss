@@ -13,7 +13,7 @@
     &.active, &:hover {
       color: $body-color;
     }
-    @include hover-focus() {
+    &:hover, &:focus {
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none;

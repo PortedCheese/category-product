@@ -6,6 +6,7 @@
                 "image" => $collection->image,
                 "template" => "catalog-teaser-xs",
                 "grid" => [
+                    "catalog-teaser-xxl" => 1400,
                     "catalog-teaser-xl" => 1200,
                     "catalog-teaser-lg" => 992,
                     "catalog-teaser-md" => 768,
