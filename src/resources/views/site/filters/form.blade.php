@@ -23,9 +23,9 @@
     @endforeach
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block">Показать</button>
+        <button type="submit" class="btn btn-primary w-100">Показать</button>
         <a href="{{ route("catalog.categories.show", ['category' => $category]) }}"
-           class="btn btn-link btn-block">
+           class="btn btn-link w-100">
             Сбросить фильтры
         </a>
     </div>
