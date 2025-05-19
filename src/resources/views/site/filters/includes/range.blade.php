@@ -1,7 +1,7 @@
 @if ($filter->render)
     <div class="form-group steps-slider-cover" data-step="1">
         <label>{{ $filter->title }}</label>
-        <div class="row justify-content-between mb-2">
+        <div class="row justify-content-between my-2">
             <div class="col-6">
                 <input type="number"
                        name="range-from-{{ $filter->slug }}"

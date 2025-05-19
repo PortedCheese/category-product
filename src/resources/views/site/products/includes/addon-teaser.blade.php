@@ -6,7 +6,7 @@
                     <div class="float-left me-3 mb-3">
                         @imgLazy([
                         "image" => $addon->cover,
-                        "template" => "small",
+                        "template" => config("category-product.addonsFileter", "small"),
                         "lightbox" => "addonLightGroup".$addon->id,
                         "grid" => [],
                         "imgClass" => "rounded",

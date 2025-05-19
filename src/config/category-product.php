@@ -37,6 +37,7 @@ return [
     "categoryNest" => 3,
     "addonTypesName" => "Типы дополнений",
     "addonsName" => "Дополнения",
+    "addonsFilter" => "small",
     "enableFilterAddons" => false, // need cache:clear command
 
 
