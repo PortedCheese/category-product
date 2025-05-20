@@ -50,7 +50,7 @@
                                             <td class="w-25 border-0">
                                                 {{ $spec->title }}
                                             </td>
-                                            <td class="w-75 border-0 text-right">
+                                            <td class="w-75 border-0 text-end">
                                                 {{ implode(", ", $spec->values) }}
                                             </td>
                                         </tr>
